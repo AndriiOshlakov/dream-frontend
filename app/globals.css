@@ -1,11 +1,21 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: var(--font-inter), sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin: 0;
+  margin: 0 auto;
   background-color: #f3f9ed;
   color: #000;
+}
+
+main {
+  margin: 0 auto;
 }
 
 h1,
@@ -32,10 +42,4 @@ a {
 button {
   cursor: pointer;
   border: none;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
 }

@@ -1,9 +1,9 @@
-import css from "@/app/Home.module.css";
+import css from '@/app/Home.module.css';
 
 export default function HomePage() {
   return (
-    <main>
+    <div>
       <h1>Main Page</h1>
-    </main>
+    </div>
   );
 }

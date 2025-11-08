@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Nunito_Sans } from 'next/font/google';
 import 'modern-normalize/modern-normalize.css';
 import './globals.css';
+import css from './Home.module.css';
 import Header from '@/components/Header/Header';
 // import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import Footer from '@/components/Footer/Footer';
