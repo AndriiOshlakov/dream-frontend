@@ -6,6 +6,7 @@ import Header from '@/components/Header/Header';
 // import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import Footer from '@/components/Footer/Footer';
 // import AuthProvider from "@/components/AuthProvider/AuthProvider";
+import ReviewsList from '@/components/ReviewsList/ReviewsList';
 
 const inter = Inter({
   subsets: ['cyrillic'],
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.variable} ${nunito.variable} `}>
         <Header />
         <main>{children}</main>
+        <ReviewsList />
         <Footer />
       </body>
     </html>
