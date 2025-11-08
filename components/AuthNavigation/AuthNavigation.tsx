@@ -6,22 +6,19 @@ import Link from 'next/link';
 import { useAuthStore } from '@/lib/store/authStore';
 
 const AuthNavigation = () => {
-  const { isAuthenticated, user } = useAuthStore();
-
-  const handleLogout = () => {};
+  const { isAuthenticated } = useAuthStore();
 
   return isAuthenticated ? (
     <li>
-      <p>{user?.email}</p>
-      <button onClick={handleLogout}>Вихід</button>
+      <Link href="/profile">Кабінет</Link>
     </li>
   ) : (
     <>
       <li>
-        <Link href="/sign-in">Вхід</Link>
+        <Link href="/auth/login">Вхід</Link>
       </li>
       <li>
-        <Link href="/sign-up">Реєстрація</Link>
+        <Link href="/auth/register">Реєстрація</Link>
       </li>
     </>
   );
