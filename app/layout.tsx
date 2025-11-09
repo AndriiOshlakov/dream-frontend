@@ -5,6 +5,8 @@ import "./globals.css";
 import Header from "@/components/Header/Header";
 // import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import Footer from "@/components/Footer/Footer";
+import Hero from "@/components/Hero/page";
+import Style from "@/components/Style/page";
 // import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
 const inter = Inter({
