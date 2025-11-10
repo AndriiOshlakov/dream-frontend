@@ -127,6 +127,7 @@
   .headerLink:focus {
     text-decoration: underline;
     text-underline-offset: 3px;
+    color: #9db484;
   }
 
   .headerLink:active {
