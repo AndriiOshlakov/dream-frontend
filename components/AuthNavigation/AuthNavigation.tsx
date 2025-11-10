@@ -12,10 +12,8 @@ interface AuthNavigationProps {
 const AuthNavigation = ({ variant = 'header' }: AuthNavigationProps) => {
   const { isAuthenticated } = useAuthStore();
 
-  // Класс для <ul>
   const containerClass = variant === 'header' ? css.authNavigationHeader : css.authNavigationMobile;
 
-  // Класс для <li>
   const itemClass =
     variant === 'header' ? css.authNavigationItemHeader : css.authNavigationItemMobile;
 

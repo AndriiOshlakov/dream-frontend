@@ -14,12 +14,10 @@ export default function Header() {
   return (
     <header className={css.header}>
       <div className={css.container}>
-        {/* icon */}
         <Link href="/" className={css.headerLogo}>
-          Clothica
-          {/* <svg width="84" height="36">
-            <use href="../" />
-          </svg> */}
+          <svg width="84" height="36">
+            <use href="/symbol-defs.svg#icon-Company-Logo" />
+          </svg>
         </Link>
         <nav className={css.headerNavigation}>
           {/* Navigation on web  */}
@@ -46,15 +44,15 @@ export default function Header() {
         <AuthNavigation variant="header" />
         <div className={css.headerBtn}>
           <button onClick={() => setMenuOpen(true)} className={css.burgerBtn}>
-            {/* <svg width="18.3" height="12.44">
-            <use href="../" />
-          </svg> */}
+            <svg width="24" height="24">
+              <use href="/symbol-defs.svg#icon-menu" />
+            </svg>
           </button>
 
           {/* basket */}
           <Link className={css.headerBasket} href="/order">
-            <svg width="24" height="24">
-              <use href="/" />
+            <svg className={css.headerBasketIcon} width="24" height="24">
+              <use href="/symbol-defs.svg#icon-shopping_cart" />
             </svg>
           </Link>
         </div>

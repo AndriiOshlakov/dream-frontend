@@ -1,29 +1,28 @@
 import Link from 'next/link';
 import AuthNavigation from '../AuthNavigation/AuthNavigation';
 import css from './MobileMenu.module.css';
+import Container from '../Container/Container';
 
 export default function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   return (
-    <div className={css.container}>
+    <Container>
       <div className={`${css.mobileMenu} ${isOpen ? css.isOpen : ''}`}>
         <div className={css.mobileMenuHeader}>
           <Link href="/">
-            Clothica
             <svg width="84" height="36">
-              <use href="/public/symbol-defs.svg/#" />
+              <use href="symbol-defs.svg#icon-Company-Logo" />
             </svg>
           </Link>
 
           <div className={css.mobileMenuNavigationBtn}>
             <button className={css.mobileMenuCloseBtn} onClick={onClose}>
-              X
-              {/* <svg className={css.mobileMenuCloseBtnIcon} width="24" height="24">
-                      <use href="/public/symbol-defs.svg#icon-close" />
-                    </svg> */}
+              <svg className={css.mobileMenuCloseBtnIcon} width="24" height="24">
+                <use href="/symbol-defs.svg#icon-close" />
+              </svg>
             </button>
             <Link className={css.mobileMenuBasket} href="/order" onClick={onClose}>
-              <svg className={css.mobileMenuCloseBtnIcon} width="36" height="36">
-                <use href="/public/symbol-defs.svg#icon-close" />
+              <svg className={css.mobileMenuBasketIcon} width="19" height="20">
+                <use href="/symbol-defs.svg#icon-shopping_cart" />
               </svg>
             </Link>
           </div>
@@ -51,6 +50,6 @@ export default function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClo
 
         <AuthNavigation variant="mobile" />
       </div>
-    </div>
+    </Container>
   );
 }
