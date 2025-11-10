@@ -3,50 +3,65 @@
 
 import Link from 'next/link';
 import AuthNavigation from '../AuthNavigation/AuthNavigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MobileMenu from '../MobileMenu/MobileMenu';
+import css from './Header.module.css';
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
+  }, [menuOpen]);
   return (
-    <header>
-      <div>
+    <header className={css.header}>
+      <div className={css.container}>
         {/* icon */}
-        <Link href="/">
-          <svg width="84" height="36">
-            <use href="/" />
-          </svg>
+        <Link href="/" className={css.headerLogo}>
+          Clothica
+          {/* <svg width="84" height="36">
+            <use href="../" />
+          </svg> */}
         </Link>
-        <nav>
+        <nav className={css.headerNavigation}>
           {/* Navigation on web  */}
-          <ul>
+
+          <ul className={css.headerNavigationList}>
             <li>
-              <Link href="/">Головна</Link>
+              <Link href="/" className={css.headerLink}>
+                Головна
+              </Link>
             </li>
             <li>
-              <Link href="/goods">Товари</Link>
+              <Link href="/goods" className={css.headerLink}>
+                Товари
+              </Link>
             </li>
             <li>
-              <Link href="/categories">Категорії</Link>
+              <Link href="/categories" className={css.headerLink}>
+                Категорії
+              </Link>
             </li>
             {/* navigation for auth or unauth user */}
-            <AuthNavigation />
           </ul>
         </nav>
+        <AuthNavigation variant="header" />
+        <div className={css.headerBtn}>
+          <button onClick={() => setMenuOpen(true)} className={css.burgerBtn}>
+            {/* <svg width="18.3" height="12.44">
+            <use href="../" />
+          </svg> */}
+          </button>
 
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-          ☰
-        </button>
-
-        {/* basket */}
-        <Link href="/order">
-          <svg width="84" height="36">
-            <use href="/" />
-          </svg>
-        </Link>
+          {/* basket */}
+          <Link className={css.headerBasket} href="/order">
+            <svg width="24" height="24">
+              <use href="/" />
+            </svg>
+          </Link>
+        </div>
       </div>
       {/* Mob menu */}
-      {isMenuOpen && <MobileMenu onClose={() => setIsMenuOpen(false)} />}
+      {menuOpen && <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />}
     </header>
   );
 }
