@@ -1,14 +1,17 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Container from '@/components/Container/Container';
 
-interface PublicLayoutProps {
+type PublicLayoutProps = {
   children: React.ReactNode;
-}
+};
 
-const PublicLayout = ({ children }: PublicLayoutProps) => {
+export default function PublicLayout({ children }: PublicLayoutProps) {
   const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +19,13 @@ const PublicLayout = ({ children }: PublicLayoutProps) => {
     setLoading(false);
   }, [router]);
 
-  return <> {loading ? <p>Loading...</p> : children}</>;
-};
-
-export default PublicLayout;
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <Container>
+      <Link href="/auth/login">Вхід</Link>
+      <Link href="/auth/register">Реєстрація</Link>
+      {children}
+    </Container>
+  );
+}
