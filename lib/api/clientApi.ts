@@ -1,16 +1,19 @@
-// import { LoginRequest, RegisterRequest } from "@/types/auth";
 // import { FetchNotesParams, nextServer, PostsHttpResponse } from "./api";
-// import { User } from "@/types/user";
 // import { Note, NoteCreatePayload } from "@/types/note";
 
-// export async function register(data: RegisterRequest) {
-//   const response = await nextServer.post<User>("/auth/register", data);
-//   return response.data;
-// }
-// export const login = async (data: LoginRequest) => {
-//   const res = await nextServer.post<User>("/auth/login", data);
-//   return res.data;
-// };
+import { RegisterRequest, LoginRequest } from '@/types/auth';
+import { nextServer } from './api';
+import { User } from '@/types/user';
+
+export const register = async (data: RegisterRequest) => {
+  const response = await nextServer.post<User>('/auth/register', data);
+  return response.data;
+};
+
+export const login = async (data: LoginRequest) => {
+  const response = await nextServer.post<User>('/auth/login', data);
+  return response.data;
+};
 
 // type CheckSessionRequest = {
 //   success: boolean;
