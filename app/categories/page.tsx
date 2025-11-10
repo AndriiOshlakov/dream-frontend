@@ -1,3 +1,3 @@
-import css from "./CategoriesPage.module.css";
+import css from './CategoriesPage.module.css';
 
 export default function CategoriesPage() {}
