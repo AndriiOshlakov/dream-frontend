@@ -1,5 +1,5 @@
-import css from './Header.module.css';
 'use client';
+import css from './Header.module.css';
 
 import Link from 'next/link';
 import AuthNavigation from '../AuthNavigation/AuthNavigation';
