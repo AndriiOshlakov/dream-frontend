@@ -1,0 +1,258 @@
+.footer {
+  background-color: #c5e1a5;
+}
+.container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 48px 20px;
+}
+.footerTop {
+  display: flex;
+  flex-direction: column;
+}
+.footerLinks {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 40px;
+  margin: 0 auto;
+  margin-bottom: 32px;
+}
+
+.footerMenu {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.footerNavList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #000;
+}
+
+.footerNavigation {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: #000;
+}
+
+.footerSubscribe {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.footerSub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.footerDescription {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.footerFormContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.footerInput {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 8px;
+  width: 195px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.6);
+}
+.footerInput:hover,
+.footerInput:focus {
+  border: #c5e1a5;
+}
+.footerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 100px;
+  padding-block: 6px;
+  padding-inline: 12px;
+  width: 124px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.footerBtn:hover,
+.footerBtn:focus {
+  background: #9db484;
+}
+
+.footerBtn:active {
+  background: #3b4331;
+}
+.footerSocial {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+.rights {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #000;
+  text-align: center;
+  padding-top: 32px;
+}
+
+.socialContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.socialLink {
+  fill: #000;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: 48px 32px;
+  }
+  .footerTop {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .footerLinks,
+  .footerSubscribe {
+    flex: 1 1 50%;
+  }
+  .footerMenu {
+    text-align: start;
+    font-size: 14px;
+  }
+  .footerNavigation {
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-align: start;
+  }
+
+  .footerLinks {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 40px;
+  }
+  .footerSubscribe {
+    width: 400px;
+  }
+  .footerSub {
+    font-size: 14px;
+  }
+  .footerDescription {
+    font-size: 14px;
+  }
+  .footerInput {
+    width: 273px;
+    height: 37px;
+  }
+  .footerBtn {
+    width: 111px;
+    height: 33px;
+    font-size: 14px;
+  }
+  .rights {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    flex: 1;
+  }
+  .footerSocial {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .socialLink svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding: 80px 64px;
+  }
+  .footerLogo {
+    width: 372px;
+  }
+  .footerMenu {
+    font-size: 16px;
+  }
+  .footerNav {
+    width: 372px;
+  }
+  .footerNavigation {
+    font-size: 14px;
+  }
+  .rights {
+    font-size: 14px;
+  }
+
+  .footerNavigation {
+    font-size: 14px;
+  }
+  .footerSub {
+    font-size: 16px;
+  }
+  .footerDescription {
+    font-size: 16px;
+  }
+  .footerSubscribe {
+    margin-left: 128px;
+  }
+  .footerBtn {
+    font-size: 16px;
+  }
+}
