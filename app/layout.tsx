@@ -8,6 +8,7 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 // import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
+
 const inter = Inter({
   subsets: ['cyrillic'],
   weight: ['400', '500', '600'],
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.variable} ${nunito.variable} `}>
         <Header />
         <main>{children}</main>
+      
         <Footer />
       </body>
     </html>
