@@ -12,20 +12,20 @@ export default function Footer() {
                 <use href="/symbol-defs.svg#icon-Company-Logo"></use>
               </svg>
             </Link>
-            <div className={css.footerNav}>
+            <nav className={css.footerNav}>
               <h2 className={css.footerMenu}>Меню</h2>
               <ul className={css.footerNavList}>
                 <li className={css.footerNavigation}>
                   <Link href="/">Головна</Link>
                 </li>
                 <li className={css.footerNavigation}>
-                  <Link href="#">Товари</Link>
+                  <Link href="/goods">Товари</Link>
                 </li>
                 <li className={css.footerNavigation}>
-                  <Link href="#">Категорії</Link>
+                  <Link href="/categories">Категорії</Link>
                 </li>
               </ul>
-            </div>
+            </nav>
           </div>
           <div className={css.footerSubscribe}>
             <h3 className={css.footerSub}>Підписатися</h3>
