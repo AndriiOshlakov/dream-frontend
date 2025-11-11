@@ -4,10 +4,9 @@ import 'modern-normalize/modern-normalize.css';
 import './globals.css';
 import css from './Home.module.css';
 import Header from '@/components/Header/Header';
-// import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Footer from '@/components/Footer/Footer';
-// import AuthProvider from "@/components/AuthProvider/AuthProvider";
-
+// import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 const inter = Inter({
   subsets: ['cyrillic'],
@@ -57,9 +56,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </TanStackProvider>
       </body> */}
       <body className={`${inter.variable} ${nunito.variable} `}>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <TanStackProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </TanStackProvider>
       </body>
     </html>
   );

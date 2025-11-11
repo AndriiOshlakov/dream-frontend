@@ -1,9 +1,9 @@
-// "use client";
+// 'use client';
 
-// import { useAuthStore } from "@/lib/store/authStore";
-// import { checkSession, getMe } from "@/lib/api/clientApi";
+// import { useAuthStore } from '@/lib/store/authStore';
+// import { checkSession, getMe } from '@/lib/api/clientApi';
 
-// import { useEffect } from "react";
+// import { useEffect } from 'react';
 
 // type Props = {
 //   children: React.ReactNode;
@@ -11,9 +11,7 @@
 
 // const AuthProvider = ({ children }: Props) => {
 //   const setUser = useAuthStore((state) => state.setUser);
-//   const clearIsAuthenticated = useAuthStore(
-//     (state) => state.clearIsAuthenticated
-//   );
+//   const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated);
 
 //   useEffect(() => {
 //     const fetchUser = async () => {

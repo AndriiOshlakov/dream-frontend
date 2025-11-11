@@ -2,31 +2,42 @@
 
 import css from './Footer.module.css';
 import Link from 'next/link';
+import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function Footer() {
+  const queryClient = useQueryClient();
+
   const [email, setEmail] = useState('');
 
+  const mutation = useMutation({
+    mutationFn: async ({ email }: { email: string }) => {
+      try {
+        const response = await axios.post('/api/subscriptions', { email });
+        return response.data;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          const message = error.response?.data?.message || 'Помилка підписки';
+          throw new Error(message);
+        }
+        throw new Error('Невідома помилка');
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['email'] });
+      toast.success('Дякуємо за підписку!');
+      setEmail('');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch('https://localhost:3000/api/subscriptions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      const result = await response.json();
-      if (!response.ok) {
-        toast.error(result.message || 'Некоректний email');
-      } else {
-        toast.success('Дякуємо за підписку!');
-        setEmail('');
-      }
-    } catch {
-      toast.error("Помилка з'єднання з сервером");
-    }
+    mutation.mutate({ email });
   };
 
   return (
@@ -59,7 +70,7 @@ export default function Footer() {
             <p className={css.footerDescription}>
               Приєднуйтесь до нашої розсилки, щоб бути в курсі новин та акцій.
             </p>
-            <form onSubmit={handleSubmit} className={css.footerForm}>
+            <form className={css.footerForm} onSubmit={handleSubmit}>
               <input
                 type="email"
                 value={email}
@@ -69,8 +80,8 @@ export default function Footer() {
                 className={css.footerInput}
                 pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
               />
-              <button type="submit" className={css.footerBtn}>
-                Підписатися
+              <button type="submit" className={css.footerBtn} disabled={mutation.isPending}>
+                {mutation.isPending ? 'Надсилаємо...' : 'Підписатися'}
               </button>
             </form>
           </div>
@@ -134,6 +145,14 @@ export default function Footer() {
           </ul>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        theme="light"
+      />
     </footer>
   );
 }
