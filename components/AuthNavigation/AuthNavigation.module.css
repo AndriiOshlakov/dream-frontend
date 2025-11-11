@@ -80,9 +80,8 @@
 
 .containerClass {
   display: flex;
-  flex-direction: column;
   gap: 16px;
-  margin: 32px 0 0 0;
+
   padding: 0;
   list-style: none;
 }
@@ -96,14 +95,10 @@
   letter-spacing: 0;
   align-items: center;
   color: #000000;
-}
-
-.signInClass {
   background-color: #0000000d;
-  width: 335;
-  height: 36;
+  height: 36px;
+  width: 100%;
   opacity: 1;
-
   border-radius: 100px;
   padding-top: 6px;
   padding-right: 12px;
@@ -126,11 +121,17 @@
 
 .registrationClass {
   background-color: #c5e1a5;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  align-items: center;
   color: #000000;
-  width: 335;
-  height: 36;
+  height: 36px;
+  width: 100%;
   opacity: 1;
-  gap: 8px;
   border-radius: 100px;
   padding-top: 6px;
   padding-right: 12px;
