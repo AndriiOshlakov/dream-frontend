@@ -1,7 +1,34 @@
+'use client';
+
 import css from './Footer.module.css';
 import Link from 'next/link';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('https://localhost:3000/api/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.message || 'Некоректний email');
+      } else {
+        toast.success('Дякуємо за підписку!');
+        setEmail('');
+      }
+    } catch {
+      toast.error("Помилка з'єднання з сервером");
+    }
+  };
+
   return (
     <footer className={css.footer}>
       <div className={css.container}>
@@ -32,20 +59,20 @@ export default function Footer() {
             <p className={css.footerDescription}>
               Приєднуйтесь до нашої розсилки, щоб бути в курсі новин та акцій.
             </p>
-            <div className={css.footerFormContainer}>
-              <form action="" className={css.footerForm}>
-                <input
-                  type="email"
-                  required
-                  placeholder="Введіть ваш email"
-                  className={css.footerInput}
-                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                />
-              </form>
+            <form onSubmit={handleSubmit} className={css.footerForm}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Введіть ваш email"
+                className={css.footerInput}
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+              />
               <button type="submit" className={css.footerBtn}>
                 Підписатися
               </button>
-            </div>
+            </form>
           </div>
         </div>
 
