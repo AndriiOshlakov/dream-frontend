@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { register } from '@/lib/api/clientApi';
 import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
+import css from './RegisterPage.module.css';
 
 interface RegistrationFormValues {
   username: string;
@@ -64,24 +65,44 @@ export default function RegistrationForm() {
         onSubmit={handleSubmit}
         validationSchema={RegisterSchema}
       >
-        <Form>
-          <label>
+        <Form className={css.form}>
+          <label className={css.formLabel}>
             Імʼя*
-            <Field type="text" name="username" placeholder="Ваше ім’я" required />
-            <ErrorMessage component="span" name="userName" />
+            <Field
+              className={css.input}
+              type="text"
+              name="username"
+              placeholder="Ваше ім’я"
+              required
+            />
+            <ErrorMessage className={css.inputError} component="span" name="userName" />
           </label>
-          <label>
+          <label className={css.formLabel}>
             Номер телефону*
-            <Field type="tel" name="phone" placeholder="+38 (0__) ___-__-__" required />
-            <ErrorMessage component="span" name="phone" />
+            <Field
+              className={css.input}
+              type="tel"
+              name="phone"
+              placeholder="+38 (0__) ___-__-__"
+              required
+            />
+            <ErrorMessage className={css.inputError} component="span" name="phone" />
           </label>
-          <label>
+          <label className={css.formLabel}>
             Пароль*
-            <Field type="password" name="password" placeholder="********" required />
-            <ErrorMessage component="span" name="phone" />
+            <Field
+              className={css.input}
+              type="password"
+              name="password"
+              placeholder="********"
+              required
+            />
+            <ErrorMessage className={css.inputError} component="span" name="phone" />
           </label>
-          <button type="submit">Зареєструватися</button>
-          {error && <p>{error}</p>}
+          <button className={css.button} type="submit">
+            Зареєструватися
+          </button>
+          {error && <p className={css.formError}>{error}</p>}
         </Form>
       </Formik>
     </>
