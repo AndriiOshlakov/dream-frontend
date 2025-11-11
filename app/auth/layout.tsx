@@ -4,28 +4,60 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Container from '@/components/Container/Container';
+import css from './AuthPage.module.css';
 
-type PublicLayoutProps = {
+type AuthLayoutProps = {
   children: React.ReactNode;
 };
 
-export default function PublicLayout({ children }: PublicLayoutProps) {
-  const [loading, setLoading] = useState(true);
-
+export default function AuthLayout({ children }: AuthLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
     router.refresh();
-    setLoading(false);
   }, [router]);
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
-    <Container>
-      <Link href="/auth/login">Вхід</Link>
-      <Link href="/auth/register">Реєстрація</Link>
-      {children}
-    </Container>
+  useEffect(() => {
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+    if (header) header.style.display = 'none';
+    if (footer) footer.style.display = 'none';
+
+    return () => {
+      if (header) header.style.display = '';
+      if (footer) footer.style.display = '';
+    };
+  }, []);
+
+  return (
+    <section className={css.authOverlay}>
+      <Container>
+        <div className={css.authLayout}>
+          <div className={css.authHeader}>
+            <Link href="/">
+              <svg className={css.companyLogoIcon} width="84" height="36">
+                <use href="/symbol-defs.svg#icon-Company-Logo"></use>
+              </svg>
+            </Link>
+          </div>
+          <div className={css.authFormWrapper}>
+            <ul className={css.authList}>
+              <li className={css.authItem}>
+                <Link className={css.authLink} href="/auth/register">
+                  Реєстрація
+                </Link>
+              </li>
+              <li className={css.authItem}>
+                <Link className={css.authLink} href="/auth/login">
+                  Вхід
+                </Link>
+              </li>
+            </ul>
+            <div className={css.authContent}>{children}</div>
+          </div>
+          <div className={css.authFooter}>© 2025 Clothica. Всі права захищені.</div>
+        </div>
+      </Container>
+    </section>
   );
 }

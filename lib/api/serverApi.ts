@@ -1,7 +1,9 @@
-// import { cookies } from "next/headers";
-// import { FetchNotesParams, nextServer } from "./api";
+// import { FetchNotesParams } from "./api";
 // import { Note } from "@/types/note";
 // import { User } from "@/types/user";
+
+import { cookies } from 'next/headers';
+import { nextServer } from './api';
 
 // interface PostsHttpResponse {
 //   notes: Note[];
@@ -34,15 +36,15 @@
 //   return data;
 // };
 
-// export const checkServerSession = async () => {
-//   const cookieStore = await cookies();
-//   const res = await nextServer.get("/auth/session", {
-//     headers: {
-//       Cookie: cookieStore.toString(),
-//     },
-//   });
-//   return res;
-// };
+export const checkServerSession = async () => {
+  const cookieStore = await cookies();
+  const response = await nextServer.get('/auth/refresh', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return response;
+};
 
 // export const fetchNoteByIdServer = async (id: string): Promise<Note> => {
 //   const cookieStore = await cookies();
