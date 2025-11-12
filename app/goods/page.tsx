@@ -1,11 +1,9 @@
-// import GoodsList from "@/components/GoodsList/GoodsList";
 
-export default function GoodsPage() {
-  return (
-    <main className="container">
-      <h1>Всі товари</h1>
-      
-    </main>
-  );
+import Filters from '@/components/Filters/Filters';
+import css from './GoodsPage.module.css';
+import { getCategories } from '@/lib/api/clientApi';
+
+export default async function GoodsPage() {
+  return <Filters />;
 }
 

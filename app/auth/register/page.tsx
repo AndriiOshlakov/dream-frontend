@@ -1,71 +1,110 @@
-"use client";
+'use client';
 
-// import { useRouter } from "next/navigation";
-import css from "./RegisterPage.module.css";
-// import { useState } from "react";
-// import { RegisterRequest } from "@/types/auth";
-// import { register } from "@/lib/api/clientApi";
-// import { AxiosError } from "axios";
-// import { useAuthStore } from "@/lib/store/authStore";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { register } from '@/lib/api/clientApi';
+import { ApiError } from '@/app/api/api';
+import { useAuthStore } from '@/lib/store/authStore';
+import css from './RegisterPage.module.css';
 
-// type ApiError = AxiosError<{ error: string }>;
+interface RegistrationFormValues {
+  username: string;
+  phone: string;
+  password: string;
+}
 
-export default function Register() {
-  // const router = useRouter();
-  // const [error, setError] = useState("");
-  // const setUser = useAuthStore((state) => state.setUser);
-  const handleSubmit = async (formData: FormData) => {
-    // try {
-    //   const formValues = Object.fromEntries(formData) as RegisterRequest;
-    //   const res = await register(formValues);
-    //   if (res) {
-    //     setUser(res);
-    //     router.push("/profile");
-    //   } else {
-    //     setError("Invalid email or password");
-    //   }
-    // } catch (error) {
-    //   setError(
-    //     (error as ApiError).response?.data?.error ??
-    //       (error as ApiError).message ??
-    //       "Oops... some error"
-    //   );
-    // }
+const initialValues: RegistrationFormValues = {
+  username: '',
+  phone: '',
+  password: '',
+};
+
+const RegisterSchema = Yup.object().shape({
+  username: Yup.string().max(32, 'Імʼя має бути не довше 32 символів').required('Імʼя обовʼязкове'),
+  phone: Yup.string()
+    .matches(/^\+380\d{9}$/, 'Введіть коректний номер телефону у форматі +380XXXXXXXXX')
+    .required('Номер телефону обовʼязковий'),
+  password: Yup.string()
+    .min(8, 'Пароль має містити щонайменше 8 символів')
+    .max(128, 'Пароль занадто довгий')
+    .required('Пароль обовʼязковий'),
+});
+
+export default function RegistrationForm() {
+  const router = useRouter();
+  const [error, setError] = useState('');
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const handleSubmit = async (
+    values: RegistrationFormValues,
+    actions: FormikHelpers<RegistrationFormValues>
+  ) => {
+    try {
+      const response = await register(values);
+      if (response) {
+        setUser(response);
+        router.push('/');
+      } else {
+        setError('Неправильний номер телефону або пароль');
+      }
+    } catch (err) {
+      const error = err as ApiError;
+      setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
+    } finally {
+      actions.resetForm();
+    }
   };
+
   return (
-    <main className={css.mainContent}>
-      <h1 className={css.formTitle}>Sign up</h1>
-      <form className={css.form} action={handleSubmit}>
-        <div className={css.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            className={css.input}
-            required
-          />
-        </div>
-
-        <div className={css.formGroup}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            className={css.input}
-            required
-          />
-        </div>
-
-        <div className={css.actions}>
-          <button type="submit" className={css.submitButton}>
-            Register
+    <>
+      <h1>Реєстрація</h1>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={RegisterSchema}
+      >
+        <Form className={css.form}>
+          <label className={css.formLabel}>
+            Імʼя*
+            <Field
+              className={css.input}
+              type="text"
+              name="username"
+              placeholder="Ваше ім’я"
+              required
+            />
+            <ErrorMessage className={css.inputError} component="span" name="userName" />
+          </label>
+          <label className={css.formLabel}>
+            Номер телефону*
+            <Field
+              className={css.input}
+              type="tel"
+              name="phone"
+              placeholder="+38 (0__) ___-__-__"
+              required
+            />
+            <ErrorMessage className={css.inputError} component="span" name="phone" />
+          </label>
+          <label className={css.formLabel}>
+            Пароль*
+            <Field
+              className={css.input}
+              type="password"
+              name="password"
+              placeholder="********"
+              required
+            />
+            <ErrorMessage className={css.inputError} component="span" name="phone" />
+          </label>
+          <button className={css.button} type="submit">
+            Зареєструватися
           </button>
-        </div>
-
-        {/* {error && <p className={css.error}>{error}</p>} */}
-      </form>
-    </main>
+          {error && <p className={css.formError}>{error}</p>}
+        </Form>
+      </Formik>
+    </>
   );
 }

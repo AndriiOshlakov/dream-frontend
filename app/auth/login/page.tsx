@@ -1,72 +1,71 @@
-"use client";
+'use client';
 
-// import { useRouter } from "next/navigation";
-import css from "./LogInPage.module.css";
-// import { useState } from "react";
-// import { AxiosError } from "axios";
-// import { login } from "@/lib/api/clientApi";
-// import { LoginRequest } from "@/types/auth";
-// import { useAuthStore } from "@/lib/store/authStore";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { login } from '@/lib/api/clientApi';
+import { ApiError } from '@/app/api/api';
+import { useAuthStore } from '@/lib/store/authStore';
 
-// type ApiError = AxiosError<{ error: string }>;
+interface LoginFormValues {
+  phone: string;
+  password: string;
+}
 
-export default function LogIn() {
-  // const router = useRouter();
-  // const [error, setError] = useState("");
-  // const setUser = useAuthStore((state) => state.setUser);
-  const handleSubmit = async (formData: FormData) => {
-    // try {
-    //   const formValues = Object.fromEntries(formData) as LoginRequest;
-    //   const res = await login(formValues);
-    //   if (res) {
-    //     setUser(res);
-    //     router.push("/profile");
-    //   } else {
-    //     setError("Invalid email or password");
-    //   }
-    // } catch (error) {
-    //   setError(
-    //     (error as ApiError).response?.data?.error ??
-    //       (error as ApiError).message ??
-    //       "Oops... some error"
-    //   );
-    // }
+const initialValues: LoginFormValues = {
+  phone: '',
+  password: '',
+};
+
+const LoginSchema = Yup.object().shape({
+  phone: Yup.string()
+    .matches(/^\+380\d{9}$/, 'Введіть коректний номер телефону у форматі +380XXXXXXXXX')
+    .required('Номер телефону обовʼязковий'),
+  password: Yup.string().required('Пароль обовʼязковий'),
+});
+
+export default function LoginForm() {
+  const router = useRouter();
+  const [error, setError] = useState('');
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const handleSubmit = async (values: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
+    try {
+      const response = await login(values);
+      if (response) {
+        setUser(response);
+        router.push('/');
+      } else {
+        setError('Неправильний номер телефону або пароль');
+      }
+    } catch (err) {
+      const error = err as ApiError;
+      setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
+    } finally {
+      actions.resetForm();
+    }
   };
+
   return (
-    <main className={css.mainContent}>
-      <form className={css.form} action={handleSubmit}>
-        <h1 className={css.formTitle}>Sign in</h1>
-
-        <div className={css.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            className={css.input}
-            required
-          />
-        </div>
-
-        <div className={css.formGroup}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            className={css.input}
-            required
-          />
-        </div>
-
-        <div className={css.actions}>
-          <button type="submit" className={css.submitButton}>
-            Log in
-          </button>
-        </div>
-
-        {/* {error && <p className={css.error}>{error}</p>} */}
-      </form>
-    </main>
+    <>
+      <h1>Вхід</h1>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={LoginSchema}>
+        <Form>
+          <label>
+            Номер телефону*
+            <Field type="tel" name="phone" placeholder="+38 (0__) ___-__-__" required />
+            <ErrorMessage component="span" name="phone" />
+          </label>
+          <label>
+            Пароль*
+            <Field type="password" name="password" placeholder="********" required />
+            <ErrorMessage component="span" name="phone" />
+          </label>
+          <button type="submit">Увійти</button>
+          {error && <p>{error}</p>}
+        </Form>
+      </Formik>
+    </>
   );
 }
