@@ -97,15 +97,15 @@ export default function GoodsList() {
         `${API}/api/goods?page=1&limit=${TOP_N}`,
         `${API}/api/goods?perPage=${TOP_N}`,
       ];
-      let lastErr: any = null;
+      let lastErr = null;
 
       for (const url of urls) {
         try {
           const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
           if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
           const data = await res.json();
-          const list: RawGood[] = Array.isArray((data as any).goods)
-            ? (data as any).goods
+          const list: RawGood[] = Array.isArray((data).goods)
+            ? (data).goods
             : Array.isArray(data)
             ? data
             : [];
@@ -123,7 +123,7 @@ export default function GoodsList() {
         }
       }
 
-      setError(`Не вдалось отримати товари (${lastErr?.message ?? "невідомо"}). Показую мок-дані.`);
+      setError(`Не вдалось отримати товари. Показую мок-дані.`);
       setGoods(MOCK.slice(0, TOP_N));
       setLoading(false);
     }
