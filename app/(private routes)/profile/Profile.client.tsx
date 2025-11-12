@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import css from './Profile.module.css';
-import OrderItem from '@/components/OrderItem/OrderItem';
+// import OrderItem from '@/components/OrderItem/OrderItem';
 import ProfileForm from '@/components/ProfileForm/ProfileForm';
 import { fetchMyOrders } from '@/lib/api/api';
 
@@ -32,7 +32,7 @@ export default function ProfileClient() {
             {orders.map((order) => {
               return (
                 <li key={order._id}>
-                  <OrderItem order={order} />
+                  {/* <OrderItem order={order} /> */}
                 </li>
               );
             })}
