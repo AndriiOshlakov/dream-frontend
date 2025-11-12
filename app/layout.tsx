@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </TanStackProvider>
       </body> */}
       <body className={`${inter.variable} ${nunito.variable} `}>
-        <Header />
+        {/* <Header /> */}
         <main>{children}</main>
         <Footer />
       </body>
