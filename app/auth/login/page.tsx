@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { login } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
+import { login } from '@/lib/api/api';
 
 interface LoginFormValues {
   phone: string;
@@ -39,9 +38,8 @@ export default function LoginForm() {
       } else {
         setError('Неправильний номер телефону або пароль');
       }
-    } catch (err) {
-      const error = err as ApiError;
-      setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
+    } catch {
+      setError('Ой... сталася помилка');
     } finally {
       actions.resetForm();
     }
