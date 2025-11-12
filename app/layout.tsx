@@ -6,6 +6,7 @@ import css from './Home.module.css';
 import Header from '@/components/Header/Header';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Footer from '@/components/Footer/Footer';
+import Container from '@/components/Container/Container';
 // import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 const inter = Inter({
@@ -43,23 +44,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      {/* <body className={`${inter.variable} ${nunito.variable} `}>
-        <TanStackProvider>
-          <AuthProvider>
-            <Header />
-            <main>
-              {children}
-              {modal}
-            </main>
-            <Footer />
-          </AuthProvider>
-        </TanStackProvider>
-      </body> */}
       <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <Container>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </Container>
         </TanStackProvider>
       </body>
     </html>
