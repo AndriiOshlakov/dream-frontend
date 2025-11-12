@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { User } from '@/types/user';
 import { CategoriesResponse } from '@/types/category';
