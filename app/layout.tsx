@@ -46,11 +46,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
+          <Header />
           <Container>
-            <Header />
             <main>{children}</main>
-            <Footer />
           </Container>
+          <Footer />
         </TanStackProvider>
       </body>
     </html>
