@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import css from './Filters.module.css';
 import { useEffect, useState } from 'react';
+import { getCategories } from '@/lib/api/clientApi';
+import { Category } from '@/types/category';
 
 export default function Filters() {
   const [minVal, setMinVal] = useState(0);
@@ -11,6 +13,20 @@ export default function Filters() {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories(1);
+        setCategories(data);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     // функція перевірки розміру
@@ -56,17 +72,6 @@ export default function Filters() {
     const value = e.target.value;
     setGender(value);
   };
-
-  const categories = [
-    { id: 1, title: 'Футболки та сорочки' },
-    { id: 2, title: 'штани та джинси' },
-    { id: 3, title: 'Верхній одяг' },
-    { id: 4, title: 'Топи та майки' },
-    { id: 5, title: 'Сукні та спідниці' },
-    { id: 6, title: 'Домашній одяг' },
-    { id: 7, title: 'Худі та кофти' },
-  ];
-
   return (
     <div className={css.sideBar}>
       {isMobile ? (
@@ -93,9 +98,9 @@ export default function Filters() {
                     </Link>
                   </li>
                   {categories.map((category) => (
-                    <li className={css.categoryListItem} key={category.id}>
-                      <Link className={css.category} href={`/categories/{category.id}`}>
-                        {category.title}
+                    <li className={css.categoryListItem} key={category._id}>
+                      <Link className={css.category} href={`/categories/{category._id}`}>
+                        {category.name}
                       </Link>
                     </li>
                   ))}
@@ -201,9 +206,9 @@ export default function Filters() {
                 </Link>
               </li>
               {categories.map((category) => (
-                <li className={css.categoryListItem} key={category.id}>
-                  <Link className={css.category} href={`/categories/{category.id}`}>
-                    {category.title}
+                <li className={css.categoryListItem} key={category._id}>
+                  <Link className={css.category} href={`/categories/{category._id}`}>
+                    {category.name}
                   </Link>
                 </li>
               ))}

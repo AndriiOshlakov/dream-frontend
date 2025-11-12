@@ -8,7 +8,13 @@ export interface CategoryApiItem {
 
 // тип з яким працюють компоненти
 export interface Category {
-  id: string;
-  title: string;
-  imageUrl: string;
+  _id: string;
+  name: string;
+}
+export interface CategoriesResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  categories: Category[];
 }
