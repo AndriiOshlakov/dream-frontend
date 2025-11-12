@@ -1,0 +1,51 @@
+.profile {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 48px;
+  padding: 64px 0 48px;
+}
+
+.heading {
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 120%;
+  letter-spacing: -1%;
+  text-align: center;
+}
+
+.subheading {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 140%;
+  letter-spacing: -1%;
+  text-align: center;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.logoutButton {
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: #e8eae6;
+  color: #000;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+@media (min-width: 768px) {
+  .profile {
+    padding: 112px 0 80px;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
