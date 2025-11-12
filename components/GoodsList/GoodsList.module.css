@@ -1,0 +1,396 @@
+/***** ===== MOBILE (base) ===== *****/
+.section {
+  background-color: #f3f9ed;
+  padding: 48px 20px;
+}
+
+.section .container {
+  max-width: 335px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.title {
+  font-family: "Nunito Sans", Montserrat, sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #000;
+  max-width: 227px;
+  white-space: normal;
+  margin: 0 0 40px;
+}
+
+/* buttons */
+.button,
+.allBtn,
+.detailsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 108px;
+  height: 36px;
+  padding: 6px 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 100px;
+  background: rgba(0,0,0,0.05);
+  color: #000;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color .2s, border-color .2s, color .2s, transform .1s;
+}
+
+.allBtn {
+  width:108px;
+  height:36px;
+  padding:0 16px;
+  white-space:nowrap;
+  line-height:1;
+  margin-top:4px;
+}
+
+.button:hover,.allBtn:hover,.detailsBtn:hover,
+.button:focus,.allBtn:focus,.detailsBtn:focus {
+  background:#c5e1a5;
+  border-color:#c5e1a5;
+}
+
+.button:active,.allBtn:active,.detailsBtn:active {
+  background:#1b5e20;
+  border-color:#1b5e20;
+  color:#fff;
+  transform:translateY(1px);
+}
+
+/* list */
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 0 auto;
+}
+
+/* card */
+.card {
+  background-color: transparent;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 335px;
+  height: 556px;
+}
+
+/* image */
+.imgWrap {
+  width: 100%;
+  height: 412px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  margin-bottom: 16px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.imgWrap:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.imgWrap:hover .img {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+.info {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* === Заголовок і бренд === */
+.titleBlock {
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* title + price */
+.headRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.goodTitle {
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.brand {
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+}
+
+.price {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  flex: 0 0 auto;
+}
+
+/* rating row */
+.ratingRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.star {
+  width: 13px;
+  height: 12px;
+  fill: #000;
+  flex: 0 0 auto;
+}
+
+.commentIcon {
+  width: 13px;
+  height: 13px;
+  fill: #000;
+  flex: 0 0 auto;
+  margin-left: 2px;
+  margin-right: 1px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ratingValue, .dotSep, .reviewsCount {
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #000;
+}
+
+/* ===== КНОПКА “Детальніше” ===== */
+.detailsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 335px;
+  height: 40px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  background: rgba(0, 0, 0, 0.05);
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  cursor: pointer;
+  transition: background-color .2s, border-color .2s, color .2s, transform .1s;
+}
+
+.detailsBtn:hover,
+.detailsBtn:focus {
+  background:#c5e1a5;
+  border-color:#c5e1a5;
+}
+
+.detailsBtn:active {
+  background:#1b5e20;
+  border-color:#1b5e20;
+  color:#fff;
+  transform:translateY(1px);
+}
+
+/* === SLIDER controls — MOBILE === */
+.controls {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.dotActive {
+  background: #000;
+  width: 12px;
+  height: 12px;
+}
+
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrowBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #f9fcf6;
+  background: #c5e1a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  color: #000;
+}
+
+/***** ===== TABLET ≥768px ===== *****/
+@media (min-width: 768px) {
+  .section {
+    padding: 48px 32px;
+  }
+
+  .section .container {
+    max-width: 704px;
+  }
+
+  .title {
+    font-size: 48px;
+    margin-bottom: 40px;
+    max-width: none;
+  }
+  
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .card {
+    width: 336px;
+    height: 558px;
+  }
+
+  .imgWrap {
+    height: 416px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .detailsBtn {
+    width: 336px;
+  }
+
+  /* Slider Controls */
+  .dots { gap: 8px; }
+  .dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); }
+  .dotActive { width: 12px; height: 12px; background: #000; }
+
+  .arrows { gap: 16px; }
+  .arrowBtn {
+    width: 48px;
+    height: 48px;
+    padding: 12px;
+    border-radius: 100px;
+    border: 1px solid #f9fcf6;
+    background: #c5e1a5;
+  }
+  .icon { width: 24px; height: 24px; }
+}
+
+/***** ===== DESKTOP ≥1440px ===== *****/
+@media (min-width: 1440px) {
+  .section {
+    padding: 80px 64px;
+  }
+
+  .section .container {
+    max-width: 1312px;
+  }
+
+  .list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .card {
+    width: 304px;
+    height: 518px;
+  }
+
+  .imgWrap {
+    height: 376px;
+  }
+
+  .title {
+    font-size: 48px;
+    margin-bottom: 40px;
+    max-width: none;
+  }
+
+  .detailsBtn {
+    width: 304px;
+  }
+
+  /* Slider Controls */
+  .dots { gap: 8px; }
+  .dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); }
+  .dotActive { width: 12px; height: 12px; background: #000; }
+
+  .arrowBtn {
+    width: 48px;
+    height: 48px;
+    padding: 12px;
+    border-radius: 100px;
+    border: 1px solid #f9fcf6;
+    background: #c5e1a5;
+  }
+
+  .icon { width: 24px; height: 24px; }
+}
