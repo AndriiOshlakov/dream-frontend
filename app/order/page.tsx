@@ -4,7 +4,6 @@ import css from "./CreateOrderPage.module.css";
 import { Formik, Form, Field, ErrorMessage } from 'formik'; 
 import * as Yup from 'yup'; 
 
- 
 const initialValues = {
     firstName: '',
     lastName: '',
@@ -74,7 +73,7 @@ export default function CreateOrder() {
                                     <div className={css.nameGroup}>
                                         <div className={css.inputWrapper}>
                                           
-                                            <p className={css.inputLabel}>Ім"я*</p>
+                                            <p className={css.inputLabel}>Ім'я*</p>
                                             <Field 
                                                 className={css.input}
                                                 type="text" 
