@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { parse } from 'cookie';
-import { checkServerSession } from './lib/api/serverApi';
+import { refreshServerSession } from './lib/api/serverApi';
 
 const privateRoutes = ['/profile'];
 const authRoutes = ['/auth/login', '/auth/register'];
@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
   const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
   if (!accessToken) {
     if (refreshToken) {
-      const data = await checkServerSession();
+      const data = await refreshServerSession();
       const setCookie = data.headers['set-cookie'];
       if (setCookie) {
         const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
@@ -51,6 +51,7 @@ export async function middleware(request: NextRequest) {
     if (isPrivateRoute) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
+    return NextResponse.next();
   }
   if (isAuthRoute) {
     return NextResponse.redirect(new URL('/', request.url));
@@ -58,6 +59,7 @@ export async function middleware(request: NextRequest) {
   if (isPrivateRoute) {
     return NextResponse.next();
   }
+  return NextResponse.next();
 }
 
 export const config = {

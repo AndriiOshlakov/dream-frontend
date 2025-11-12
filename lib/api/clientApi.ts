@@ -5,27 +5,32 @@ import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { nextServer } from './api';
 import { User } from '@/types/user';
 
-export async function register(data: RegisterRequest) {
-  const response = await nextServer.post<User>('/auth/register', data);
+interface AuthResponse {
+  message: string;
+  user: User;
+}
+
+export async function register(data: RegisterRequest): Promise<AuthResponse> {
+  const response = await nextServer.post<AuthResponse>('/auth/register', data);
   return response.data;
 }
 
-export async function login(data: LoginRequest) {
-  const response = await nextServer.post<User>('/auth/login', data);
+export async function login(data: LoginRequest): Promise<AuthResponse> {
+  const response = await nextServer.post<AuthResponse>('/auth/login', data);
   return response.data;
 }
 
-interface CheckSessionRequest {
+interface RefreshSessionRequest {
   success: boolean;
 }
 
-export async function checkSession() {
-  const response = await nextServer.get<CheckSessionRequest>('/auth/refresh');
+export async function refreshSession() {
+  const response = await nextServer.post<RefreshSessionRequest>('/auth/refresh');
   return response.data.success;
 }
 
-export async function getMe() {
-  const response = await nextServer.get<User>('/users/me');
+export async function getMe(): Promise<User> {
+  const response = await nextServer.get<User>('/users/current');
   return response.data;
 }
 

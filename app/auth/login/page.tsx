@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { login } from '@/lib/api/clientApi';
 import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
+import css from './LogInPage.module.css';
 
 interface LoginFormValues {
   phone: string;
@@ -32,9 +33,9 @@ export default function LoginForm() {
 
   const handleSubmit = async (values: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
     try {
-      const response = await login(values);
-      if (response) {
-        setUser(response);
+      const { user } = await login(values);
+      if (user) {
+        setUser(user);
         router.push('/');
       } else {
         setError('Неправильний номер телефону або пароль');
@@ -49,22 +50,38 @@ export default function LoginForm() {
 
   return (
     <>
-      <h1>Вхід</h1>
+      <h1 className={css.title}>Вхід</h1>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={LoginSchema}>
-        <Form>
-          <label>
-            Номер телефону*
-            <Field type="tel" name="phone" placeholder="+38 (0__) ___-__-__" required />
-            <ErrorMessage component="span" name="phone" />
-          </label>
-          <label>
-            Пароль*
-            <Field type="password" name="password" placeholder="********" required />
-            <ErrorMessage component="span" name="phone" />
-          </label>
-          <button type="submit">Увійти</button>
-          {error && <p>{error}</p>}
-        </Form>
+        {({ errors, touched }) => (
+          <Form className={css.form}>
+            <label className={css.formLabel}>
+              Номер телефону*
+              <Field
+                className={`${css.input} ${errors.phone && touched.phone ? css.inputError : ''}`}
+                type="tel"
+                name="phone"
+                placeholder="+38 (0__) ___-__-__"
+                required
+              />
+              <ErrorMessage className={css.inputError} component="span" name="phone" />
+            </label>
+            <label className={css.formLabel}>
+              Пароль*
+              <Field
+                className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}
+                type="password"
+                name="password"
+                placeholder="********"
+                required
+              />
+              <ErrorMessage className={css.inputError} component="span" name="password" />
+            </label>
+            <button className={css.button} type="submit">
+              Увійти
+            </button>
+            {error && <p className={css.formError}>{error}</p>}
+          </Form>
+        )}
       </Formik>
     </>
   );

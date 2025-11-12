@@ -36,9 +36,9 @@ import { nextServer } from './api';
 //   return data;
 // };
 
-export const checkServerSession = async () => {
+export const refreshServerSession = async () => {
   const cookieStore = await cookies();
-  const response = await nextServer.get('/auth/refresh', {
+  const response = await nextServer.post('/auth/refresh', {
     headers: {
       Cookie: cookieStore.toString(),
     },
