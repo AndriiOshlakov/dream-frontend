@@ -1,0 +1,25 @@
+.itemContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.date {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+@media (min-width: 768px) {
+  .itemContainer {
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: start;
+  }
+}
