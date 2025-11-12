@@ -1,0 +1,160 @@
+
+.title {
+   
+     display: block; 
+    max-width: 250px;
+    height: 86px;
+    font-size: 36px;
+    text-align: center;
+    margin: 64px auto 48px auto;
+      font-weight: 400;
+      font-size: 36px;
+      line-height: 120%;
+      letter-spacing: -1%;
+      font: Nunito Sans;
+     
+}
+
+.container {
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+ 
+.list {
+    display: flex;
+    flex-direction: column;   
+    gap: 32px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.blockCartTitle {
+     
+      font-size: 20px;
+      line-height: 140%;
+       font-weight: 400;
+      letter-spacing: -1%;
+      font: Nunito Sans;
+      margin-bottom: 16px;
+      text-align: center;
+}
+
+.blockInfoTitle {
+     
+      font-size: 20px;
+      line-height: 140%;
+       font-weight: 400;
+      letter-spacing: -1%;
+      font: Nunito Sans;
+      margin-bottom: 24px;
+       text-align: center;
+}
+ 
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Spacing between input groups */
+    margin-bottom: 64px;
+}
+.inputLabel{
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+.input, .textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    font-size: 16px;
+    width: 100%;  
+    box-sizing: border-box;  
+}
+
+.textarea {
+    resize: vertical;
+}
+
+.nameGroup, .deliveryGroup {
+    display: flex;
+    gap: 16px;
+    flex-direction: column;  
+}
+
+.submitButton {
+    padding: 15px 30px;
+    background-color: #C5E1A5; /* Light Green */
+    color: black;
+    border: 1px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: 0%;
+    cursor: pointer;
+    /*margin-top: 24px;*/
+    transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+    background-color: #A3C982; 
+}
+
+
+ 
+@media screen and (min-width: 768px) {
+    .title{
+        min-width: 100%;
+        font-size: 48px;
+    }
+    .container {
+        max-width: 1440px; 
+        padding: 0 40px;
+    }
+    
+    .list {
+        flex-direction: column; /* Desktop/Tablet: Arrange side-by-side */
+      
+         
+    }
+    
+    .goods, .personalInfo {
+       width: 100%;
+    }
+
+    .nameGroup, .deliveryGroup {
+        /* Arrange inputs side-by-side on desktop/tablet */
+        display: flex;
+        flex-direction: row; 
+        gap: 32px;
+                    }
+    
+   .nameGroup > .inputWrapper, 
+.deliveryGroup > .inputWrapper {
+    /* flex-basis: calc(50% - 16px); /* Use calc to account for the 32px gap */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 50%;  
+}
+}
+@media screen and (min-width: 1440px) {
+     
+    .list {
+        /* ⭐️ FIX: Switch to the desired two-column layout here ⭐️ */
+        flex-direction: row; 
+         
+        align-items: flex-start;
+    }
+
+    .goods, .personalInfo {
+     
+        flex-basis: 50%; 
+        min-width: 0; 
+    }
+    
+  
+    .nameGroup, .deliveryGroup {
+        flex-direction: row; 
+    }
+}

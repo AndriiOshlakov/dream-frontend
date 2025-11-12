@@ -9,7 +9,6 @@ export default function HomePage() {
     <>
      <Hero/>
      <Style/>
-            <ReviewsList />
-    </>
+      <ReviewsList />
   );
 }
