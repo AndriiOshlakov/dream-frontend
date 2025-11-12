@@ -21,8 +21,8 @@ interface PlaceholderComment {
   body: string;
 }
 
-export async function fetchFakeReviews(limit = 20): Promise<Review[]> {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/comments?_limit=${limit}`);
+export async function fetchFakeReviews(): Promise<Review[]> {
+  const res = await fetch('https://jsonplaceholder.typicode.com/comments?_limit=30');
   if (!res.ok) throw new Error('Failed to fetch fake reviews');
 
   const data: PlaceholderComment[] = await res.json();
