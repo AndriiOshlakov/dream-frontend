@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import css from './Filters.module.css';
 import { useEffect, useState } from 'react';
-import { getCategories } from '@/lib/api/clientApi';
 import { Category } from '@/types/category';
+import { getCategories } from '@/lib/api/api';
 
 export default function Filters() {
   const [minVal, setMinVal] = useState(0);

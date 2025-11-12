@@ -73,7 +73,7 @@ export default function CreateOrder() {
                                     <div className={css.nameGroup}>
                                         <div className={css.inputWrapper}>
                                           
-                                            <p className={css.inputLabel}>Ім'я*</p>
+                                            <p className={css.inputLabel}>Імя*</p>
                                             <Field 
                                                 className={css.input}
                                                 type="text" 

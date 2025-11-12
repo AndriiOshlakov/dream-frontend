@@ -42,7 +42,7 @@ export default function CategoriesList({ categories, onCategoryClick }: Categori
         ‹
       </button>
 
-      <Swiper
+      {/* <Swiper
         modules={[Keyboard]}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -80,7 +80,7 @@ export default function CategoriesList({ categories, onCategoryClick }: Categori
             </button>
           </SwiperSlide>
         ))}
-      </Swiper>
+      </Swiper> */}
 
       <button
         type="button"
