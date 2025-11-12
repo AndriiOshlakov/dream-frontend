@@ -1,8 +1,8 @@
 import css from './HeroPage.module.css';
 import Image from 'next/image';
-import MobileImg from '../images/Hero_Img_mob.png';
-import TabletImg from '../images/Hero_Img_tablet.png';
-import DeskTopImg from '../images/Hero_image_dst.png';
+import MobileImg from '../../public/images/Hero_Img_mob.png'
+import TabletImg from '../../public/images/Hero_Img_tablet.png';
+import DeskTopImg from '../../public/images/Hero_image_dst.png';
  
 
 export default function Hero() {

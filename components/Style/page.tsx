@@ -1,7 +1,7 @@
 import css from './StylePage.module.css';
-import iconQuality from '../images/Quality.svg';
-import iconUnivers from '../images/Universal.svg';
-import iconComfort from '../images/Comfort.svg';
+import iconQuality from '../../public/images/Quality.svg';
+import iconUnivers from '../../public/images/Universal.svg';
+import iconComfort from '../../public/images/Comfort.svg';
 import Image from 'next/image';
 const advantages = [
   {
@@ -30,12 +30,7 @@ export default function Style() {
           <ul className={css.advantagesList}>
         {advantages.map((advantage) => (
           <li key={advantage.title} className={css.advantageCard}>
-          
-            {/* <img
-              src={advantage.icon.src}
-              alt={advantage.title}
-              className={css.cardIcon}>
-              </img> */}
+        
             <Image
  src={advantage.icon}  
  alt={advantage.title}
