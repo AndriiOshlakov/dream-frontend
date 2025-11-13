@@ -1,9 +1,10 @@
 export type RegisterRequest = {
-  email: string;
+  username: string;
+  phone: string;
   password: string;
 };
 
 export type LoginRequest = {
-  email: string;
+  phone: string;
   password: string;
 };
