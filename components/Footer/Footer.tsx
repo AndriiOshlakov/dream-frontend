@@ -16,7 +16,10 @@ export default function Footer() {
   const mutation = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       try {
-        const response = await axios.post('/api/subscriptions', { email });
+        const response = await axios.post(
+          'https://dream-backend-a69s.onrender.com/api/subscriptions',
+          { email }
+        );
         return response.data;
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
@@ -78,7 +81,7 @@ export default function Footer() {
                 required
                 placeholder="Введіть ваш email"
                 className={css.footerInput}
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
               />
               <button type="submit" className={css.footerBtn} disabled={mutation.isPending}>
                 {mutation.isPending ? 'Надсилаємо...' : 'Підписатися'}

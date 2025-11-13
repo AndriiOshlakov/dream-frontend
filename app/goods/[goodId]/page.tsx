@@ -7,6 +7,8 @@ import { useParams } from 'next/navigation';
 import ReviewsList from '@/components/ReviewsList/ReviewsList';
 import css from './GoodPage.module.css';
 
+import ModalReview from '@/components/ModalReview/ModalReview';
+
 interface Good {
   _id: string;
   name: string;
@@ -37,8 +39,12 @@ export default function GoodPage() {
   const [error, setError] = useState<string | null>(null);
   const [, setIsClient] = useState(false);
 
-  useEffect(() => setIsClient(true), []);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     async function fetchGood() {
@@ -66,11 +72,11 @@ export default function GoodPage() {
             'Світшот Minimal Black — втілення стриманості та універсальності. Його дизайн побудований на простоті: глибокий чорний колір, акуратний круглий виріз і прямий крій.',
           // feedbacks: ['1', '2', '3', '4', '5'],
           characteristics: [
-      'Матеріал: 80% бавовна, 20% поліестер',
-      'Крій: прямий',
-      'Горловина: круглий виріз',
-      'Сезон: Осінь/Зима/Весна',
-    ],
+            'Матеріал: 80% бавовна, 20% поліестер',
+            'Крій: прямий',
+            'Горловина: круглий виріз',
+            'Сезон: Осінь/Зима/Весна',
+          ],
         };
         setGood(mock);
         setError('⚠️ Сервер недоступний, показано тестові дані.');
@@ -82,7 +88,6 @@ export default function GoodPage() {
     fetchGood();
   }, [goodId]);
 
-  
   useEffect(() => {
     async function fetchFeedbacks() {
       if (!good) return;
@@ -91,17 +96,14 @@ export default function GoodPage() {
         const res = await fetch('https://dream-backend-a69s.onrender.com/api/feedbacks');
         const data = await res.json();
 
-        const related = data.feedbacks?.filter(
-          (f: Feedback) => f.productId?.$oid === good._id
-        );
+        const related = data.feedbacks?.filter((f: Feedback) => f.productId?.$oid === good._id);
 
         setFeedbacks(related || []);
 
         if (related?.length) {
           const avg =
-  related.reduce((sum: number, f: Feedback) => sum + f.rate, 0) / related.length;
-setAverageRate(Math.round(avg * 2) / 2);
-
+            related.reduce((sum: number, f: Feedback) => sum + f.rate, 0) / related.length;
+          setAverageRate(Math.round(avg * 2) / 2);
         } else {
           setAverageRate(0);
         }
@@ -122,14 +124,14 @@ setAverageRate(Math.round(avg * 2) / 2);
 
   return (
     <main className={css.container}>
-    
       <nav className={css.breadcrumbs}>
-        <a href="/goods" className={css.breadcrumbLink}>Товари</a>
+        <a href="/goods" className={css.breadcrumbLink}>
+          Товари
+        </a>
         <span className={css.breadcrumbSeparator}>›</span>
         <span className={css.breadcrumbCurrent}>{good.name}</span>
       </nav>
 
-     
       <section className={css.good}>
         <div className={css.imageWrapper}>
           <img src={good.image} alt={good.name} className={css.image} loading="lazy" />
@@ -138,7 +140,6 @@ setAverageRate(Math.round(avg * 2) / 2);
         <div className={css.info}>
           <h1 className={css.title}>{good.name}</h1>
 
-          
           <div className={css.priceBlock}>
             <span className={css.price}>
               {good.price.value} {good.price.currency}
@@ -149,52 +150,45 @@ setAverageRate(Math.round(avg * 2) / 2);
                 const diff = averageRate - i;
                 let star = '☆';
                 if (diff >= 1) star = '★';
-                else if (diff === 0.5) star = '⯪'; 
-                return <span key={i} className={css.star}>{star}</span>;
+                else if (diff === 0.5) star = '⯪';
+                return (
+                  <span key={i} className={css.star}>
+                    {star}
+                  </span>
+                );
               })}
-              <span className={css.ratingValue}>
-                ({averageRate.toFixed(1)})
-              </span>
-              <span className={css.reviewsCount}>
-                • {feedbacks.length} відгуків
-              </span>
+              <span className={css.ratingValue}>({averageRate.toFixed(1)})</span>
+              <span className={css.reviewsCount}>• {feedbacks.length} відгуків</span>
             </div>
           </div>
 
           <p className={css.description}>{good.description}</p>
 
-          
           <div className={css.sizeBlock}>
             <p>Розмір:</p>
             <select className={css.sizeSelect}>
               {good.size.map((s) => (
-                <option key={s} value={s}>{s}</option>
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
           </div>
 
-          
           <div className={css.cartRow}>
             <button className={css.buyButton} onClick={handleAddToCart}>
               Додати в кошик
             </button>
-            <input
-              type="number"
-              min="1"
-              defaultValue="1"
-              className={css.quantityInput}
-            />
+            <input type="number" min="1" defaultValue="1" className={css.quantityInput} />
           </div>
 
           <button className={css.buyNowButton}>Купити зараз</button>
-          <p className={css.deliveryText}>
-            Безкоштовна доставка для замовлень від 1000 грн
-          </p>
+          <p className={css.deliveryText}>Безкоштовна доставка для замовлень від 1000 грн</p>
 
           {error && <p className={css.error}>{error}</p>}
         </div>
       </section>
-{/* <div className={css.descriptionBlock}>
+      {/* <div className={css.descriptionBlock}>
   <h3 className={css.descriptionTitle}>Опис</h3>
   <p className={css.descriptionText}>{good.description}</p>
   <ul className={css.characteristicsList}>
@@ -204,26 +198,25 @@ setAverageRate(Math.round(avg * 2) / 2);
   </ul>
 </div> */}
 
-
-
-
-     
-<section className={css.reviews}>
-  <div className={css.reviewsHeader}>
-    <h2>Відгуки клієнтів</h2>
-    
-  </div>
-<button className={css.reviewBtn}>Залишити відгук</button>
-  {good.feedbacks && good.feedbacks.length > 0 ? (
-    <ReviewsList />
-  ) : (
-    <div className={css.noReviews}>
-      <p>У цього товару ще немає відгуків</p>
-      <button className={css.leaveReviewBtn}>Залишити відгук</button>
-    </div>
-  )}
-</section>
-
+      <section className={css.reviews}>
+        <div className={css.reviewsHeader}>
+          <h2>Відгуки клієнтів</h2>
+        </div>
+        <button className={css.reviewBtn} onClick={openModal}>
+          Залишити відгук
+        </button>
+        {good.feedbacks && good.feedbacks.length > 0 ? (
+          <ReviewsList />
+        ) : (
+          <div className={css.noReviews}>
+            <p>У цього товару ще немає відгуків</p>
+            <button className={css.leaveReviewBtn} onClick={openModal}>
+              Залишити відгук
+            </button>
+          </div>
+        )}
+        {isModalOpen && <ModalReview key={goodId} onClose={closeModal} goodId={goodId} />}
+      </section>
     </main>
   );
 }
