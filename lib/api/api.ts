@@ -24,16 +24,16 @@ interface CheckSessionRequest {
 }
 
 export async function checkSession() {
-  const response = await nextServer.get<CheckSessionRequest>('/auth/refresh');
+  const response = await api.get<CheckSessionRequest>('/auth/refresh');
   return response.data.success;
 }
 
 export async function getMe() {
-  const response = await nextServer.get<User>('/users/me');
+  const response = await api.get<User>('/users/me');
   return response;
 }
 export async function getCategories(page: CategoriesResponse['page']) {
-  const response = await nextServer.get<CategoriesResponse>('/categories', { params: { page } });
+  const response = await api.get<CategoriesResponse>('/categories', { params: { page } });
   console.log(response.data.categories);
 
   return response.data.categories;
