@@ -1,6 +1,7 @@
 import css from './OrderItem.module.css';
+import type { Order, OrderGoodsItem } from '@/types/order';
 
-function formatDate(iso: string | Date) {
+function formatDate(iso: string) {
   try {
     const d = new Date(iso);
     return d.toLocaleDateString('uk-UA');
@@ -9,25 +10,29 @@ function formatDate(iso: string | Date) {
   }
 }
 
-// export default function OrderItem({ order }) {
-//   const total = order.goods.reduce((sum, good) => sum + good.total, 0);
+type OrderItemProps = {
+  order: Order;
+};
 
-//   return (
-//     <div className={css.itemContainer}>
-//       <div>
-//         <time dateTime={order.createdAt}>{formatDate(order.createdAt)}</time>
-//         <div className={css.label}>#{order._id.slice(0, 8)}</div>
-//       </div>
+export default function OrderItem({ order }: OrderItemProps) {
+  const total = order.goods.reduce((sum: number, good: OrderGoodsItem) => sum + good.total, 0);
 
-//       <div>
-//         <div className={css.label}>Сума:</div>
-//         <div className={css.value}>{total} грн</div>
-//       </div>
+  return (
+    <div className={css.itemContainer}>
+      <div>
+        <time dateTime={order.createdAt}>{formatDate(order.createdAt)}</time>
+        <div className={css.label}>#{order._id.slice(0, 8)}</div>
+      </div>
 
-//       <div>
-//         <div className={css.label}>Статус:</div>
-//         <div className={css.value}>В обробці</div>
-//       </div>
-//     </div>
-//   );
-// }
+      <div>
+        <div className={css.label}>Сума:</div>
+        <div className={css.value}>{total} грн</div>
+      </div>
+
+      <div>
+        <div className={css.label}>Статус:</div>
+        <div className={css.value}>В обробці</div>
+      </div>
+    </div>
+  );
+}

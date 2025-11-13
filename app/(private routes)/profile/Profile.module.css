@@ -20,12 +20,57 @@
   line-height: 140%;
   letter-spacing: -1%;
   text-align: center;
+  margin-bottom: 16px;
 }
 
 .dashboard {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
+}
+
+.ordersSection {
+  order: 0;
+}
+
+.infoSection {
+  order: -1;
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.noOrdersPlaceholder {
+  background-color: #c5e1a5;
+  padding: 24px 0;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.noOrdersInfo {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.orderButton {
+  margin: 0 auto;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background-color: #a3c982;
+  color: #000;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 150%;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .logoutButton {
@@ -47,5 +92,13 @@
   .dashboard {
     grid-template-columns: 1fr 1fr;
     align-items: start;
+  }
+
+  .ordersSection {
+    order: 0;
+  }
+
+  .infoSection {
+    order: 0;
   }
 }

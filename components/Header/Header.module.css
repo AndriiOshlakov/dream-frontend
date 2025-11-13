@@ -1,27 +1,19 @@
 /* Mobile */
-.container {
-  max-width: 375px;
-  margin: 0 auto;
-  padding: 48px 20px;
+
+.header {
+  background-color: #d6eac0;
+  width: 100%;
 }
 
-.header > .container {
-  max-width: 768;
-  width: 100%;
+.headerContainer {
   padding-top: 24px;
   padding-bottom: 24px;
   display: flex;
-  background-color: #d6eac0;
   justify-content: space-between;
-  align-items: center;  
+  align-items: center;
 }
 
 .headerBasket {
-  width: 36px;
-  height: 36px;
-  opacity: 1;
-  padding: 6px;
-  border-radius: 100px;
   background-color: #000000;
 }
 .headerBasket:hover,
@@ -46,12 +38,17 @@
   gap: 16px;
 }
 
-.burgerBtn {
+.headerIconBtn {
   width: 36px;
   height: 36px;
-  opacity: 1;
   padding: 6px;
   border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burgerBtn {
   background-color: #0000000d;
 }
 .burgerBtn:hover,
@@ -79,20 +76,9 @@
 /* Tablet */
 
 @media screen and (min-width: 768px) {
-  .container {
-    padding: 48px 32px;
-    max-width: 768px;
-  }
-
-  .header > .container {
-    max-width: 1440px;
-    width: 100%;
+  .headerContainer {
     padding-top: 18px;
     padding-bottom: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
   }
 
   .burgerBtn {
@@ -113,10 +99,6 @@
 
   .headerBasket {
     margin-left: 16px;
-  }
-
-  .headerLogo {
-    margin-left: auto;
   }
 
   .headerLink {
@@ -147,17 +129,6 @@
 
 /* Desktop */
 @media screen and (min-width: 1440px) {
-  .container {
-    max-width: 1440px;
-    padding: 80px 64px;
-  }
-
-  .header > .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
 
   .headerNavigation {
     display: flex;
