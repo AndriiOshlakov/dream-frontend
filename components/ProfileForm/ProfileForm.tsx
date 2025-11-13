@@ -29,7 +29,7 @@ const ProfileFormSchema = Yup.object().shape({
     .matches(/^\+380\d{9}$/, 'Введіть коректний номер телефону у форматі +380XXXXXXXXX')
     .required('Номер телефону обовʼязковий'),
   city: Yup.string().required('Місто доставки обовʼязкове'),
-  postOffice: Yup.string().required('Номер відділення обовʼязкове'),
+  postOffice: Yup.string().required('Номер відділення обовʼязковий'),
 });
 
 export default function ProfileForm() {
@@ -51,8 +51,9 @@ export default function ProfileForm() {
     >
       <Form className={css.form}>
         <div className={css.field}>
-          <label htmlFor="firstname" className={css.formLabel}></label>
-          Імʼя*
+          <label htmlFor="firstname" className={css.formLabel}>
+            Імʼя*
+          </label>
           <Field
             className={css.input}
             type="text"
@@ -98,10 +99,11 @@ export default function ProfileForm() {
           <Field className={css.input} type="text" name="postOffice" placeholder="1" required />
           <ErrorMessage className={css.inputError} component="span" name="postOffice" />
         </div>
-        <div className={`${css.actions} ${css.full}`}></div>
-        <button className={css.button} type="submit">
-          Зберегти зміни
-        </button>
+        <div className={`${css.actions} ${css.full}`}>
+          <button className={css.button} type="submit">
+            Зберегти зміни
+          </button>
+        </div>
       </Form>
     </Formik>
   );

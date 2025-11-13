@@ -3,6 +3,7 @@ import axios from 'axios';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { User } from '@/types/user';
 import { CategoriesResponse } from '@/types/category';
+import { Order } from '@/types/order';
 
 export const nextServer = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL + '/api',
@@ -39,7 +40,7 @@ export async function getCategories(page: CategoriesResponse['page']) {
   return response.data.categories;
 }
 
-export const fetchMyOrders = async () => {
+export const fetchMyOrders = (): Order[] => {
   return [
     {
       _id: '69135246d77bd9a8f9389459',
