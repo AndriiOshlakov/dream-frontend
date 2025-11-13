@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { login } from '@/lib/api/api';
+import { login } from '@/lib/api/clientApi';
+import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import css from './LogInPage.module.css';
 
@@ -20,7 +21,7 @@ const initialValues: LoginFormValues = {
 
 const LoginSchema = Yup.object().shape({
   phone: Yup.string()
-    .matches(/^\+380\d{9}$/, 'Введіть коректний номер у форматі +380XXXXXXXXX')
+    .matches(/^\+380\d{9}$/, 'Введіть коректний номер телефону у форматі +380XXXXXXXXX')
     .required('Номер телефону обовʼязковий'),
   password: Yup.string().required('Пароль обовʼязковий'),
 });
@@ -32,9 +33,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (values: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
     try {
-      const user = await login(values);
-      console.log(user);
-
+      const { user } = await login(values);
       if (user) {
         setUser(user);
         router.push('/');
@@ -42,7 +41,8 @@ export default function LoginForm() {
         setError('Неправильний номер телефону або пароль');
       }
     } catch (err) {
-      setError('Ой... сталася помилка');
+      const error = err as ApiError;
+      setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
     } finally {
       actions.resetForm();
     }
