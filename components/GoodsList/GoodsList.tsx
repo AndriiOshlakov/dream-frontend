@@ -4,6 +4,12 @@ import { useEffect, useState, type ReactElement } from "react";
 import Link from "next/link";
 import css from "./GoodsList.module.css";
 
+/* === Swiper === */
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
+import { Keyboard, A11y } from "swiper/modules";
+import "swiper/css";
+
 /* ===== Типи ===== */
 
 interface Feedback {
@@ -35,7 +41,7 @@ export interface Good {
   price: number;
   currency: string;
   reviewsCount: number;
-  rating: number; // середнє значення (0..5) з 1 знаком після коми
+  rating: number;
   sizes: string[];
 }
 
@@ -44,6 +50,9 @@ type EnvelopeKeys = "goods" | "items" | "data" | "results" | "docs" | "list";
 /* ===== Константи ===== */
 
 const API: string = process.env.NEXT_PUBLIC_API_URL ?? ""; // https://dream-backend-a69s.onrender.com
+
+const DOTS_COUNT = 5;
+const ACTIVE_DOT = 0;
 
 /* ===== Хелпери ===== */
 
@@ -88,7 +97,6 @@ function hasListOfRawGood(x: unknown): x is { list: RawGood[] } {
   return isRecord(x) && isRawGoodArray((x as { list?: unknown }).list);
 }
 
-/** Повертає масив товарів із різних можливих обгорток без `any` */
 function pickList(data: unknown): RawGood[] {
   if (isRawGoodArray(data)) return data;
 
@@ -105,7 +113,7 @@ function pickList(data: unknown): RawGood[] {
   return [];
 }
 
-/* ===== Рейтинг і кількість з feedbacks (використовуємо Math, без “—”) ===== */
+/* ===== Рейтинг і кількість ===== */
 
 function takeRatingValue(f?: Feedback): number | null {
   if (!f) return null;
@@ -129,9 +137,8 @@ function calcRatingAndReviews(feedbacks?: Feedback[]): { rating: number; reviews
 
   const sum: number = ratings.reduce((s, n) => s + n, 0);
   const avg: number = ratings.length > 0 ? sum / ratings.length : 0;
-  const fixed1: number = Math.round(avg * 10) / 10; // 1 знак після коми
+  const fixed1: number = Math.round(avg * 10) / 10;
 
-  // завжди повертаємо числа (навіть якщо 0 відгуків → 0.0 і 0)
   return { rating: fixed1, reviewsCount };
 }
 
@@ -157,8 +164,8 @@ function normalize(g: RawGood): Good {
   };
 }
 
-/* ===== Фетч із явним Promise та без any ===== */
-/** Повертає нормалізований масив товарів. Якщо жоден маршрут не підійшов — порожній масив. */
+/* ===== Фетч ===== */
+
 async function fetchGoods(apiBase: string, signal?: AbortSignal): Promise<Good[]> {
   const candidates: readonly string[] = [
     apiJoin(apiBase, "/"),
@@ -171,13 +178,12 @@ async function fetchGoods(apiBase: string, signal?: AbortSignal): Promise<Good[]
       const res: Response = await fetch(url, { cache: "no-store", signal });
       if (!res.ok) continue;
 
-      const raw: unknown = await res.json(); // ← типізуємо як unknown, далі — type guards
+      const raw: unknown = await res.json();
       const list: RawGood[] = pickList(raw);
       if (!list.length) continue;
 
       return list.map(normalize);
     } catch {
-      // пробуємо наступний маршрут
       continue;
     }
   }
@@ -190,17 +196,30 @@ export default function GoodsList(): ReactElement {
   const [goods, setGoods] = useState<Good[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [visibleCount, setVisibleCount] = useState<number>(4); // desktop дефолт
 
-  // ✅ Єдина зміна: точні брейкпойнти + оновлення на ресайз
+  // 1 / 2 / 4 картки на екрані (моб/планш/десктоп)
+  const [slidesPerView, setSlidesPerView] = useState<number>(4);
+
+  // скільки карток ВЗАГАЛІ підвантажено (кожен клік по стрілці +3, поки не закінчаться)
+  const [loadedCount, setLoadedCount] = useState<number>(4);
+
+  // Swiper інстанс і активна крапка
+  const [swiper, setSwiper] = useState<SwiperType | null>(null);
+  const [activeDot, setActiveDot] = useState<number>(ACTIVE_DOT);
+
   useEffect((): (() => void) | void => {
     if (typeof window === "undefined") return;
 
     const compute = (): void => {
       const w = window.innerWidth;
-      if (w < 768) setVisibleCount(1);         // мобілка
-      else if (w < 1440) setVisibleCount(2);   // планшет
-      else setVisibleCount(4);                 // десктоп
+      let spv: number;
+
+      if (w < 768) spv = 1;       
+      else if (w < 1440) spv = 2; 
+      else spv = 4;               
+
+      setSlidesPerView(spv);
+      setLoadedCount(spv); 
     };
 
     compute();
@@ -238,7 +257,9 @@ export default function GoodsList(): ReactElement {
   const renderSkeletons = (n: number): ReactElement => (
     <ul className={css.list} aria-hidden>
       {Array.from({ length: n }).map((_, i) => (
-        <li key={i} className={css.card}><div className={css.imgWrap} /></li>
+        <li key={i} className={css.card}>
+          <div className={css.imgWrap} />
+        </li>
       ))}
     </ul>
   );
@@ -249,40 +270,91 @@ export default function GoodsList(): ReactElement {
         <div className="container">
           <div className={css.header}>
             <h2 className={css.title}>Популярні товари</h2>
-            <Link href="/goods" className={css.allBtn}>Всі товари</Link>
+            <Link href="/goods" className={css.allBtn}>
+              Всі товари
+            </Link>
           </div>
-          {renderSkeletons(visibleCount)}
+          {renderSkeletons(slidesPerView)}
         </div>
       </section>
     );
   }
 
-  const show: Good[] = goods.slice(0, visibleCount);
+  const displayGoods: Good[] = goods.slice(0, loadedCount);
+
+  const handlePrev = (): void => {
+    if (!swiper) return;
+    swiper.slidePrev();
+  };
+
+  const handleNext = (): void => {
+    // спочатку підвантажуємо ще 3 картки, якщо є
+    if (goods.length > 0) {
+      setLoadedCount((prev) => {
+        if (prev < goods.length) {
+          const next = Math.min(prev + 3, goods.length);
+          return next;
+        }
+        return prev;
+      });
+    }
+     
+    if (swiper) {
+      swiper.slideNext();
+    }
+  };
+
+  const canGoPrev: boolean = !!swiper && !swiper.isBeginning;
+  const hasMoreToLoad: boolean = loadedCount < goods.length;
+  const canSlideNext: boolean = !!swiper && !swiper.isEnd;
+  const canGoNext: boolean = hasMoreToLoad || canSlideNext;
 
   return (
     <section className={css.section}>
       <div className="container">
         <div className={css.header}>
           <h2 className={css.title}>Популярні товари</h2>
-          <Link href="/goods" className={css.allBtn}>Всі товари</Link>
+          <Link href="/goods" className={css.allBtn}>
+            Всі товари
+          </Link>
         </div>
 
-        {error && <p role="alert" style={{ marginBottom: 12 }}>{error}</p>}
+        {error && (
+          <p role="alert" style={{ marginBottom: 12 }}>
+            {error}
+          </p>
+        )}
 
-        {show.length > 0 ? (
-          <ul className={css.list}>
-            {show.map((g) => {
+        {displayGoods.length > 0 ? (
+          <Swiper
+            tag="ul"
+            wrapperTag="ul"
+            className={css.list}
+            modules={[Keyboard, A11y]}
+            keyboard={{ enabled: true, onlyInViewport: true }}
+            slidesPerView={slidesPerView}
+            spaceBetween={24}
+            onSwiper={setSwiper}
+            onSlideChange={(s): void => {
+              const realIndex = typeof s.realIndex === "number" ? s.realIndex : s.activeIndex;
+              setActiveDot(realIndex % DOTS_COUNT);
+            }}
+            aria-label="Популярні товари — слайдер категорій"
+          >
+            {displayGoods.map((g) => {
               const tight: boolean = g.title.length > 26;
 
               return (
-                <li key={g.id} className={css.card}>
+                <SwiperSlide key={g.id} tag="li" className={css.card}>
                   <Link href={`/goods/${g.id}`} className={css.link} aria-label={`${g.title} — детальніше`}>
                     <div className={css.imgWrap}>
                       <img
                         src={resolveImage(g.image)}
                         alt={g.title}
                         className={css.img}
-                        onError={(e): void => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
+                        onError={(e): void => {
+                          (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
+                        }}
                         loading="lazy"
                         width={1200}
                         height={800}
@@ -301,7 +373,7 @@ export default function GoodsList(): ReactElement {
 
                       <p className={css.brand}>Clothica</p>
 
-                      {/* Завжди показуємо рейтинг і кількість */}
+                      {/* Рейтинг і кількість */}
                       <div className={css.ratingRow}>
                         <svg className={css.star} aria-hidden="true">
                           <use href="/symbol-defs.svg#icon-star-filled" />
@@ -319,27 +391,45 @@ export default function GoodsList(): ReactElement {
                   <Link href={`/goods/${g.id}`} className={css.detailsBtn}>
                     Детальніше
                   </Link>
-                </li>
+                </SwiperSlide>
               );
             })}
-          </ul>
+          </Swiper>
         ) : (
-          renderSkeletons(visibleCount)
+          renderSkeletons(slidesPerView)
         )}
 
-        {/* Контроли-заглушки — без змін */}
-        <div className={css.controls}>
+          <div className={css.controls}>
           <div className={css.dots} aria-hidden>
-            <span className={`${css.dot} ${css.dotActive}`} />
-            <span className={css.dot} />
-            <span className={css.dot} />
+            {Array.from({ length: DOTS_COUNT }).map((_, i) => (
+              <span
+                key={i}
+                className={`${css.dot} ${i === activeDot ? css.dotActive : ""}`}
+              />
+            ))}
           </div>
           <div className={css.arrows}>
-            <button type="button" className={css.arrowBtn} disabled>
-              <svg className={css.icon}><use href="/symbol-defs.svg#icon-arrow_back" /></svg>
+            <button
+              type="button"
+              className={css.arrowBtn}
+              onClick={handlePrev}
+              disabled={!canGoPrev}
+              aria-label="Попередні товари"
+            >
+              <svg className={css.icon}>
+                <use href="/symbol-defs.svg#icon-arrow_back" />
+              </svg>
             </button>
-            <button type="button" className={css.arrowBtn} disabled>
-              <svg className={css.icon}><use href="/symbol-defs.svg#icon-arrow_forward" /></svg>
+            <button
+              type="button"
+              className={css.arrowBtn}
+              onClick={handleNext}
+              disabled={!canGoNext}
+              aria-label="Наступні товари"
+            >
+              <svg className={css.icon}>
+                <use href="/symbol-defs.svg#icon-arrow_forward" />
+              </svg>
             </button>
           </div>
         </div>
@@ -347,6 +437,3 @@ export default function GoodsList(): ReactElement {
     </section>
   );
 }
-
-
-

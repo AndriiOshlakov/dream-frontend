@@ -4,9 +4,14 @@
   padding: 48px 20px;
 }
 
+/* внутрішній контейнер секції */
 .section .container {
-  max-width: 335px;
+  width: 100%;
+  max-width: 395px;
+  padding: 0 20px;
   margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;       
 }
 
 .header {
@@ -39,38 +44,44 @@
   min-width: 108px;
   height: 36px;
   padding: 6px 12px;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 100px;
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
   color: #000;
   font-family: Inter, system-ui, sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
   cursor: pointer;
-  transition: background-color .2s, border-color .2s, color .2s, transform .1s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.1s;
 }
 
 .allBtn {
-  width:108px;
-  height:36px;
-  padding:0 16px;
-  white-space:nowrap;
-  line-height:1;
-  margin-top:4px;
+  width: 108px;
+  height: 36px;
+  padding: 0 16px;
+  white-space: nowrap;
+  line-height: 1;
+  margin-top: 4px;
 }
 
-.button:hover,.allBtn:hover,.detailsBtn:hover,
-.button:focus,.allBtn:focus,.detailsBtn:focus {
-  background:#c5e1a5;
-  border-color:#c5e1a5;
+.button:hover,
+.allBtn:hover,
+.detailsBtn:hover,
+.button:focus,
+.allBtn:focus,
+.detailsBtn:focus {
+  background: #c5e1a5;
+  border-color: #c5e1a5;
 }
 
-.button:active,.allBtn:active,.detailsBtn:active {
-  background:#1b5e20;
-  border-color:#1b5e20;
-  color:#fff;
-  transform:translateY(1px);
+.button:active,
+.allBtn:active,
+.detailsBtn:active {
+  background: #1b5e20;
+  border-color: #1b5e20;
+  color: #fff;
+  transform: translateY(1px);
 }
 
 /* list */
@@ -89,7 +100,7 @@
   flex-direction: column;
   padding: 0;
   width: 335px;
-  height: 556px;
+  
 }
 
 /* image */
@@ -121,9 +132,9 @@
 }
 
 .info {
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* === Заголовок і бренд === */
@@ -199,7 +210,9 @@
   vertical-align: middle;
 }
 
-.ratingValue, .dotSep, .reviewsCount {
+.ratingValue,
+.dotSep,
+.reviewsCount {
   font-family: Inter, system-ui, sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -212,7 +225,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 335px;
+  width: 100%;              /* рівно по ширині картки */
   height: 40px;
   padding: 4px 10px;
   border-radius: 100px;
@@ -224,64 +237,113 @@
   line-height: 1.5;
   color: #000;
   cursor: pointer;
-  transition: background-color .2s, border-color .2s, color .2s, transform .1s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.1s;
+  margin-top: 16px;
 }
 
 .detailsBtn:hover,
 .detailsBtn:focus {
-  background:#c5e1a5;
-  border-color:#c5e1a5;
+  background: #c5e1a5;
+  border-color: #c5e1a5;
 }
 
 .detailsBtn:active {
-  background:#1b5e20;
-  border-color:#1b5e20;
-  color:#fff;
-  transform:translateY(1px);
+  background: #1b5e20;
+  border-color: #1b5e20;
+  color: #fff;
+  transform: translateY(1px);
 }
 
-/* === SLIDER controls — MOBILE === */
+
 .controls {
   margin-top: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  position: relative;
 }
 
 .dots {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 9px;                
 }
 
-.dot {
+.dot,
+.dotActive {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+}
+
+.dot {
   background: rgba(0, 0, 0, 0.25);
 }
 
 .dotActive {
   background: #000;
-  width: 12px;
-  height: 12px;
 }
 
 .arrows {
-  display: flex;
-  gap: 8px;
+  display: inline-flex;
+  gap: 12px;
+  z-index: 5;            
 }
 
+/* ====== BUTTON STATES FOR SLIDER ARROWS ====== */
+
 .arrowBtn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid #f9fcf6;
-  background: #c5e1a5;
-  display: flex;
-  align-items: center;
+  border: 1px solid #c5e1a5; 
+  background: #c5e1a5;      
+  display: inline-flex;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
 }
+
+/* Іконка */
+.arrowBtn .icon {
+  width: 18px;
+  height: 18px;
+  stroke: #000;        
+  fill: none;
+}
+
+/* Hover / Focus (активна) */
+.arrowBtn:hover:not(:disabled),
+.arrowBtn:focus-visible:not(:disabled) {
+  background: #92b46e;        
+  border-color: #92b46e;
+}
+
+/* Active (при натисканні) */
+.arrowBtn:active:not(:disabled) {
+  background: #1b5e20;        
+  border-color: #1b5e20;
+}
+
+.arrowBtn:active:not(:disabled) .icon {
+  stroke: #fff;               
+}
+
+/* ===== DISABLED STATE ===== */
+
+.arrowBtn:disabled {
+  background: rgba(0, 0, 0, 0.05);  
+  border-color: rgba(0, 0, 0, 0.1); 
+  cursor: default;
+  pointer-events: none;            
+}
+
+.arrowBtn:disabled .icon {
+  stroke: rgba(0, 0, 0, 0.25);     
+}
+
 
 .icon {
   width: 18px;
@@ -289,14 +351,15 @@
   color: #000;
 }
 
-/***** ===== TABLET ≥768px ===== *****/
+/***** ===== TABLET ≥768px =====*****/
 @media (min-width: 768px) {
   .section {
     padding: 48px 32px;
   }
 
   .section .container {
-    max-width: 704px;
+    max-width: 736px;
+    margin: 0 auto;
   }
 
   .title {
@@ -304,7 +367,7 @@
     margin-bottom: 40px;
     max-width: none;
   }
-  
+
   .list {
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
@@ -312,7 +375,6 @@
 
   .card {
     width: 336px;
-    height: 558px;
   }
 
   .imgWrap {
@@ -324,34 +386,53 @@
   }
 
   .detailsBtn {
-    width: 336px;
+    width: 100%;
   }
 
-  /* Slider Controls */
-  .dots { gap: 8px; }
-  .dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); }
-  .dotActive { width: 12px; height: 12px; background: #000; }
+  
+  .controls {
+    margin-top: 32px;
+    justify-content: center;
+  }
 
-  .arrows { gap: 16px; }
+  .dots {
+    justify-content: center;
+  }
+
+    .arrows {
+    position: absolute;
+    top: -400px;               
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 692px;           
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;   
+    z-index: 5;
+  }
+
   .arrowBtn {
     width: 48px;
     height: 48px;
-    padding: 12px;
-    border-radius: 100px;
-    border: 1px solid #f9fcf6;
-    background: #c5e1a5;
+    pointer-events: auto;               
   }
-  .icon { width: 24px; height: 24px; }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
 }
 
-/***** ===== DESKTOP ≥1440px ===== *****/
+/***** ===== DESKTOP ≥1440px =====*****/
 @media (min-width: 1440px) {
   .section {
     padding: 80px 64px;
   }
 
   .section .container {
-    max-width: 1312px;
+    max-width: 1312px;                
+    margin: 0 auto;
   }
 
   .list {
@@ -361,7 +442,6 @@
 
   .card {
     width: 304px;
-    height: 518px;
   }
 
   .imgWrap {
@@ -375,22 +455,38 @@
   }
 
   .detailsBtn {
-    width: 304px;
+    width: 100%;
   }
 
-  /* Slider Controls */
-  .dots { gap: 8px; }
-  .dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); }
-  .dotActive { width: 12px; height: 12px; background: #000; }
+  .controls {
+    margin-top: 32px;
+    justify-content: center;
+  }
+
+  .dots {
+    justify-content: center;
+  }
+
+  .arrows {
+    position: absolute;
+    top: -375px;               
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1250px;           
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;   
+    z-index: 5;
+  }
 
   .arrowBtn {
     width: 48px;
     height: 48px;
-    padding: 12px;
-    border-radius: 100px;
-    border: 1px solid #f9fcf6;
-    background: #c5e1a5;
   }
 
-  .icon { width: 24px; height: 24px; }
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
 }
