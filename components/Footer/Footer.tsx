@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { nextServer } from '@/lib/api/api';
 
 export default function Footer() {
   const queryClient = useQueryClient();
@@ -16,10 +17,7 @@ export default function Footer() {
   const mutation = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       try {
-        const response = await axios.post(
-          'https://dream-backend-a69s.onrender.com/api/subscriptions',
-          { email }
-        );
+        const response = await nextServer.post('/subscriptions', { email });
         return response.data;
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
