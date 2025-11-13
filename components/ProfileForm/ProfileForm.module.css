@@ -12,8 +12,41 @@
 }
 
 .formLabel {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputError {
+  color: red;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.full {
   display: flex;
-  flex-direction: column;
+}
+
+.button {
+  margin: 0 auto;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background-color: #a3c982;
+  color: #000;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 150%;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 @media (min-width: 768px) {
