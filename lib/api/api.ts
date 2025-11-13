@@ -19,6 +19,10 @@ export async function login(data: LoginRequest) {
   return response.data;
 }
 
+export async function logout(): Promise<void> {
+  await nextServer.post('/auth/logout');
+}
+
 interface CheckSessionRequest {
   success: boolean;
 }
