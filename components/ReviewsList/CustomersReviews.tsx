@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export interface ApiFeedback {
   _id: string;
   author: string;
@@ -17,14 +19,11 @@ export interface Review {
 }
 
 export async function fetchReviews(): Promise<Review[]> {
-  const response = await fetch('https://dream-backend-a69s.onrender.com/api/feedbacks');
+  const response = await axios.get<ApiFeedback[]>(
+    'https://dream-backend-a69s.onrender.com/api/feedbacks'
+  );
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch reviews: ${response.status}`);
-  }
-
-  const data: { feedbacks?: ApiFeedback[] } | ApiFeedback[] = await response.json();
-  const feedbacks: ApiFeedback[] = Array.isArray(data) ? data : (data.feedbacks ?? []);
+  const feedbacks = response.data;
 
   return feedbacks.map((feedback) => ({
     name: feedback.author,
