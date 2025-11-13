@@ -1,13 +1,9 @@
 /***** ===== MOBILE (base) ===== *****/
 .section {
   background-color: #f3f9ed;
-  padding: 48px 20px;
+  padding: 48px 0;
 }
 
-.section .container {
-  max-width: 335px;
-  margin: 0 auto;
-}
 
 .header {
   display: flex;
@@ -39,9 +35,9 @@
   min-width: 108px;
   height: 36px;
   padding: 6px 12px;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 100px;
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
   color: #000;
   font-family: Inter, system-ui, sans-serif;
   font-weight: 500;
@@ -52,25 +48,31 @@
 }
 
 .allBtn {
-  width:108px;
-  height:36px;
-  padding:0 16px;
-  white-space:nowrap;
-  line-height:1;
-  margin-top:4px;
+  width: 108px;
+  height: 36px;
+  padding: 0 16px;
+  white-space: nowrap;
+  line-height: 1;
+  margin-top: 4px;
 }
 
-.button:hover,.allBtn:hover,.detailsBtn:hover,
-.button:focus,.allBtn:focus,.detailsBtn:focus {
-  background:#c5e1a5;
-  border-color:#c5e1a5;
+.button:hover,
+.allBtn:hover,
+.detailsBtn:hover,
+.button:focus,
+.allBtn:focus,
+.detailsBtn:focus {
+  background: #c5e1a5;
+  border-color: #c5e1a5;
 }
 
-.button:active,.allBtn:active,.detailsBtn:active {
-  background:#1b5e20;
-  border-color:#1b5e20;
-  color:#fff;
-  transform:translateY(1px);
+.button:active,
+.allBtn:active,
+.detailsBtn:active {
+  background: #1b5e20;
+  border-color: #1b5e20;
+  color: #fff;
+  transform: translateY(1px);
 }
 
 /* list */
@@ -121,9 +123,9 @@
 }
 
 .info {
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* === Заголовок і бренд === */
@@ -199,7 +201,9 @@
   vertical-align: middle;
 }
 
-.ratingValue, .dotSep, .reviewsCount {
+.ratingValue,
+.dotSep,
+.reviewsCount {
   font-family: Inter, system-ui, sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -229,15 +233,15 @@
 
 .detailsBtn:hover,
 .detailsBtn:focus {
-  background:#c5e1a5;
-  border-color:#c5e1a5;
+  background: #c5e1a5;
+  border-color: #c5e1a5;
 }
 
 .detailsBtn:active {
-  background:#1b5e20;
-  border-color:#1b5e20;
-  color:#fff;
-  transform:translateY(1px);
+  background: #1b5e20;
+  border-color: #1b5e20;
+  color: #fff;
+  transform: translateY(1px);
 }
 
 /* === SLIDER controls — MOBILE === */
@@ -292,7 +296,7 @@
 /***** ===== TABLET ≥768px ===== *****/
 @media (min-width: 768px) {
   .section {
-    padding: 48px 32px;
+    padding: 48px 0;
   }
 
   .section .container {
@@ -304,7 +308,7 @@
     margin-bottom: 40px;
     max-width: none;
   }
-  
+
   .list {
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
@@ -328,11 +332,26 @@
   }
 
   /* Slider Controls */
-  .dots { gap: 8px; }
-  .dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); }
-  .dotActive { width: 12px; height: 12px; background: #000; }
+  .dots {
+    gap: 8px;
+  }
 
-  .arrows { gap: 16px; }
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .dotActive {
+    width: 12px;
+    height: 12px;
+    background: #000;
+  }
+
+  .arrows {
+    gap: 16px;
+  }
+
   .arrowBtn {
     width: 48px;
     height: 48px;
@@ -341,13 +360,17 @@
     border: 1px solid #f9fcf6;
     background: #c5e1a5;
   }
-  .icon { width: 24px; height: 24px; }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 /***** ===== DESKTOP ≥1440px ===== *****/
 @media (min-width: 1440px) {
   .section {
-    padding: 80px 64px;
+    padding: 80px 0;
   }
 
   .section .container {
@@ -379,9 +402,21 @@
   }
 
   /* Slider Controls */
-  .dots { gap: 8px; }
-  .dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); }
-  .dotActive { width: 12px; height: 12px; background: #000; }
+  .dots {
+    gap: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .dotActive {
+    width: 12px;
+    height: 12px;
+    background: #000;
+  }
 
   .arrowBtn {
     width: 48px;
@@ -392,5 +427,8 @@
     background: #c5e1a5;
   }
 
-  .icon { width: 24px; height: 24px; }
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
 }
