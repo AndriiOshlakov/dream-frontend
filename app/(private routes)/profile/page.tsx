@@ -1,6 +1,6 @@
 import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import ProfileClient from './Profile.client';
-import { fetchMyOrders } from '@/lib/api/api';
+import { fetchMyOrders } from '@/lib/api/clientApi';
 
 export default async function Profile() {
   const queryClient = new QueryClient();

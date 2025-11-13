@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Category } from '@/types/category';
 import Image from 'next/image';
 import Container from '@/components/Container/Container';
-import { getCategories } from '@/lib/api/api';
+import { getCategories } from '@/lib/api/clientApi';
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import css from './Filters.module.css';
 import { useEffect, useState } from 'react';
 import { Category } from '@/types/category';
-import { getCategories } from '@/lib/api/api';
+import { getCategories } from '@/lib/api/clientApi';
 
 export default function Filters() {
   const [minVal, setMinVal] = useState(0);
