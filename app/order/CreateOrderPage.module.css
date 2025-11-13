@@ -19,7 +19,8 @@
     padding: 0 20px;
     margin: 0 auto;
     max-width: 100%;
-}
+    
+}   
 
  
 .list {
@@ -56,7 +57,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Spacing between input groups */
+    gap: 16px; 
     margin-bottom: 64px;
 }
 .inputLabel{
@@ -81,10 +82,15 @@
     gap: 16px;
     flex-direction: column;  
 }
-
+.error{
+    color:red;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
 .submitButton {
     padding: 15px 30px;
-    background-color: #C5E1A5; /* Light Green */
+    background-color: #C5E1A5;
     color: black;
     border: 1px;
     border-radius: 25px;
@@ -106,16 +112,16 @@
 @media screen and (min-width: 768px) {
     .title{
         min-width: 100%;
-        font-size: 48px;
+        font-size: 36px;
     }
     .container {
         max-width: 1440px; 
-        padding: 0 40px;
+        padding: 0 32px;
+        margin: 0 auto;
     }
     
     .list {
-        flex-direction: column; /* Desktop/Tablet: Arrange side-by-side */
-      
+        flex-direction: column; 
          
     }
     
@@ -124,7 +130,7 @@
     }
 
     .nameGroup, .deliveryGroup {
-        /* Arrange inputs side-by-side on desktop/tablet */
+        
         display: flex;
         flex-direction: row; 
         gap: 32px;
@@ -132,16 +138,24 @@
     
    .nameGroup > .inputWrapper, 
 .deliveryGroup > .inputWrapper {
-    /* flex-basis: calc(50% - 16px); /* Use calc to account for the 32px gap */
+    
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 50%;  
 }
 }
 @media screen and (min-width: 1440px) {
-     
+    
+    .title{
+     margin-top: 112px;
+    font-size: 48px;}
+
+.container{
+    padding: 0 64px;
+    margin: 0 auto;
+}
     .list {
-        /* ⭐️ FIX: Switch to the desired two-column layout here ⭐️ */
+       
         flex-direction: row; 
          
         align-items: flex-start;
