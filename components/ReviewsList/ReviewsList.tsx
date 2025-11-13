@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, A11y } from 'swiper/modules';
 import type { Swiper as SwiperClass } from 'swiper';
 import 'swiper/css';
-import { fetchFakeReviews, type Review } from './FakeReviews';
+import { fetchReviews, type Review } from './CustomersReviews';
 import css from './ReviewsList.module.css';
 
 export default function ReviewsList() {
@@ -17,7 +17,7 @@ export default function ReviewsList() {
   const swiperRef = useRef<SwiperClass | null>(null);
 
   useEffect(() => {
-    fetchFakeReviews().then((data) => {
+    fetchReviews().then((data) => {
       setReviews(data);
       setIsLoading(false);
     });
@@ -65,7 +65,9 @@ export default function ReviewsList() {
             disabled={isAtStart}
             aria-label="Попередні відгуки"
           >
-            ←
+            <svg className={css.icon}>
+              <use href="/symbol-defs.svg#icon-arrow_back" />
+            </svg>
           </button>
           <button
             type="button"
@@ -74,7 +76,9 @@ export default function ReviewsList() {
             disabled={isAtEnd}
             aria-label="Наступні відгуки"
           >
-            →
+            <svg className={css.icon}>
+              <use href="/symbol-defs.svg#icon-arrow_forward" />
+            </svg>
           </button>
         </div>
       </div>
