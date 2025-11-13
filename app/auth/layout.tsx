@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Container from '@/components/Container/Container';
 import css from './AuthPage.module.css';
+import Loader from '@/components/Loader/Loader';
 
 type AuthLayoutProps = {
   children: React.ReactNode;
@@ -12,9 +13,12 @@ type AuthLayoutProps = {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     router.refresh();
+    setLoading(false);
   }, [router]);
 
   useEffect(() => {
@@ -29,7 +33,9 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     };
   }, []);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <section className={css.authOverlay}>
       <Container>
         <div className={css.authLayout}>
@@ -42,12 +48,14 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           </div>
           <div className={css.authFormWrapper}>
             <ul className={css.authList}>
-              <li className={css.authItem}>
+              <li
+                className={`${css.authItem} ${pathname === '/auth/register' ? css.activeLink : ''}`}
+              >
                 <Link className={css.authLink} href="/auth/register">
                   Реєстрація
                 </Link>
               </li>
-              <li className={css.authItem}>
+              <li className={`${css.authItem} ${pathname === '/auth/login' ? css.activeLink : ''}`}>
                 <Link className={css.authLink} href="/auth/login">
                   Вхід
                 </Link>

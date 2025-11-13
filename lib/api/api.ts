@@ -4,18 +4,18 @@ import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { User } from '@/types/user';
 import { CategoriesResponse } from '@/types/category';
 
-export const nextServer = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL + '/api',
+export const api = axios.create({
+  baseURL: 'https://dream-backend-a69s.onrender.com/api',
   withCredentials: true,
 });
 
 export async function register(data: RegisterRequest) {
-  const response = await nextServer.post<User>('/auth/register', data);
+  const response = await api.post<User>('/auth/register', data);
   return response.data;
 }
 
 export async function login(data: LoginRequest) {
-  const response = await nextServer.post<User>('/auth/login', data);
+  const response = await api.post<User>('/auth/login', data);
   return response.data;
 }
 
