@@ -1,32 +1,40 @@
 "use client";
 //import GoodsOrderList from "@/components/GoodsOrderList/GoodsOrderList";
 import css from "./CreateOrderPage.module.css";
-import { Formik, Form, Field, ErrorMessage } from 'formik'; 
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'; 
 import * as Yup from 'yup'; 
 
-const initialValues = {
-    firstName: '',
-    lastName: '',
+interface OrderInput{
+    name: string;
+    surname: string;
+    phone: string;
+    city: string;
+    postNumber: string;
+    comment: string;  
+}
+const initialValues: OrderInput = {
+    name: '',
+    surname: '',
     phone: '',
-    deliveryPlace: '',
-    novaPoshta: '',
+    city: '',
+    postNumber: '',
     comment: '',
 };
 
  const validationSchema = Yup.object({
-    firstName: Yup.string()
+    name: Yup.string()
         .max(20, 'Ім\'я занадто довге')
         .required("Ім'я є обов'язковим полем"),
-    lastName: Yup.string()
+    surname: Yup.string()
         .max(30, 'Прізвище занадто довге')
         .required("Прізвище є обов'язковим полем"),
     phone: Yup.string()
         .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/, 'Недійсний номер телефону')
         .required('Телефон є обов\'язковим полем'),
-    deliveryPlace: Yup.string()
+    city: Yup.string()
         .required("Населений пункт є обов'язковим полем"),
-    novaPoshta: Yup.string()
-        .required("Вулиця та номер будинку є обов'язковими"),
+    postNumber: Yup.string()
+        .required("Вкажіть номер відділення Нової Пошти"),
     comment: Yup.string()
         .max(500, 'Коментар занадто довгий'),
 });
@@ -34,14 +42,12 @@ const initialValues = {
 export default function CreateOrder() {
     
    
-    const onSubmit = (values: typeof initialValues, { resetForm }: { resetForm: () => void }) => {
-        console.log('Order Submitted!', values);
-        //  send 'values' to an API endpoint here.
-        alert('Замовлення успішно оформлено! Дивіться консоль для даних.');
-        
-        // resetForm(); 
-    };
-
+    const handleSubmit = (
+        values: OrderInput, 
+        actions: FormikHelpers<OrderInput>) =>{
+            console.log('Order Submitted!', values);
+            actions.resetForm();
+                  };
     return (
         <>
             <h2 className={css.title}>Оформити замовлення</h2>
@@ -56,15 +62,15 @@ export default function CreateOrder() {
                         </div>
                     </li>
 
-                    {/* RIGHT BLOCK: Personal Information & Formik Form */}
+                    {/* RIGHT BLOCK:*/}
                     <li className={css.personalInfo}>
                         <h5 className={css.blockInfoTitle}>Особиста інформація</h5>
                         
-                        {/* 6. Wrap the form in Formik */}
+                        
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
-                            onSubmit={onSubmit}
+                            onSubmit= {handleSubmit}
                         >
                            {({ isSubmitting }) => (
                                 <Form className={css.form}>
@@ -73,80 +79,85 @@ export default function CreateOrder() {
                                     <div className={css.nameGroup}>
                                         <div className={css.inputWrapper}>
                                           
-                                            <p className={css.inputLabel}>Імя*</p>
-                                            <Field 
+                                            <label htmlFor="name" className={css.inputLabel}>Ім`я*</label>
+                                                                                        <Field 
                                                 className={css.input}
                                                 type="text" 
-                                                name="firstName" 
+                                                name="name" 
+                                                id="name"
                                                 placeholder="Ваше ім'я" 
                                             />
                                          
-                                            <ErrorMessage name="firstName" component="div" className={css.error} />
+                                            <ErrorMessage name="name" component="p" className={css.error} />
                                         </div>
                                         
                                         <div className={css.inputWrapper}>
-                                            <p className={css.inputLabel}>Прізвище*</p>
+                                            <label htmlFor="surname" className={css.inputLabel}>Прізвище*</label>
                                             <Field 
                                                 className={css.input}
                                                 type="text" 
-                                                name="lastName" 
+                                                name="surname" 
+                                                id="surname"
                                                 placeholder="Ваше прізвище" 
                                             />
-                                            <ErrorMessage name="lastName" component="div" className={css.error} />
+                                            <ErrorMessage name="surname" component="p" className={css.error} />
                                         </div>
                                     </div>
 
                                  
                                     <div className={css.inputWrapper}>
-                                        <p className={css.inputLabel}>Номер телефону*</p>
+                                        <label htmlFor="phone" className={css.inputLabel}>Номер телефону*</label>
                                         <Field 
                                             className={css.input}
                                             type="tel" 
                                             name="phone" 
+                                            id="phone"
                                             placeholder="+38 (0__)__-__-__" 
                                         />
-                                        <ErrorMessage name="phone" component="div" className={css.error} />
+                                        <ErrorMessage name="phone" component="p" className={css.error} />
                                     </div>
 
                                  
                                     <div className={css.deliveryGroup}>
                                         <div className={css.inputWrapper}>
-                                            <p className={css.inputLabel}>Місто доставки*</p>
+                                            <label htmlFor="city" className={css.inputLabel}>Місто доставки*</label>
                                             <Field 
                                                 className={css.input}
                                                 type="text" 
-                                                name="deliveryPlace" 
+                                                name="city" 
+                                                id="city"
                                                 placeholder="Ваше місто" 
                                             />
-                                            <ErrorMessage name="deliveryPlace" component="div" className={css.error} />
+                                            <ErrorMessage name="city" component="p" className={css.error} />
                                         </div>
                                         <div className={css.inputWrapper}>
-                                            <p className={css.inputLabel}>Номер відділення Нової Пошти*</p>
+                                           <label htmlFor="postNumber" className={css.inputLabel}>Відділення Нової пошти*</label>
                                             <Field 
                                                 className={css.input}
                                                 type="text" 
-                                                name="novaPoshta"
+                                                name="postNumber"
+                                                id="postNumber"
                                                 placeholder="1" 
                                             />
-                                            <ErrorMessage name="novaPoshta" component="div" className={css.error} />
+                                            <ErrorMessage name="postNumber" component="p" className={css.error} />
                                         </div>
                                     </div>
 
                                     
                                     <div className={css.inputWrapper}>
-                                        <p className={css.inputLabel}>Коментар</p>
+                                     <label htmlFor="comment" className={css.inputLabel}>Коментар</label>
                                         <Field 
                                             as="textarea" 
                                             className={css.textarea}
                                             name="comment" 
+                                            id="comment"
                                             placeholder="Введіть Ваш коментар" 
                                             rows={8}
                                         />
-                                        <ErrorMessage name="comment" component="div" className={css.error} />
+                                        <ErrorMessage name="comment" component="p" className={css.error} />
                                     </div>
 
-                                 
-                                    <button 
+                                         <button 
                                         className={css.submitButton} 
                                         type="submit"
                                         disabled={isSubmitting} 
