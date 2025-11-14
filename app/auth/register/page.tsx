@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { register } from '@/lib/api/api';
+import { register } from '@/lib/api/clientApi';
+import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import css from './RegisterPage.module.css';
 
@@ -23,7 +24,7 @@ const initialValues: RegistrationFormValues = {
 const RegisterSchema = Yup.object().shape({
   name: Yup.string().max(32, 'Імʼя має бути не довше 32 символів').required('Імʼя обовʼязкове'),
   phone: Yup.string()
-    .matches(/^\+380\d{9}$/, 'Введіть коректний номер у форматі +380XXXXXXXXX')
+    .matches(/^\+380\d{9}$/, 'Введіть коректний номер телефону у форматі +380XXXXXXXXX')
     .required('Номер телефону обовʼязковий'),
   password: Yup.string()
     .min(8, 'Пароль має містити щонайменше 8 символів')
@@ -41,15 +42,16 @@ export default function RegistrationForm() {
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
     try {
-      const user = await register(values);
+      const { user } = await register(values);
       if (user) {
         setUser(user);
         router.push('/');
       } else {
         setError('Не вдалося створити обліковий запис. Спробуйте ще раз');
       }
-    } catch {
-      setError('Ой... сталася помилка');
+    } catch (err) {
+      const error = err as ApiError;
+      setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
     } finally {
       actions.resetForm();
     }

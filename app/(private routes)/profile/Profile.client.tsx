@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import css from './Profile.module.css';
 import OrderItem from '@/components/OrderItem/OrderItem';
 import ProfileForm from '@/components/ProfileForm/ProfileForm';
-import { fetchMyOrders } from '@/lib/api/api';
+import { fetchMyOrders } from '@/lib/api/clientApi';
 
 export default function ProfileClient() {
   const {

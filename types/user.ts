@@ -5,3 +5,5 @@ export interface User {
   phone: string;
   role: string;
 }
+
+export type EditCurrentUser = Pick<User, 'name' | 'surname' | 'phone'>;
