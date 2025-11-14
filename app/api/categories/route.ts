@@ -2,13 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isAxiosError } from 'axios';
 import { api } from '../api';
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const email = request.nextUrl.searchParams.get('email') ?? '';
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-    }
-    const response = await api('/subscriptions', { params: { email } });
+    const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
+    const limit = Number(request.nextUrl.searchParams.get('limit') ?? 4);
+    const response = await api('/categories', { params: { page, limit } });
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {

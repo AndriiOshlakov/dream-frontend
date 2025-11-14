@@ -13,7 +13,7 @@ export async function POST() {
       return NextResponse.json({ success: true });
     }
     if (refreshToken) {
-      const apiRes = await api.post('auth/refresh', {
+      const apiRes = await api.post('/auth/refresh', {
         headers: {
           Cookie: cookieStore.toString(),
         },

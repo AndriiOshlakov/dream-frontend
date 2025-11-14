@@ -7,7 +7,7 @@ import { api } from '../../api';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const apiRes = await api.post('auth/register', body);
+    const apiRes = await api.post('/auth/register', body);
     const cookieStore = await cookies();
     const setCookie = apiRes.headers['set-cookie'];
     if (setCookie) {

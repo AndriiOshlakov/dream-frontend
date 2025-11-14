@@ -56,14 +56,16 @@ export async function editMe(data: EditCurrentUser): Promise<User> {
 
 export async function getCategories(page: CategoriesResponse['page']) {
   const response = await nextServer.get<CategoriesResponse>('/categories', { params: { page } });
-  console.log(response.data.categories);
-
   return response.data.categories;
 }
 
 //! -------
-//! -ORDER-
+//! -GOODS-
 //! -------
+
+//! --------
+//! -ORDERS-
+//! --------
 
 export const fetchMyOrders = (): Order[] => {
   return [
@@ -86,6 +88,10 @@ export const fetchMyOrders = (): Order[] => {
   ];
 };
 
-//! -------
-//! -GOODS-
-//! -------
+//! -----------
+//! -FEEDBACKS-
+//! -----------
+
+//! ---------------
+//! -SUBSCRIPTIONS-
+//! ---------------
