@@ -4,6 +4,7 @@ import 'modern-normalize/modern-normalize.css';
 import './globals.css';
 import Header from '@/components/Header/Header';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
 import Footer from '@/components/Footer/Footer';
 import Container from '@/components/Container/Container';
 
@@ -41,14 +42,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="uk">
       <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
-          <Header />
-          <Container>
-            <main>{children}</main>
-          </Container>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <Container>
+              <main>{children}</main>
+            </Container>
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>
