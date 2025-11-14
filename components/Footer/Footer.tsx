@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { nextServer } from '@/lib/api/api';
 
 export default function Footer() {
   const queryClient = useQueryClient();
@@ -16,7 +17,7 @@ export default function Footer() {
   const mutation = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       try {
-        const response = await axios.post('/api/subscriptions', { email });
+        const response = await nextServer.post('/subscriptions', { email });
         return response.data;
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
@@ -78,7 +79,7 @@ export default function Footer() {
                 required
                 placeholder="Введіть ваш email"
                 className={css.footerInput}
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
               />
               <button type="submit" className={css.footerBtn} disabled={mutation.isPending}>
                 {mutation.isPending ? 'Надсилаємо...' : 'Підписатися'}
