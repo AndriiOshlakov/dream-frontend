@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { login } from '@/lib/api/clientApi';
 import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
+import Loader from '@/components/Loader/Loader';
 import css from './LogInPage.module.css';
 
 interface LoginFormValues {
@@ -29,10 +30,13 @@ const LoginSchema = Yup.object().shape({
 export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (values: LoginFormValues, actions: FormikHelpers<LoginFormValues>) => {
     try {
+      setError('');
+      setIsLoading(true);
       const { user } = await login(values);
       if (user) {
         setUser(user);
@@ -44,6 +48,7 @@ export default function LoginForm() {
       const error = err as ApiError;
       setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
     } finally {
+      setIsLoading(false);
       actions.resetForm();
     }
   };
@@ -76,13 +81,14 @@ export default function LoginForm() {
               />
               <ErrorMessage className={css.errorText} component="span" name="password" />
             </label>
-            <button className={css.button} type="submit">
-              Увійти
+            <button className={css.button} type="submit" disabled={isLoading}>
+              {isLoading ? 'Авторизація...' : 'Увійти'}
             </button>
             {error && <p className={css.formError}>{error}</p>}
           </Form>
         )}
       </Formik>
+      {isLoading && <Loader />}
     </>
   );
 }
