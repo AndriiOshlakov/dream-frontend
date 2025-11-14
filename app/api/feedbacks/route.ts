@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   try {
     const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
     // const limit = Number(request.nextUrl.searchParams.get('limit') ?? 6);
-    const response = await api('/feedbacks', { params: { page } });
+    const response = await api.get('/feedbacks', { params: { page } });
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {
@@ -22,11 +22,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { feedback } = body;
-    if (!feedback) {
-      return NextResponse.json({ error: 'Feedback is required' }, { status: 400 });
+    if (!body || Object.keys(body).length === 0) {
+      return NextResponse.json({ error: 'Body is required' }, { status: 400 });
     }
-    const response = await api('/feedbacks', feedback);
+    const response = await api.post('/feedbacks', body);
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {
