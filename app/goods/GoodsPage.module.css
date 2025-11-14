@@ -1,0 +1,23 @@
+.pageContainer {
+    padding: 64px 0;
+}
+
+.pageTitle {
+    margin-bottom: 24px;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #000;
+}
+
+@media screen and (min-width:1440px) {
+    .pageContainer {
+        padding: 112px 0;
+    }
+
+    .pageTitle {
+        margin-bottom: 40px;
+        font-size: 48px;
+    }
+}

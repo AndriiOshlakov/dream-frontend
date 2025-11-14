@@ -42,6 +42,7 @@
 .category {
     color: inherit;
     position: relative;
+    cursor: pointer;
 }
 
 .box {
