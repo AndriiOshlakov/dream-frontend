@@ -1,8 +1,8 @@
-.container {
+/* .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
-}
+} */
 
 .header {
   display: flex;
@@ -134,4 +134,26 @@
   .container {
     padding: 1rem;
   }
+}
+
+.navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.navButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #f9fcf6;
+  background: #c5e1a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  color: #000;
 }

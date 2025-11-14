@@ -2,9 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import css from './Profile.module.css';
-// import OrderItem from '@/components/OrderItem/OrderItem';
+import OrderItem from '@/components/OrderItem/OrderItem';
 import ProfileForm from '@/components/ProfileForm/ProfileForm';
-import { fetchMyOrders } from '@/lib/api/api';
+import { fetchMyOrders } from '@/lib/api/clientApi';
 
 export default function ProfileClient() {
   const {
@@ -26,20 +26,29 @@ export default function ProfileClient() {
       <h1 className={css.heading}>Кабінет</h1>
 
       <div className={css.dashboard}>
-        <section>
+        <section className={css.ordersSection}>
           <h2 className={css.subheading}>Мої замовлення</h2>
-          <ul>
-            {orders.map((order) => {
-              return (
-                <li key={order._id}>
-                  {/* <OrderItem order={order} /> */}
-                </li>
-              );
-            })}
-          </ul>
+          {orders.length > 0 ? (
+            <ul className={css.ordersList}>
+              {orders.map((order) => {
+                return (
+                  <li key={order._id}>
+                    <OrderItem order={order} />
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className={css.noOrdersPlaceholder}>
+              <p className={css.noOrdersInfo}>
+                У вас ще не було жодних замовлень! Мершій до покупок!
+              </p>
+              <button className={css.orderButton}>До покупок</button>
+            </div>
+          )}
         </section>
 
-        <section>
+        <section className={css.infoSection}>
           <h2 className={css.subheading}>Особиста інформація</h2>
           <ProfileForm />
         </section>
