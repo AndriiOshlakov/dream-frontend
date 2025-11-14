@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { register } from '@/lib/api/clientApi';
 import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
+import Loader from '@/components/Loader/Loader';
 import css from './RegisterPage.module.css';
 
 interface RegistrationFormValues {
@@ -35,6 +36,7 @@ const RegisterSchema = Yup.object().shape({
 export default function RegistrationForm() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (
@@ -42,6 +44,8 @@ export default function RegistrationForm() {
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
     try {
+      setError('');
+      setIsLoading(true);
       const { user } = await register(values);
       if (user) {
         setUser(user);
@@ -53,6 +57,7 @@ export default function RegistrationForm() {
       const error = err as ApiError;
       setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
     } finally {
+      setIsLoading(false);
       actions.resetForm();
     }
   };
@@ -100,13 +105,14 @@ export default function RegistrationForm() {
               />
               <ErrorMessage className={css.errorText} component="span" name="password" />
             </label>
-            <button className={css.button} type="submit">
-              Зареєструватися
+            <button className={css.button} type="submit" disabled={isLoading}>
+              {isLoading ? 'Реєстрація...' : 'Зареєструватися'}
             </button>
             {error && <p className={css.formError}>{error}</p>}
           </Form>
         )}
       </Formik>
+      {isLoading && <Loader />}
     </>
   );
 }
