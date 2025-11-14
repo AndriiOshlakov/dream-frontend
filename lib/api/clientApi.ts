@@ -1,8 +1,9 @@
 import { nextServer } from './api';
 import { EditCurrentUser, User } from '@/types/user';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
-import { CategoriesResponse } from '@/types/category';
+import { CategoriesResponse, Category } from '@/types/category';
 import { Order } from '@/types/order';
+import { isAxiosError } from 'axios';
 
 //! ------
 //! -AUTH-
@@ -59,6 +60,39 @@ export async function getCategories(page: number) {
     params: { page },
   });
   return response.data.categories;
+}
+
+export interface FetchCategoriesResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  categories: Category[];
+}
+
+export interface FetchCategoriesParam {
+  page: string;
+  perPage: string;
+}
+
+export async function fetchCategoriesClient(
+  page = 1,
+  perPage = 6
+): Promise<FetchCategoriesResponse> {
+  try {
+    const params = {
+      page: String(page),
+    };
+
+    const { data } = await nextServer.get<FetchCategoriesResponse>('/categories', { params });
+
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Fetching categories failed');
+    }
+    throw new Error('Fetching categories failed');
+  }
 }
 
 //! -------
