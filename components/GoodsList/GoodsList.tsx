@@ -7,7 +7,7 @@ import css from "./GoodsList.module.css";
 /* === Swiper === */
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-import { Keyboard, A11y } from "swiper/modules";
+import { Keyboard, A11y, Mousewheel } from "swiper/modules";
 import "swiper/css";
 
 /* ===== Типи ===== */
@@ -214,12 +214,12 @@ export default function GoodsList(): ReactElement {
       const w = window.innerWidth;
       let spv: number;
 
-      if (w < 768) spv = 1;       
-      else if (w < 1440) spv = 2; 
-      else spv = 4;               
+      if (w < 768) spv = 1;
+      else if (w < 1440) spv = 2;
+      else spv = 4;
 
       setSlidesPerView(spv);
-      setLoadedCount(spv); 
+      setLoadedCount(spv);
     };
 
     compute();
@@ -298,7 +298,7 @@ export default function GoodsList(): ReactElement {
         return prev;
       });
     }
-     
+
     if (swiper) {
       swiper.slideNext();
     }
@@ -330,8 +330,12 @@ export default function GoodsList(): ReactElement {
             tag="ul"
             wrapperTag="ul"
             className={css.list}
-            modules={[Keyboard, A11y]}
+            modules={[Keyboard, A11y, Mousewheel]}
             keyboard={{ enabled: true, onlyInViewport: true }}
+            mousewheel={{
+              forceToAxis: true,
+              releaseOnEdges: true,
+            }}
             slidesPerView={slidesPerView}
             spaceBetween={24}
             onSwiper={setSwiper}
@@ -346,7 +350,11 @@ export default function GoodsList(): ReactElement {
 
               return (
                 <SwiperSlide key={g.id} tag="li" className={css.card}>
-                  <Link href={`/goods/${g.id}`} className={css.link} aria-label={`${g.title} — детальніше`}>
+                  <Link
+                    href={`/goods/${g.id}`}
+                    className={css.link}
+                    aria-label={`${g.title} — детальніше`}
+                  >
                     <div className={css.imgWrap}>
                       <img
                         src={resolveImage(g.image)}
@@ -363,7 +371,10 @@ export default function GoodsList(): ReactElement {
 
                     <div className={css.info}>
                       <div className={css.headRow}>
-                        <h3 className={`${css.goodTitle} ${tight ? css.goodTitleTight : ""}`} title={g.title}>
+                        <h3
+                          className={`${css.goodTitle} ${tight ? css.goodTitleTight : ""}`}
+                          title={g.title}
+                        >
                           {g.title}
                         </h3>
                         <span className={css.price}>
@@ -399,7 +410,7 @@ export default function GoodsList(): ReactElement {
           renderSkeletons(slidesPerView)
         )}
 
-          <div className={css.controls}>
+        <div className={css.controls}>
           <div className={css.dots} aria-hidden>
             {Array.from({ length: DOTS_COUNT }).map((_, i) => (
               <span
