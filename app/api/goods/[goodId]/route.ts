@@ -1,14 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { isAxiosError } from 'axios';
-import { api } from '../api';
+import { api } from '../../api';
 
-export async function POST(request: NextRequest) {
+interface RequestServerProps {
+  params: Promise<{ goodId: string }>;
+}
+
+export async function GET({ params }: RequestServerProps) {
   try {
-    const body = await request.json();
-    if (!body.email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-    }
-    const response = await api.post('/subscriptions', body);
+    const { goodId } = await params;
+    const response = await api.get(`/goods/${goodId}`);
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {

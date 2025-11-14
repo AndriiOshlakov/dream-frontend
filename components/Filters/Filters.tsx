@@ -99,7 +99,7 @@ export default function Filters() {
                   </li>
                   {categories.map((category) => (
                     <li className={css.categoryListItem} key={category._id}>
-                      <Link className={css.category} href={`/categories/{category._id}`}>
+                      <Link className={css.category} href={`/categories/${category._id}`}>
                         {category.name}
                       </Link>
                     </li>
