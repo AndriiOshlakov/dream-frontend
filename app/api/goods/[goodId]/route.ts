@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { isAxiosError } from 'axios';
 import { api } from '../../api';
 
@@ -6,7 +6,7 @@ interface RequestServerProps {
   params: Promise<{ goodId: string }>;
 }
 
-export async function GET({ params }: RequestServerProps) {
+export async function GET(request: NextRequest, { params }: RequestServerProps) {
   try {
     const { goodId } = await params;
     const response = await api.get(`/goods/${goodId}`);
