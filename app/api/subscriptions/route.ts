@@ -4,7 +4,8 @@ import { api } from '../api';
 
 export async function POST(request: NextRequest) {
   try {
-    const email = request.nextUrl.searchParams.get('email') ?? '';
+    const body = await request.json();
+    const { email } = body;
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
