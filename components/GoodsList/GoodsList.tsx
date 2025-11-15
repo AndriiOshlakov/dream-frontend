@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
@@ -12,60 +13,98 @@ import css from "./GoodsList.module.css";
 import type { RawGood, Good } from "../../types/goods";
 import Loader from "../Loader/Loader";
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
+// axios-інстанс з app/api/api.ts
+import { api } from "@/app/api/api";
+
+/* ===== Константи базових URL ===== */
+
+// baseURL з axios: "https://dream-backend-a69s.onrender.com/api"
+const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
+
+// те саме, але без зайвих слешів в кінці
+const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
+
+// корінь бекенда БЕЗ /api — для картинок
+// "https://dream-backend-a69s.onrender.com"
+const API_ROOT: string = API_BASE.replace(/\/api$/, "");
+
+// кількість крапок-пагінації
 const DOTS_COUNT = 5;
 
-// Будуємо коректний src для картинки
+/* ===== Допоміжні типи ===== */
+
+type RawFeedback = {
+  rating?: number;
+  rate?: number;
+  score?: number;
+  value?: number;
+  stars?: number;
+};
+
+/* ===== Хелпери ===== */
+
+// формуємо src для <Image>
 const buildImageSrc = (image: string): string => {
   if (!image) return "";
 
   const trimmed = image.trim();
 
-  // Якщо бекенд повернув повний URL — не чіпаємо
+  // якщо бекенд уже віддав повний URL
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     return trimmed;
   }
 
-  // Якщо "/img/goods/xxx.webp" або "img/goods/xxx.webp" — чіпляємо твій бекенд
-  return `${API_BASE}/${trimmed.replace(/^\/+/, "")}`;
+  // якщо щось типу "/uploads/..." або "img/goods/..."
+  const normalizedPath = trimmed.replace(/^\/+/, "");
+  return `${API_ROOT}/${normalizedPath}`;
 };
 
-const mapRawGoodToGood = (raw: RawGood): Good => {
-  // _id може бути string або { $oid: string }
-  const rawId = (raw as unknown as { _id?: string | { $oid: string } })._id;
-  let id = "";
+const isRawFeedbackArray = (value: unknown): value is RawFeedback[] => {
+  return Array.isArray(value);
+};
+
+const getIdFromRaw = (raw: RawGood): string => {
+  const rawId = (raw as { _id?: string | { $oid: string } })._id;
 
   if (typeof rawId === "string") {
-    id = rawId;
-  } else if (
-    rawId &&
-    typeof (rawId as { $oid?: string }).$oid === "string"
-  ) {
-    id = (rawId as { $oid: string }).$oid;
-  } else {
-    id = `tmp-${Math.random().toString(36).slice(2)}`;
+    return rawId;
   }
 
-  // категорій у бекенді немає → просто undefined
-  const categoryId = undefined;
+  if (
+    typeof rawId === "object" &&
+    rawId !== null &&
+    "$oid" in rawId &&
+    typeof (rawId as { $oid: string }).$oid === "string"
+  ) {
+    return (rawId as { $oid: string }).$oid;
+  }
 
-  // feedbacks — масив обʼєктів з рейтингом
-  const feedbacks = (raw as unknown as { feedbacks?: unknown }).feedbacks;
+  // fallback id, щоб не було порожнього ключа
+  return `tmp-${Math.random().toString(36).slice(2)}`;
+};
+
+/* ===== Маппер з RawGood до Good ===== */
+
+const mapRawGoodToGood = (raw: RawGood): Good => {
+  const id = getIdFromRaw(raw);
+
+  const feedbacksUnknown = (raw as { feedbacks?: unknown }).feedbacks;
   let reviewsCount = 0;
   let rating = 0;
 
-  if (Array.isArray(feedbacks) && feedbacks.length > 0) {
-    reviewsCount = feedbacks.length;
+  if (isRawFeedbackArray(feedbacksUnknown) && feedbacksUnknown.length > 0) {
+    reviewsCount = feedbacksUnknown.length;
 
-    const numericRatings = feedbacks
-      .map(
-        (f: any) =>
-          f.rating ?? f.rate ?? f.score ?? f.value ?? f.stars ?? null
-      )
-      .filter(
-        (val: unknown): val is number =>
-          typeof val === "number" && Number.isFinite(val)
-      );
+    const numericRatings = feedbacksUnknown
+      .map((f: RawFeedback): number | null => {
+        if (typeof f.rating === "number") return f.rating;
+        if (typeof f.rate === "number") return f.rate;
+        if (typeof f.score === "number") return f.score;
+        if (typeof f.value === "number") return f.value;
+        if (typeof f.stars === "number") return f.stars;
+        return null;
+      })
+      .filter((val): val is number => val !== null);
 
     if (numericRatings.length > 0) {
       const sum = numericRatings.reduce((acc, n) => acc + n, 0);
@@ -73,42 +112,52 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
     }
   }
 
+  const sizes = Array.isArray(raw.size) ? raw.size : [];
+
   return {
     id,
     title: raw.name,
-    image: raw.image, // сирий шлях, нормальний src зробимо в JSX через buildImageSrc
+    image: raw.image,
     price: raw.price?.value ?? 0,
     currency: raw.price?.currency ?? "грн",
-    categoryId,
-    sizes: Array.isArray(raw.size) ? raw.size : [],
+    categoryId: undefined, // категорій у тебе немає
+    sizes,
     reviewsCount,
-    rating,
+    rating, // завжди number (дефолт 0)
   };
 };
 
+/* ===== Запит товарів ===== */
+
 const fetchGoods = async (): Promise<Good[]> => {
   if (!API_BASE) {
-    throw new Error("NEXT_PUBLIC_API_URL не задано у .env");
+    throw new Error("baseURL не налаштований у api.defaults.baseURL");
   }
 
-  const url = `${API_BASE}/api/goods`;
+  // baseURL вже має /api → тут просто /goods
+  const url = `${API_BASE}/goods`;
 
-  const res = await fetch(url, {
+  const response = await fetch(url, {
     cache: "no-store",
+    // ВАЖЛИВО: БЕЗ credentials, інакше CORS банить через '*'
+    // credentials: "include",
   });
 
-  if (!res.ok) {
-    throw new Error(`Помилка запиту: ${res.status}`);
+  if (!response.ok) {
+    throw new Error(`Помилка запиту: ${response.status}`);
   }
 
-  const data = (await res.json()) as { goods?: RawGood[] };
+  const data: unknown = await response.json();
+  const typed = data as { goods?: RawGood[] };
 
-  if (!Array.isArray(data.goods)) {
+  if (!Array.isArray(typed.goods)) {
     return [];
   }
 
-  return data.goods.map(mapRawGoodToGood);
+  return typed.goods.map(mapRawGoodToGood);
 };
+
+/* ===== Компонент ===== */
 
 export default function GoodsList() {
   const [goods, setGoods] = useState<Good[]>([]);
@@ -120,22 +169,39 @@ export default function GoodsList() {
   const [isEnd, setIsEnd] = useState(false);
   const [activeDot, setActiveDot] = useState(0);
 
-  // фетч товарів
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    let isCancelled = false;
 
-    fetchGoods()
-      .then((list) => {
-        setGoods(list);
-        if (list.length === 0) {
-          setError("Популярні товари тимчасово недоступні.");
+    const loadGoods = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const list = await fetchGoods();
+        if (!isCancelled) {
+          setGoods(list);
+          if (list.length === 0) {
+            setError("Популярні товари тимчасово недоступні.");
+          }
         }
-      })
-      .catch((e) => {
-        setError(e instanceof Error ? e.message : "Невідома помилка");
-      })
-      .finally(() => setLoading(false));
+      } catch (e) {
+        if (!isCancelled) {
+          const message =
+            e instanceof Error ? e.message : "Невідома помилка запиту";
+          setError(message);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadGoods();
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   const handlePrev = () => {
@@ -186,19 +252,20 @@ export default function GoodsList() {
                 setIsBeginning(instance.isBeginning);
                 setIsEnd(instance.isEnd);
               }}
-              onSlideChange={(s) => {
-                setIsBeginning(s.isBeginning);
-                setIsEnd(s.isEnd);
+              onSlideChange={(swiper) => {
+                setIsBeginning(swiper.isBeginning);
+                setIsEnd(swiper.isEnd);
                 const realIndex =
-                  typeof s.realIndex === "number"
-                    ? s.realIndex
-                    : s.activeIndex;
+                  typeof swiper.realIndex === "number"
+                    ? swiper.realIndex
+                    : swiper.activeIndex;
                 setActiveDot(realIndex % DOTS_COUNT);
               }}
               aria-label="Популярні товари — слайдер товарів"
             >
-              {goods.map((good) => {
+              {goods.map((good, index) => {
                 const imgSrc = buildImageSrc(good.image);
+                const ratingValue = (good.rating ?? 0).toFixed(1);
 
                 return (
                   <SwiperSlide key={good.id} tag="li" className={css.card}>
@@ -208,15 +275,19 @@ export default function GoodsList() {
                       aria-label={`${good.title} — детальніше`}
                     >
                       <div className={css.imgWrap}>
-                        <img
-                          src={imgSrc}
-                          alt={good.title}
-                          className={css.img}
-                          width={304}
-                          height={375}
-                          loading="lazy"
-                          decoding="async"
-                        />
+                        {imgSrc && (
+                          <Image
+                            src={imgSrc}
+                            alt={good.title}
+                            className={css.img}
+                            width={304}
+                            height={375}
+                            loading="lazy"
+                            // робимо пріоритетною тільки першу картку,
+                            // щоб не було попереджень від Next
+                            priority={index === 0}
+                          />
+                        )}
                       </div>
 
                       <div className={css.info}>
@@ -236,9 +307,7 @@ export default function GoodsList() {
                           <svg className={css.star} aria-hidden="true">
                             <use href="/symbol-defs.svg#icon-star-filled" />
                           </svg>
-                          <span className={css.ratingValue}>
-                            {(good.rating ?? 0).toFixed(1)}
-                          </span>
+                          <span className={css.ratingValue}>{ratingValue}</span>
 
                           <svg className={css.commentIcon} aria-hidden="true">
                             <use href="/symbol-defs.svg#icon-comment" />
@@ -260,11 +329,11 @@ export default function GoodsList() {
 
             <div className={css.controls}>
               <div className={css.dots} aria-hidden>
-                {Array.from({ length: DOTS_COUNT }).map((_, i) => (
+                {Array.from({ length: DOTS_COUNT }).map((_, index) => (
                   <span
-                    key={i}
+                    key={index}
                     className={`${css.dot} ${
-                      i === activeDot ? css.dotActive : ""
+                      index === activeDot ? css.dotActive : ""
                     }`}
                   />
                 ))}
