@@ -1,32 +1,43 @@
 'use client';
 
-import Link from 'next/link';
 import css from './Filters.module.css';
 import { useEffect, useState } from 'react';
 import { Category } from '@/types/category';
-import { getCategories } from '@/lib/api/clientApi';
+import { useDebouncedCallback } from 'use-debounce';
+import { FiltersType } from '@/app/goods/page';
 
-export default function Filters() {
+type FiltersProps = {
+  categories: Category[];
+  onChange: (updatedFilters: {
+    minVal: number;
+    maxVal: number;
+    gender: string;
+    sizes: string[];
+  }) => void;
+  onCategorySelect: (name: string) => void;
+  onClearOne: (filterName: keyof FiltersType) => void;
+  onClearAll: () => void;
+  filters: FiltersType;
+  totalItems: number;
+  showedItems: number;
+};
+
+export default function Filters({
+  categories,
+  onChange,
+  onCategorySelect,
+  onClearOne,
+  onClearAll,
+  filters,
+  totalItems,
+  showedItems,
+}: FiltersProps) {
   const [minVal, setMinVal] = useState(0);
-  const [maxVal, setMaxVal] = useState(3000);
-  const [gender, setGender] = useState<string>('all');
+  const [maxVal, setMaxVal] = useState(1000);
+  const [gender, setGender] = useState<string>('');
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await getCategories(1);
-        setCategories(data);
-      } catch (err) {
-        console.error('Error fetching categories:', err);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     // функція перевірки розміру
@@ -36,16 +47,12 @@ export default function Filters() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    if (checked) {
-      // додаємо розмір у масив
-      setSelectedSizes((prev) => [...prev, name]);
-    } else {
-      // видаляємо розмір, якщо знято галочку
-      setSelectedSizes((prev) => prev.filter((size) => size !== name));
-    }
-  };
+  useEffect(() => {
+    setMinVal(filters.minVal);
+    setMaxVal(filters.maxVal);
+    setGender(filters.gender);
+    setSelectedSizes(filters.sizes);
+  }, [filters]);
 
   const genderOptions = [
     { value: 'all', label: 'Всі' },
@@ -56,7 +63,21 @@ export default function Filters() {
 
   const toggleDropdown = () => setOpen(!open);
   const min = 0;
-  const max = 15000;
+  const max = 10000;
+
+  const debouncedOnChange = useDebouncedCallback(() => {
+    onChange({ minVal, maxVal, gender, sizes: selectedSizes });
+  }, 500);
+
+  useEffect(() => {
+    debouncedOnChange();
+  }, [minVal, maxVal, gender, selectedSizes, debouncedOnChange]);
+
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked, name } = e.target;
+
+    setSelectedSizes((prev) => (checked ? [...prev, name] : prev.filter((s) => s !== name)));
+  };
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), maxVal - 1);
@@ -69,19 +90,20 @@ export default function Filters() {
   };
 
   const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setGender(value);
+    setGender(e.target.value);
   };
+
   return (
     <div className={css.sideBar}>
       {isMobile ? (
         <div className={css.sideBarMobile}>
-          <h1>Обрана категоря</h1>
           <div className={css.box}>
             <p>Фільтри</p>
-            <button>Очистити всі</button>
+            <button onClick={onClearAll}>Очистити всі</button>
           </div>
-          <p className={css.numberOfGoods}>Показано 15 з 100</p>
+          <p className={css.numberOfGoods}>
+            Показано {showedItems} з {totalItems}
+          </p>
           <button className={css.dropdownButton} onClick={toggleDropdown}>
             Фільтри
             <svg className={open ? css.arrowUp : css.arrowDown} width={24} height={24}>
@@ -93,15 +115,15 @@ export default function Filters() {
               <div>
                 <ul>
                   <li className={css.categoryListItem}>
-                    <Link className={css.category} href={'/categories/allGoods'}>
+                    <p className={css.category} onClick={() => onCategorySelect('Усі товари')}>
                       Усі
-                    </Link>
+                    </p>
                   </li>
                   {categories.map((category) => (
                     <li className={css.categoryListItem} key={category._id}>
-                      <Link className={css.category} href={`/categories/${category._id}`}>
+                      <p className={css.category} onClick={() => onCategorySelect(category.name)}>
                         {category.name}
-                      </Link>
+                      </p>
                     </li>
                   ))}
                 </ul>
@@ -109,7 +131,7 @@ export default function Filters() {
               <div className={css.sizesContainer}>
                 <div className={css.box}>
                   <p className={css.containerTitle}>Розмір</p>
-                  <button>Очистити</button>
+                  <button onClick={() => onClearOne('sizes')}>Очистити</button>
                 </div>
                 <div className={css.sizesBox}>
                   {['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'].map((size) => (
@@ -128,7 +150,14 @@ export default function Filters() {
               <div className={css.sliderContainer}>
                 <div className={css.box}>
                   <p className={css.containerTitle}>Ціна</p>
-                  <button>Очистити</button>
+                  <button
+                    onClick={() => {
+                      onClearOne('minVal');
+                      onClearOne('maxVal');
+                    }}
+                  >
+                    Очистити
+                  </button>
                 </div>
                 <div className={css.priceWrapper}>
                   <div className={css.slider}>
@@ -169,7 +198,7 @@ export default function Filters() {
               <div className={css.genderContainer}>
                 <div className={css.box}>
                   <p className={css.containerTitle}>Стать</p>
-                  <button>Очистити</button>
+                  <button onClick={() => onClearOne('gender')}>Очистити</button>
                 </div>
 
                 <div className={css.radiosBox}>
@@ -193,23 +222,24 @@ export default function Filters() {
       ) : (
         <div className={css.sideBarDescktop}>
           <div>
-            <h2>Обрана категоря</h2>
             <div className={css.box}>
               <p>Фільтри</p>
-              <button>Очистити всі</button>
+              <button onClick={onClearAll}>Очистити всі</button>
             </div>
-            <p className={css.numberOfGoods}>Показано 15 з 100</p>
+            <p className={css.numberOfGoods}>
+              Показано {showedItems} з {totalItems}
+            </p>
             <ul>
               <li className={css.categoryListItem}>
-                <Link className={css.category} href={'/categories/allGoods'}>
+                <p className={css.category} onClick={() => onCategorySelect('Усі товари')}>
                   Усі
-                </Link>
+                </p>
               </li>
               {categories.map((category) => (
                 <li className={css.categoryListItem} key={category._id}>
-                  <Link className={css.category} href={`/categories/{category._id}`}>
+                  <p className={css.category} onClick={() => onCategorySelect(category.name)}>
                     {category.name}
-                  </Link>
+                  </p>
                 </li>
               ))}
             </ul>
@@ -217,7 +247,7 @@ export default function Filters() {
           <div className={css.sizesContainer}>
             <div className={css.box}>
               <p className={css.containerTitle}>Розмір</p>
-              <button>Очистити</button>
+              <button onClick={() => onClearOne('sizes')}>Очистити</button>
             </div>
             <div className={css.sizesBox}>
               {['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'].map((size) => (
@@ -237,7 +267,14 @@ export default function Filters() {
           <div className={css.sliderContainer}>
             <div className={css.box}>
               <p className={css.containerTitle}>Ціна</p>
-              <button>Очистити</button>
+              <button
+                onClick={() => {
+                  onClearOne('minVal');
+                  onClearOne('maxVal');
+                }}
+              >
+                Очистити
+              </button>
             </div>
             <div className={css.priceWrapper}>
               <div className={css.slider}>
@@ -278,7 +315,7 @@ export default function Filters() {
           <div className={css.genderContainer}>
             <div className={css.box}>
               <p className={css.containerTitle}>Стать</p>
-              <button>Очистити</button>
+              <button onClick={() => onClearOne('gender')}>Очистити</button>
             </div>
 
             <div className={css.radiosBox}>
