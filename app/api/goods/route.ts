@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const priceMin = Number(request.nextUrl.searchParams.get('priceMin') ?? 1);
     const priceMax = Number(request.nextUrl.searchParams.get('priceMax') ?? 3000);
     const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
-    const perPage = Number(request.nextUrl.searchParams.get('limit') ?? 6);
+    const perPage = Number(request.nextUrl.searchParams.get('perPage') ?? 6);
     const response = await api.get('/goods', {
       params: { categoryId, priceMin, priceMax, page, perPage },
     });
