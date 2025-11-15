@@ -27,10 +27,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   } catch (error) {
     if (isAxiosError(error)) {
-      return NextResponse.json(
-        { error: error.message, response: error.response?.data },
-        { status: error.status }
-      );
+      const status = error.response?.status ?? 500;
+      const msg =
+        error.response?.data?.error ??
+        error.response?.data?.message ??
+        'Не вдалося створити обліковий запис. Спробуйте ще раз';
+
+      return NextResponse.json({ error: msg }, { status });
     }
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
