@@ -4,6 +4,7 @@ import 'modern-normalize/modern-normalize.css';
 import './globals.css';
 import Header from '@/components/Header/Header';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
 import Footer from '@/components/Footer/Footer';
 import Container from '@/components/Container/Container';
 
@@ -47,7 +48,7 @@ export default function RootLayout({
   modal: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="uk">
       <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
           <Header />
