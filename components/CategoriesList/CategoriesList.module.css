@@ -1,0 +1,40 @@
+.categoriesSection {
+  padding: 60px 0;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  text-align: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.image {
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.name {
+  margin-top: 12px;
+  font-weight: 500;
+  color: #222;
+}
