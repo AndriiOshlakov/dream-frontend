@@ -40,18 +40,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+  modal,
+}: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
   return (
     <html lang="uk">
       <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
-          <AuthProvider>
-            <Header />
-            <Container>
-              <main>{children}</main>
-            </Container>
-            <Footer />
-          </AuthProvider>
+          <Header />
+          <Container>
+            <main>
+              {children}
+              {modal}
+            </main>
+          </Container>
+          <Footer />
         </TanStackProvider>
       </body>
     </html>
