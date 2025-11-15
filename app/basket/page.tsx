@@ -1,25 +1,25 @@
-'use client';
+'use client'
 
-import { useShopStore, CartItem } from '@/lib/store/cartStore';
-import BasketModal from '@/components/BasketModal/BasketModal';
+import GoodsOrderList from '@/components/GoodsOrderList/GoodsOrderList';
+import { useRouter } from 'next/navigation';
+import { useShopStore } from '@/lib/store/cartStore';
+import css from './basket.module.css';
 
-export default function TestPage() {
-  const { addToCart } = useShopStore();
-
-  const sampleItem: CartItem = {
-    id: '1',
-    name: 'Тестовий товар',
-    image: '/sample-product.jpg', 
-    price: 100,
-    quantity: 1,
-    rating: 4.5,
-    reviewsCount: 10,
-  };
+export default function BasketPage() {
+  const router = useRouter();
+  const { cartItems } = useShopStore();
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <button onClick={() => addToCart(sampleItem)}>Додати товар у кошик</button>
-      <BasketModal />
+    <div className={css.basketContainer}>
+      <h2 className={css.basketTitle}>Кошик</h2>
+
+      <GoodsOrderList />
+
+      {cartItems.length > 0 && (
+        <button className={css.basketOrderBtn} onClick={() => router.push('/order')}>
+          Оформити замовлення
+        </button>
+      )}
     </div>
   );
 }
