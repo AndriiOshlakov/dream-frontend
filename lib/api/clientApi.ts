@@ -14,7 +14,7 @@ interface AuthResponse {
   user: User;
 }
 
-export async function register(data: RegisterRequest): Promise<AuthResponse> {
+export async function register(data?: RegisterRequest): Promise<AuthResponse> {
   const response = await nextServer.post<AuthResponse>('/auth/register', data);
   return response.data;
 }
