@@ -51,7 +51,6 @@
   padding: 12px 24px;
   color: initial;
   font-family: Inter;
-  line-height: 1.5;
 }
 
 .authContent {
@@ -67,7 +66,6 @@
   padding-bottom: 26px;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1.5;
   text-align: center;
 }
 

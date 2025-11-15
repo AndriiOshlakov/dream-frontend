@@ -1,4 +1,10 @@
 import { ClockLoader } from 'react-spinners';
+import css from './Loader.module.css';
+
 export default function Loader() {
-  return <ClockLoader color="rgba(0, 0, 255, 1)" />;
+  return (
+    <div className={css.backdrop}>
+      <ClockLoader color="#c5e1a5" />
+    </div>
+  );
 }
