@@ -12,26 +12,9 @@ import "swiper/css";
 import css from "./GoodsList.module.css";
 import type { RawGood, Good } from "../../types/goods";
 import Loader from "../Loader/Loader";
-
-// axios-інстанс з app/api/api.ts
 import { api } from "@/app/api/api";
 
-/* ===== Константи базових URL ===== */
-
-// baseURL з axios: "https://dream-backend-a69s.onrender.com/api"
-const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
-
-// те саме, але без зайвих слешів в кінці
-const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
-
-// корінь бекенда БЕЗ /api — для картинок
-// "https://dream-backend-a69s.onrender.com"
-const API_ROOT: string = API_BASE.replace(/\/api$/, "");
-
-// кількість крапок-пагінації
-const DOTS_COUNT = 5;
-
-/* ===== Допоміжні типи ===== */
+/* ===== Типи ===== */
 
 type RawFeedback = {
   rating?: number;
@@ -39,122 +22,6 @@ type RawFeedback = {
   score?: number;
   value?: number;
   stars?: number;
-};
-
-/* ===== Хелпери ===== */
-
-// формуємо src для <Image>
-const buildImageSrc = (image: string): string => {
-  if (!image) return "";
-
-  const trimmed = image.trim();
-
-  // якщо бекенд уже віддав повний URL
-  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
-    return trimmed;
-  }
-
-  // якщо щось типу "/uploads/..." або "img/goods/..."
-  const normalizedPath = trimmed.replace(/^\/+/, "");
-  return `${API_ROOT}/${normalizedPath}`;
-};
-
-const isRawFeedbackArray = (value: unknown): value is RawFeedback[] => {
-  return Array.isArray(value);
-};
-
-const getIdFromRaw = (raw: RawGood): string => {
-  const rawId = (raw as { _id?: string | { $oid: string } })._id;
-
-  if (typeof rawId === "string") {
-    return rawId;
-  }
-
-  if (
-    typeof rawId === "object" &&
-    rawId !== null &&
-    "$oid" in rawId &&
-    typeof (rawId as { $oid: string }).$oid === "string"
-  ) {
-    return (rawId as { $oid: string }).$oid;
-  }
-
-  // fallback id, щоб не було порожнього ключа
-  return `tmp-${Math.random().toString(36).slice(2)}`;
-};
-
-/* ===== Маппер з RawGood до Good ===== */
-
-const mapRawGoodToGood = (raw: RawGood): Good => {
-  const id = getIdFromRaw(raw);
-
-  const feedbacksUnknown = (raw as { feedbacks?: unknown }).feedbacks;
-  let reviewsCount = 0;
-  let rating = 0;
-
-  if (isRawFeedbackArray(feedbacksUnknown) && feedbacksUnknown.length > 0) {
-    reviewsCount = feedbacksUnknown.length;
-
-    const numericRatings = feedbacksUnknown
-      .map((f: RawFeedback): number | null => {
-        if (typeof f.rating === "number") return f.rating;
-        if (typeof f.rate === "number") return f.rate;
-        if (typeof f.score === "number") return f.score;
-        if (typeof f.value === "number") return f.value;
-        if (typeof f.stars === "number") return f.stars;
-        return null;
-      })
-      .filter((val): val is number => val !== null);
-
-    if (numericRatings.length > 0) {
-      const sum = numericRatings.reduce((acc, n) => acc + n, 0);
-      rating = Math.round((sum / numericRatings.length) * 10) / 10;
-    }
-  }
-
-  const sizes = Array.isArray(raw.size) ? raw.size : [];
-
-  return {
-    id,
-    title: raw.name,
-    image: raw.image,
-    price: raw.price?.value ?? 0,
-    currency: raw.price?.currency ?? "грн",
-    categoryId: undefined, // категорій у тебе немає
-    sizes,
-    reviewsCount,
-    rating, // завжди number (дефолт 0)
-  };
-};
-
-/* ===== Запит товарів ===== */
-
-const fetchGoods = async (): Promise<Good[]> => {
-  if (!API_BASE) {
-    throw new Error("baseURL не налаштований у api.defaults.baseURL");
-  }
-
-  // baseURL вже має /api → тут просто /goods
-  const url = `${API_BASE}/goods`;
-
-  const response = await fetch(url, {
-    cache: "no-store",
-    // ВАЖЛИВО: БЕЗ credentials, інакше CORS банить через '*'
-    // credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Помилка запиту: ${response.status}`);
-  }
-
-  const data: unknown = await response.json();
-  const typed = data as { goods?: RawGood[] };
-
-  if (!Array.isArray(typed.goods)) {
-    return [];
-  }
-
-  return typed.goods.map(mapRawGoodToGood);
 };
 
 /* ===== Компонент ===== */
@@ -168,6 +35,9 @@ export default function GoodsList() {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [activeDot, setActiveDot] = useState(0);
+
+  const canGoPrev = !isBeginning;
+  const canGoNext = !isEnd;
 
   useEffect(() => {
     let isCancelled = false;
@@ -211,9 +81,6 @@ export default function GoodsList() {
   const handleNext = () => {
     swiperRef.current?.slideNext();
   };
-
-  const canGoPrev = !isBeginning;
-  const canGoNext = !isEnd;
 
   return (
     <section className={css.section}>
@@ -282,9 +149,7 @@ export default function GoodsList() {
                             className={css.img}
                             width={304}
                             height={375}
-                            loading="lazy"
-                            // робимо пріоритетною тільки першу картку,
-                            // щоб не було попереджень від Next
+                            // тільки перша картка — пріоритетна
                             priority={index === 0}
                           />
                         )}
@@ -371,3 +236,130 @@ export default function GoodsList() {
     </section>
   );
 }
+
+/* ===== Константи базових URL ===== */
+
+// baseURL з axios: "https://dream-backend-a69s.onrender.com/api"
+const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
+
+// те саме, але без зайвих слешів в кінці
+const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
+
+// корінь бекенда БЕЗ /api — для картинок
+// "https://dream-backend-a69s.onrender.com"
+const API_ROOT: string = API_BASE.replace(/\/api$/, "");
+
+// кількість крапок-пагінації
+const DOTS_COUNT = 5;
+
+/* ===== Хелпери ===== */
+
+const buildImageSrc = (image: string): string => {
+  if (!image) return "";
+
+  const trimmed = image.trim();
+
+  // якщо бекенд уже віддав повний URL
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  // якщо щось типу "/uploads/..." або "img/goods/..."
+  const normalizedPath = trimmed.replace(/^\/+/, "");
+  return `${API_ROOT}/${normalizedPath}`;
+};
+
+const isRawFeedbackArray = (value: unknown): value is RawFeedback[] => {
+  return Array.isArray(value);
+};
+
+const getIdFromRaw = (raw: RawGood): string => {
+  const rawId = (raw as { _id?: string | { $oid: string } })._id;
+
+  if (typeof rawId === "string") {
+    return rawId;
+  }
+
+  if (
+    typeof rawId === "object" &&
+    rawId !== null &&
+    "$oid" in rawId &&
+    typeof (rawId as { $oid: string }).$oid === "string"
+  ) {
+    return (rawId as { $oid: string }).$oid;
+  }
+
+  // fallback id, щоб не було порожнього ключа
+  return `tmp-${Math.random().toString(36).slice(2)}`;
+};
+
+/* ===== Маппер з RawGood до Good ===== */
+
+const mapRawGoodToGood = (raw: RawGood): Good => {
+  const id = getIdFromRaw(raw);
+
+  const feedbacksUnknown = (raw as { feedbacks?: unknown }).feedbacks;
+  let reviewsCount = 0;
+  let rating = 0;
+
+  if (isRawFeedbackArray(feedbacksUnknown) && feedbacksUnknown.length > 0) {
+    reviewsCount = feedbacksUnknown.length;
+
+    const numericRatings = feedbacksUnknown
+      .map((f: RawFeedback): number | null => {
+        if (typeof f.rating === "number") return f.rating;
+        if (typeof f.rate === "number") return f.rate;
+        if (typeof f.score === "number") return f.score;
+        if (typeof f.value === "number") return f.value;
+        if (typeof f.stars === "number") return f.stars;
+        return null;
+      })
+      .filter((val): val is number => val !== null);
+
+    if (numericRatings.length > 0) {
+      const sum = numericRatings.reduce((acc, n) => acc + n, 0);
+      rating = Math.round((sum / numericRatings.length) * 10) / 10;
+    }
+  }
+
+  const sizes = Array.isArray(raw.size) ? raw.size : [];
+
+  return {
+    id,
+    title: raw.name,
+    image: raw.image,
+    price: raw.price?.value ?? 0,
+    currency: raw.price?.currency ?? "грн",
+    categoryId: undefined,
+    sizes,
+    reviewsCount,
+    rating,
+  };
+};
+
+/* ===== Запит товарів ===== */
+
+const fetchGoods = async (): Promise<Good[]> => {
+  if (!API_BASE) {
+    throw new Error("baseURL не налаштований у api.defaults.baseURL");
+  }
+
+  const url = `${API_BASE}/goods`;
+
+  const response = await fetch(url, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Помилка запиту: ${response.status}`);
+  }
+
+  const data: unknown = await response.json();
+  const typed = data as { goods?: RawGood[] };
+
+  if (!Array.isArray(typed.goods)) {
+    return [];
+  }
+
+  return typed.goods.map(mapRawGoodToGood);
+};
