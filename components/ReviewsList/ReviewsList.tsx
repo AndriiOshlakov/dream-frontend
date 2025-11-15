@@ -54,9 +54,60 @@ export default function ReviewsList() {
   }
 
   return (
-    <div className={css.container}>
-      <div className={css.header}>
+    <section className={css.section}>
+      <div className={css.rewiesContainer}>
         <p className={css.title}>Останні відгуки</p>
+
+        <Swiper
+          modules={[Keyboard, A11y]}
+          keyboard={{ enabled: true }}
+          slidesPerView={1}
+          spaceBetween={20}
+          slidesPerGroup={1}
+          breakpoints={{
+            768: {
+              slidesPerView: 2,
+              slidesPerGroup: 2,
+            },
+            1440: {
+              slidesPerView: 3,
+              slidesPerGroup: 3,
+            },
+          }}
+          onSwiper={(instance) => {
+            swiperRef.current = instance;
+
+            setTimeout(updateSwiperEdgeState, 50);
+          }}
+          onSlideChange={updateSwiperEdgeState}
+          onInit={updateSwiperEdgeState}
+          className={css.swiperContainer}
+          style={{
+            marginBottom: '0',
+            paddingBottom: '0',
+          }}
+        >
+          {reviews.map((review, index) => (
+            <SwiperSlide key={index} className={css.swiperSlide}>
+              <div className={css.card}>
+                <p className={css.rating}>
+                  {Array.from({ length: review.rating }).map((_, i) => (
+                    <svg width="20" height="19" key={i}>
+                      <use href="/symbol-defs.svg#icon-star-filled" />
+                    </svg>
+                  ))}
+                </p>
+
+                <p className={css.comment}>{review.comment}</p>
+
+                <div className={css.cardFooter}>
+                  <p className={css.name}>{review.name}</p>
+                  <p className={css.category}>{review.category}</p>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
         <div className={css.navigation}>
           <button
             type="button"
@@ -65,7 +116,7 @@ export default function ReviewsList() {
             disabled={isAtStart}
             aria-label="Попередні відгуки"
           >
-            <svg className={css.icon}>
+            <svg width="48" height="48">
               <use href="/symbol-defs.svg#icon-arrow_back" />
             </svg>
           </button>
@@ -76,51 +127,12 @@ export default function ReviewsList() {
             disabled={isAtEnd}
             aria-label="Наступні відгуки"
           >
-            <svg className={css.icon}>
+            <svg width="48" height="48">
               <use href="/symbol-defs.svg#icon-arrow_forward" />
             </svg>
           </button>
         </div>
       </div>
-
-      <Swiper
-        modules={[Keyboard, A11y]}
-        keyboard={{ enabled: true }}
-        slidesPerView={1}
-        spaceBetween={20}
-        slidesPerGroup={1}
-        breakpoints={{
-          768: {
-            slidesPerView: 2,
-            slidesPerGroup: 2,
-          },
-          1024: {
-            slidesPerView: 3,
-            slidesPerGroup: 3,
-          },
-        }}
-        onSwiper={(instance) => {
-          swiperRef.current = instance;
-
-          setTimeout(updateSwiperEdgeState, 50);
-        }}
-        onSlideChange={updateSwiperEdgeState}
-        onInit={updateSwiperEdgeState}
-        className={css.swiperContainer}
-      >
-        {reviews.map((review, index) => (
-          <SwiperSlide key={index}>
-            <div className={css.card}>
-              <div className={css.cardHeader}>
-                <p className={css.name}>{review.name}</p>
-                <p className={css.rating}>{'⭐'.repeat(review.rating)}</p>
-              </div>
-              <p className={css.comment}>{review.comment}</p>
-              <p className={css.category}>{review.category}</p>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+    </section>
   );
 }
