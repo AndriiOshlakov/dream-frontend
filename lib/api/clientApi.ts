@@ -65,7 +65,7 @@ export async function getCategories(page?: number) {
 //! -GOODS-
 //! -------
 export interface GoodsRequestParams {
-  categoryId?: string;
+  // categoryId?: string;
   priceMin?: number;
   priceMax?: number;
   page?: number;
@@ -96,10 +96,13 @@ interface GoodsResponse {
   goods: GoodRessponse[];
 }
 
-export async function getGoods({ categoryId, priceMin, priceMax, page }: GoodsRequestParams) {
+export async function getGoods({ priceMin, priceMax, page }: GoodsRequestParams) {
   const response = await nextServer.get<GoodsResponse>('/goods', {
-    params: { categoryId, priceMin, priceMax, page },
+    params: { priceMin, priceMax, page },
   });
+
+  console.log('HELLO', response.data);
+
   return response.data;
 }
 //! --------

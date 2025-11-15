@@ -18,6 +18,8 @@ type FiltersProps = {
   onClearOne: (filterName: keyof FiltersType) => void;
   onClearAll: () => void;
   filters: FiltersType;
+  totalItems: number;
+  showedItems: number;
 };
 
 export default function Filters({
@@ -27,6 +29,8 @@ export default function Filters({
   onClearOne,
   onClearAll,
   filters,
+  totalItems,
+  showedItems,
 }: FiltersProps) {
   const [minVal, setMinVal] = useState(0);
   const [maxVal, setMaxVal] = useState(1000);
@@ -97,7 +101,9 @@ export default function Filters({
             <p>Фільтри</p>
             <button onClick={onClearAll}>Очистити всі</button>
           </div>
-          <p className={css.numberOfGoods}>Показано 15 з 100</p>
+          <p className={css.numberOfGoods}>
+            Показано {showedItems} з {totalItems}
+          </p>
           <button className={css.dropdownButton} onClick={toggleDropdown}>
             Фільтри
             <svg className={open ? css.arrowUp : css.arrowDown} width={24} height={24}>
@@ -220,7 +226,9 @@ export default function Filters({
               <p>Фільтри</p>
               <button onClick={onClearAll}>Очистити всі</button>
             </div>
-            <p className={css.numberOfGoods}>Показано 15 з 100</p>
+            <p className={css.numberOfGoods}>
+              Показано {showedItems} з {totalItems}
+            </p>
             <ul>
               <li className={css.categoryListItem}>
                 <p className={css.category} onClick={() => onCategorySelect('Усі товари')}>
