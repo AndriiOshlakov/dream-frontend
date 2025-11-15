@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Keyboard, A11y } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 
-import { fetchCategoriesClient } from '@/lib/api/clientApi';
+import { getCategories } from '@/lib/api/clientApi';
 import { Category } from '@/types/category';
 import { localCategories } from '@/constants/localCategories';
 
@@ -32,7 +32,7 @@ export default function PopularCategories() {
       try {
         setLoading(true);
 
-        const response = await fetchCategoriesClient(1, 3);
+        const response = await getCategories(1);
 
         const categoriesWithImages = (response.categories || []).map((category) => ({
           ...category,
@@ -73,7 +73,7 @@ export default function PopularCategories() {
       try {
         setIsLoadingMore(true);
 
-        const response = await fetchCategoriesClient(nextPage, 3);
+        const response = await getCategories(nextPage);
 
         const newCategories = (response.categories || []).map((category) => ({
           ...category,
