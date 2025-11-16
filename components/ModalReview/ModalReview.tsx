@@ -3,15 +3,16 @@
 import { toast } from 'react-toastify';
 import css from './ModalReview.module.css';
 import { useState } from 'react';
-import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { sendFeedback } from '@/lib/api/clientApi';
 
 interface ModalReviewProps {
   onClose: () => void;
-  goodId: string;
+  productId: string;
+  category: string;
 }
 
-export default function ModalReview({ onClose, goodId }: ModalReviewProps) {
+export default function ModalReview({ onClose, productId, category }: ModalReviewProps) {
   const [name, setName] = useState('');
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
@@ -20,23 +21,22 @@ export default function ModalReview({ onClose, goodId }: ModalReviewProps) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (data: { goodId: string; name: string; text: string; rating: number }) => {
-      const response = await axios.post(
-        'https://dream-backend-a69s.onrender.com/api/feedbacks',
-        data,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-      return response.data;
+    mutationFn: async (data: {
+      author: string;
+      description: string;
+      rate: number;
+      category: string;
+      productId: string;
+    }) => {
+      return sendFeedback(data);
     },
     onSuccess: () => {
       toast.success('Ваш відгук успішно надіслано!');
-      queryClient.invalidateQueries({ queryKey: ['feedbacks', goodId] });
+      queryClient.invalidateQueries({ queryKey: ['feedbacks', productId] });
       onClose();
     },
-    onError: () => {
-      toast.error('Сталася помилка, спробуйте пізніше.');
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 
@@ -44,10 +44,16 @@ export default function ModalReview({ onClose, goodId }: ModalReviewProps) {
     e.preventDefault();
 
     if (!rating) {
-      toast.error('Оберіть рейтинг ⭐');
+      toast.error('Оберіть рейтинг ★');
       return;
     }
-    mutation.mutate({ goodId, name, text, rating });
+    await mutation.mutateAsync({
+      author: name.trim(),
+      description: text.trim(),
+      rate: rating,
+      category,
+      productId,
+    });
   };
 
   const StarIcon = ({
@@ -115,8 +121,8 @@ export default function ModalReview({ onClose, goodId }: ModalReviewProps) {
               />
             ))}
           </div>
-          <button type="submit" className={css.reviewBtn}>
-            Надіслати
+          <button type="submit" className={css.reviewBtn} disabled={mutation.isPending}>
+            {mutation.isPending ? 'Надсилаємо...' : 'Надіслати'}
           </button>
         </form>
       </div>

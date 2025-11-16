@@ -134,6 +134,53 @@ export const fetchMyOrders = (): Order[] => {
 //! -FEEDBACKS-
 //! -----------
 
+// export const sendFeedback = async (data: {
+//   goodId: string;
+//   author: string;
+//   description: string;
+//   rate: number;
+// }) => {
+//   const response = await nextServer.post('/feedbacks', data);
+//   return response.data;
+// };
+export async function sendFeedback(data: {
+  author: string;
+  description: string;
+  rate: number;
+  category: string;
+  productId: string;
+}) {
+  const response = await fetch('/api/feedbacks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.error || 'Помилка відправки відгуку');
+  }
+
+  return response.json();
+}
 //! ---------------
 //! -SUBSCRIPTIONS-
 //! ---------------
+export async function subscribeUser(email: string) {
+  const response = await fetch('/api/subscriptions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.error || 'Помилка підписки');
+  }
+
+  return response.json();
+}
