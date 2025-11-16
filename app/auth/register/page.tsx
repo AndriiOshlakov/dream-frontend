@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
 import { register } from '@/lib/api/clientApi';
 import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
@@ -35,7 +36,6 @@ const RegisterSchema = Yup.object().shape({
 
 export default function RegistrationForm() {
   const router = useRouter();
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
@@ -44,18 +44,17 @@ export default function RegistrationForm() {
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
     try {
-      setError('');
       setIsLoading(true);
       const { user } = await register(values);
       if (user) {
         setUser(user);
         router.push('/');
       } else {
-        setError('Не вдалося створити обліковий запис. Спробуйте ще раз');
+        toast.error('Неправильний номер телефону або пароль');
       }
     } catch (err) {
       const error = err as ApiError;
-      setError(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
+      toast.error(error.response?.data?.error ?? error.message ?? 'Ой... сталася помилка');
     } finally {
       setIsLoading(false);
       actions.resetForm();
@@ -108,11 +107,18 @@ export default function RegistrationForm() {
             <button className={css.button} type="submit" disabled={isLoading}>
               {isLoading ? 'Реєстрація...' : 'Зареєструватися'}
             </button>
-            {error && <p className={css.formError}>{error}</p>}
           </Form>
         )}
       </Formik>
       {isLoading && <Loader />}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }
