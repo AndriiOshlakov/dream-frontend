@@ -14,7 +14,7 @@ interface AuthResponse {
   user: User;
 }
 
-export async function register(data: RegisterRequest): Promise<AuthResponse> {
+export async function register(data?: RegisterRequest): Promise<AuthResponse> {
   const response = await nextServer.post<AuthResponse>('/auth/register', data);
   return response.data;
 }
@@ -59,7 +59,7 @@ export async function getCategories(page?: number) {
   const response = await nextServer.get<CategoriesResponse>('/categories', {
     params: { page },
   });
-  return response.data.categories;
+  return response.data;
 }
 
 export interface FetchCategoriesResponse {
