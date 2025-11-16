@@ -43,7 +43,8 @@ export default function PopularCategories() {
         setTotalPages(response.totalPages);
         setTotalItems(response.totalItems);
         setCurrentPage(1);
-
+        
+        setIsPrevDisabled(true);
         setIsNextDisabled(
           response.page >= response.totalPages || categoriesWithImages.length >= response.totalItems
         );
