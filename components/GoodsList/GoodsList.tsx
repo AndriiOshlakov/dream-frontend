@@ -14,8 +14,6 @@ import type { RawGood, Good } from "../../types/goods";
 import Loader from "../Loader/Loader";
 import { api } from "@/app/api/api";
 
-/* ===== Типи ===== */
-
 type RawFeedback = {
   rating?: number;
   rate?: number;
@@ -23,8 +21,6 @@ type RawFeedback = {
   value?: number;
   stars?: number;
 };
-
-/* ===== Компонент ===== */
 
 export default function GoodsList() {
   const [goods, setGoods] = useState<Good[]>([]);
@@ -149,7 +145,6 @@ export default function GoodsList() {
                             className={css.img}
                             width={304}
                             height={375}
-                            // тільки перша картка — пріоритетна
                             priority={index === 0}
                           />
                         )}
@@ -237,34 +232,23 @@ export default function GoodsList() {
   );
 }
 
-/* ===== Константи базових URL ===== */
-
-// baseURL з axios: "https://dream-backend-a69s.onrender.com/api"
 const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
 
-// те саме, але без зайвих слешів в кінці
 const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
 
-// корінь бекенда БЕЗ /api — для картинок
-// "https://dream-backend-a69s.onrender.com"
 const API_ROOT: string = API_BASE.replace(/\/api$/, "");
 
-// кількість крапок-пагінації
 const DOTS_COUNT = 5;
-
-/* ===== Хелпери ===== */
 
 const buildImageSrc = (image: string): string => {
   if (!image) return "";
 
   const trimmed = image.trim();
 
-  // якщо бекенд уже віддав повний URL
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     return trimmed;
   }
 
-  // якщо щось типу "/uploads/..." або "img/goods/..."
   const normalizedPath = trimmed.replace(/^\/+/, "");
   return `${API_ROOT}/${normalizedPath}`;
 };
@@ -289,11 +273,8 @@ const getIdFromRaw = (raw: RawGood): string => {
     return (rawId as { $oid: string }).$oid;
   }
 
-  // fallback id, щоб не було порожнього ключа
   return `tmp-${Math.random().toString(36).slice(2)}`;
 };
-
-/* ===== Маппер з RawGood до Good ===== */
 
 const mapRawGoodToGood = (raw: RawGood): Good => {
   const id = getIdFromRaw(raw);
@@ -336,8 +317,6 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
     rating,
   };
 };
-
-/* ===== Запит товарів ===== */
 
 const fetchGoods = async (): Promise<Good[]> => {
   if (!API_BASE) {
