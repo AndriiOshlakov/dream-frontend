@@ -5,7 +5,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, A11y } from 'swiper/modules';
 import type { Swiper as SwiperClass } from 'swiper';
 import 'swiper/css';
-import { fetchReviews, type Review } from './CustomersReviews';
+import type { Review } from '@/types/feedback';
+import { fetchReviews } from '@/lib/api/clientApi';
 import css from './ReviewsList.module.css';
 
 export default function ReviewsList() {
