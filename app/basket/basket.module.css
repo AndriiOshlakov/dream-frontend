@@ -1,0 +1,91 @@
+.basketPageContainer {
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.basketPageTitle {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 120%;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.basketPageBtnWrapper {
+  margin-top: 24px;
+}
+.basketPageShoppingBtn,
+.basketPageOrderBtn {
+  width: 100%;
+  border-radius: 100px;
+  padding: 6px 12px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.basketPageShoppingBtn {
+  background-color: #0000000d;
+}
+
+.basketPageShoppingBtn:hover,
+.basketPageShoppingBtn:focus {
+  background-color: #9db484;
+}
+
+.basketPageShoppingBtn:active {
+  background-color: #3b4331;
+  color: #ffffff;
+}
+
+.basketPageShoppingBtn:disabled {
+  background-color: #f9fcf6;
+}
+
+.basketPageOrderBtn {
+  margin-top: 16px;
+  background-color: #c5e1a5;
+}
+
+.basketPageOrderBtn:hover,
+.basketPageOrderBtn:focus {
+  background-color: #9db484;
+}
+
+.basketPageOrderBtn:active {
+  background-color: #3b4331;
+  color: #ffffff;
+}
+
+.basketPageOrderBtn:disabled {
+  background-color: #f9fcf6;
+}
+
+@media only screen and (min-width: 768px) {
+  .orderGoodInfo {
+    gap: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .orderInfoWrapper {
+    flex: 0 0 auto;
+  }
+
+  .orderGoodRigth,
+  .orderGoodRigthActions {
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+  }
+}
