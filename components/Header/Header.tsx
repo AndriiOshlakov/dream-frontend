@@ -9,9 +9,11 @@ import Container from '../Container/Container';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
   }, [menuOpen]);
+
   return (
     <header className={css.header}>
       <Container>

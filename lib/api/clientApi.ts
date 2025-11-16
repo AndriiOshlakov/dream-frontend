@@ -54,7 +54,7 @@ export async function editMe(data: EditCurrentUser): Promise<User> {
 //! -CATEGORIES-
 //! ------------
 
-export async function getCategories(page: number) {
+export async function getCategories(page?: number) {
   const response = await nextServer.get<CategoriesResponse>('/categories', {
     params: { page },
   });
@@ -64,7 +64,47 @@ export async function getCategories(page: number) {
 //! -------
 //! -GOODS-
 //! -------
+export interface GoodsRequestParams {
+  // categoryId?: string;
+  priceMin?: number;
+  priceMax?: number;
+  page?: number;
+}
 
+interface GoodRessponse {
+  _id: string;
+  name: string;
+  image: string;
+  price: {
+    value: number;
+    currency: string;
+  };
+  category: string;
+  size: string[];
+  description: string;
+  prevDescription: string;
+  feedbacks: string[];
+  gender: string;
+  characteristics: string[];
+}
+
+interface GoodsResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  goods: GoodRessponse[];
+}
+
+export async function getGoods({ priceMin, priceMax, page }: GoodsRequestParams) {
+  const response = await nextServer.get<GoodsResponse>('/goods', {
+    params: { priceMin, priceMax, page },
+  });
+
+  console.log('HELLO', response.data);
+
+  return response.data;
+}
 //! --------
 //! -ORDERS-
 //! --------
