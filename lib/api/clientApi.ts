@@ -3,6 +3,7 @@ import { EditCurrentUser, User } from '@/types/user';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { CategoriesResponse } from '@/types/category';
 import { Order } from '@/types/order';
+import { ApiFeedback, Review } from '@/types/feedback';
 
 //! ------
 //! -AUTH-
@@ -133,6 +134,19 @@ export const fetchMyOrders = (): Order[] => {
 //! -----------
 //! -FEEDBACKS-
 //! -----------
+
+export async function fetchReviews(): Promise<Review[]> {
+  const response = await nextServer.get<ApiFeedback[]>('/feedbacks');
+
+  const feedbacks = response.data;
+
+  return feedbacks.map((feedback) => ({
+    name: feedback.author,
+    rating: feedback.rate,
+    comment: feedback.description,
+    category: feedback.category,
+  }));
+}
 
 // export const sendFeedback = async (data: {
 //   goodId: string;
