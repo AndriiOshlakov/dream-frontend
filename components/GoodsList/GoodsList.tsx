@@ -233,11 +233,8 @@ export default function GoodsList() {
 }
 
 const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
-
 const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
-
 const API_ROOT: string = API_BASE.replace(/\/api$/, "");
-
 const DOTS_COUNT = 5;
 
 const buildImageSrc = (image: string): string => {
