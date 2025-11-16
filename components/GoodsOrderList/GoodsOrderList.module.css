@@ -20,14 +20,13 @@
 }
 
 .orderList::-webkit-scrollbar-track {
-  background: var(--color-deco);
-  border: 5px solid var(--color-deco-lighter);
+  border: 5px solid;
   border-radius: 8px;
   background-clip: content-box;
 }
 
 .orderList::-webkit-scrollbar-thumb {
-  background: var(--color-deco-dark);
+  background: #00000040;
   border-radius: 8px;
 }
 
@@ -89,6 +88,17 @@
   min-width: 0;
 }
 
+.orderStars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.orderReviews {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
 .orderGoodWrapper {
   display: flex;
   flex-direction: column;
@@ -124,18 +134,30 @@
   width: 64px;
   height: 40px;
   background: transparent;
-  color: var(--color-neutral-darkest);
+  color: #000000;
 }
 
 .orderDeleteBtn {
-  border: 1px solid rgba(255, 255, 255, 0);
   border-radius: 100px;
   width: 40px;
   height: 40px;
-  background: var(--opacity-neutral-darkest-5);
+  background-color: #0000000d;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.orderDeleteBtn:hover,
+.orderDeleteBtn:focus {
+  background-color: #9db484;
+}
+
+.orderDeleteBtn:active {
+  background-color: #3b4331;
+  color: #ffffff;
+}
+
+.orderDeleteBtn:disabled {
+  background-color: #f9fcf6;
 }
 
 .orderTotalPriceWrapper {
@@ -163,12 +185,9 @@
 .orderTotalPrice,
 .orderTotalPriceValue {
   margin: 12px 0;
-}
-
-.orderTotalPrice {
+  font-size: 20px;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 20px;
   line-height: 150%;
 }
 
@@ -194,7 +213,7 @@
   }
 
   .orderInfoWrapper {
-    flex: 0 0 auto; /* Не розтягувати */
+    flex: 0 0 auto; 
   }
 
   .orderGoodRigth,
@@ -206,11 +225,11 @@
 }
 
 @media only screen and (min-width: 1440px) {
-  .wrapper {
+  .orderTotalPriceWrapper {
     min-height: 503px;
   }
 
-  .goods_list {
+  .orderList {
     max-height: 452px;
   }
 }

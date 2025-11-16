@@ -2,7 +2,7 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import GoodsOrderList from '@/components/GoodsOrderList/GoodsOrderList';
-import BasketMessageNoInfo from '../BasketMessageNoInfo/BasketMessageNoInfo';
+import MessageNoInfo from '../MessageNoInfo/MessageNoInfo';
 import { useShopStore } from '@/lib/store/cartStore';
 import css from './BasketModal.module.css';
 
@@ -20,13 +20,7 @@ export default function BasketModal() {
     if (!closing) return;
 
     if (nextRoute) {
-      router.back();
-
-      setTimeout(() => {
-        router.push(nextRoute!);
-      }, 200);
-    } else {
-      router.back();
+      router.push(nextRoute);
     }
   }, [closing, nextRoute, router]);
 
@@ -60,8 +54,8 @@ export default function BasketModal() {
   };
 
   const handleGoToOrder = () => {
-    setNextRoute('/order');
     setClosing(true);
+    setNextRoute('/order');
   };
 
   return (
@@ -96,7 +90,7 @@ export default function BasketModal() {
             </div>
           </>
         ) : (
-          <BasketMessageNoInfo
+          <MessageNoInfo
             text="Ваш кошик порожній, мерщій до покупок!"
             buttonText="До покупок"
             onClick={handleGoToGoods}
@@ -106,4 +100,3 @@ export default function BasketModal() {
     </div>
   );
 }
-
