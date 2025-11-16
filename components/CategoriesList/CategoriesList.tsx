@@ -23,7 +23,7 @@ export default function CategoriesList() {
         <ul className={css.list}>
           {categories.map((cat) => (
             <li key={cat._id} className={css.item}>
-              <Link href={`/categories/${cat._id}`} className={css.card}>
+              <Link href={'/categories'} className={css.card}>
                 <Image
                   src={cat.img ?? '/img/categories/default.png'}
                   alt={cat.name}
