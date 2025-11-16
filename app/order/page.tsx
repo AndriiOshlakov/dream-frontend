@@ -261,25 +261,27 @@ useEffect(() => {
                 </div>
             )} */}
 {showErrorModal && (
-                <div className={css.modalBackdrop}>
-                    <div className={css.modalContent}>
-                        {/* 1. Explicit Close Button for the Modal Wrapper */}
-                        <button 
-                            className={css.modalCloseButton} // You will need to style this button (e.g., an 'X')
-                            onClick={() => setShowErrorModal(false)}
-                            aria-label="Закрити повідомлення про помилку"
-                        >
-                            &times; {/* HTML entity for a multiplication sign / 'x' */}
-                        </button>
+    <div className={css.modalBackdrop}>
+        <div className={css.modalContent}>
+            {/* 1. Explicit Close Button for the Modal Wrapper (Keep this for accessibility/backup 'X') */}
+            {/* <button 
+                className={css.modalCloseButton}
+                onClick={() => setShowErrorModal(false)}  
+                aria-label="Закрити повідомлення про помилку"
+            >
+                &times;
+            </button> */}
 
-                        {/* 2. MessageNoInfo Component (Used for content only) */}
-                        <MessageNoInfo
-                            text="Помилка збереження 😞"
-                            buttonText="OK"  
-                        />
-                    </div>
-                </div>
-            )}
+            {/* 2. MessageNoInfo Component (Using its internal button for closing) */}
+            <MessageNoInfo
+                text="Помилка збереження"
+                buttonText="OK" 
+                onClick={() => setShowErrorModal(false)} 
+            />
+        </div>
+    </div>
+)}
+
         </>
     )
 }
