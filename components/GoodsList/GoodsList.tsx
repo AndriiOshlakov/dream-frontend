@@ -342,3 +342,6 @@ const fetchGoods = async (): Promise<Good[]> => {
 
   return typed.goods.map(mapRawGoodToGood);
 };
+
+
+
