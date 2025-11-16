@@ -79,20 +79,21 @@ export async function fetchCategoriesClient(
   page = 1,
   perPage = 6
 ): Promise<FetchCategoriesResponse> {
-  try {
-    const params = {
-      page: String(page),
-    };
+  const base = process.env.NEXT_PUBLIC_API_URL ?? '';
+  const trimmedBase = base.replace(/\/+$/, '');
+  const url = `${trimmedBase}/api/categories?page=${encodeURIComponent(
+    String(page)
+  )}&perPage=${encodeURIComponent(String(perPage))}`;
 
-    const { data } = await nextServer.get<FetchCategoriesResponse>('/categories', { params });
+  const response = await fetch(url, { cache: 'no-store' });
 
-    return data;
-  } catch (error) {
-    if (isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Fetching categories failed');
-    }
+  if (!response.ok) {
     throw new Error('Fetching categories failed');
   }
+
+  const data = (await response.json()) as FetchCategoriesResponse;
+
+  return data;
 }
 
 //! -------
