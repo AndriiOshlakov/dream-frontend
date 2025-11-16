@@ -13,7 +13,7 @@ export default function CategoriesPage() {
     const fetchCategories = async () => {
       try {
         const data = await getCategories(1);
-        setCategories(data.categories);
+        setCategories(data);
       } catch (err) {
         console.error('Error fetching categories:', err);
       }

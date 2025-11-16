@@ -75,7 +75,7 @@ export default function PopularCategories() {
 
         const response = await getCategories(nextPage);
 
-        const newCategories = (response.categories || []).map((category) => ({
+        const newCategories = (response || []).map((category) => ({
           ...category,
           img: localCategories[category._id] || '/img/categories/others.jpg',
         }));

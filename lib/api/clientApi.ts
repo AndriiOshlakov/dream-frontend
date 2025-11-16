@@ -58,7 +58,7 @@ export async function getCategories(page?: number) {
   const response = await nextServer.get<CategoriesResponse>('/categories', {
     params: { page },
   });
-  return response.data;
+  return response.data.categories;
 }
 
 export interface FetchCategoriesResponse {
