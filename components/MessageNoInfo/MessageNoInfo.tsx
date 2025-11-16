@@ -3,7 +3,7 @@ import css from './MessageNoInfo.module.css';
 type MessageNoInfoProps = {
   text: string;
   buttonText: string;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export default function MessageNoInfo({ text, buttonText, onClick }: MessageNoInfoProps) {

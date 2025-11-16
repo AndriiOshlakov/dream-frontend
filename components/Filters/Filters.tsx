@@ -11,8 +11,8 @@ type FiltersProps = {
   onChange: (updatedFilters: {
     minVal: number;
     maxVal: number;
-    gender: string;
-    sizes: string[];
+    gender: 'man' | 'women' | 'unisex' | undefined;
+    size: string | undefined;
   }) => void;
   onCategorySelect: (name: string) => void;
   onClearOne: (filterName: keyof FiltersType) => void;
@@ -20,6 +20,7 @@ type FiltersProps = {
   filters: FiltersType;
   totalItems: number;
   showedItems: number;
+  selectedCategoryName: string;
 };
 
 export default function Filters({
@@ -31,13 +32,14 @@ export default function Filters({
   filters,
   totalItems,
   showedItems,
+  selectedCategoryName,
 }: FiltersProps) {
   const [minVal, setMinVal] = useState(0);
-  const [maxVal, setMaxVal] = useState(1000);
-  const [gender, setGender] = useState<string>('');
+  const [maxVal, setMaxVal] = useState(10000);
+  const [gender, setGender] = useState<'unisex' | 'man' | 'women' | undefined>(undefined);
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     // функція перевірки розміру
@@ -51,14 +53,14 @@ export default function Filters({
     setMinVal(filters.minVal);
     setMaxVal(filters.maxVal);
     setGender(filters.gender);
-    setSelectedSizes(filters.sizes);
+    setSelectedSize(filters.size);
   }, [filters]);
 
   const genderOptions = [
-    { value: 'all', label: 'Всі' },
-    { value: 'female', label: 'Жіночий' },
-    { value: 'male', label: 'Чоловічий' },
-    { value: 'other', label: 'Унісекс' },
+    { value: 'all', label: 'Всі', id: 'all' },
+    { value: 'women', label: 'Жіночий', id: 'women' },
+    { value: 'man', label: 'Чоловічий', id: 'man' },
+    { value: 'unisex', label: 'Унісекс', id: 'unisex' },
   ];
 
   const toggleDropdown = () => setOpen(!open);
@@ -66,17 +68,21 @@ export default function Filters({
   const max = 10000;
 
   const debouncedOnChange = useDebouncedCallback(() => {
-    onChange({ minVal, maxVal, gender, sizes: selectedSizes });
+    onChange({
+      minVal,
+      maxVal,
+      gender: gender as 'unisex' | 'man' | 'women' | undefined,
+      size: selectedSize,
+    });
   }, 500);
 
   useEffect(() => {
     debouncedOnChange();
-  }, [minVal, maxVal, gender, selectedSizes, debouncedOnChange]);
+  }, [minVal, maxVal, gender, selectedSize, debouncedOnChange]);
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked, name } = e.target;
-
-    setSelectedSizes((prev) => (checked ? [...prev, name] : prev.filter((s) => s !== name)));
+    const { name } = e.target;
+    setSelectedSize(name); // записуємо лише одне значення
   };
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,9 +96,14 @@ export default function Filters({
   };
 
   const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGender(e.target.value);
-  };
+    const val = e.target.value;
 
+    if (val === 'all') {
+      setGender(undefined);
+    } else {
+      setGender(val as 'unisex' | 'man' | 'women');
+    }
+  };
   return (
     <div className={css.sideBar}>
       {isMobile ? (
@@ -115,13 +126,19 @@ export default function Filters({
               <div>
                 <ul>
                   <li className={css.categoryListItem}>
-                    <p className={css.category} onClick={() => onCategorySelect('Усі товари')}>
+                    <p
+                      className={`${css.category} ${selectedCategoryName === 'Усі товари' ? css.categoryActive : ''}`}
+                      onClick={() => onCategorySelect('Усі товари')}
+                    >
                       Усі
                     </p>
                   </li>
                   {categories.map((category) => (
                     <li className={css.categoryListItem} key={category._id}>
-                      <p className={css.category} onClick={() => onCategorySelect(category.name)}>
+                      <p
+                        className={`${css.category} ${selectedCategoryName === category.name ? css.categoryActive : ''}`}
+                        onClick={() => onCategorySelect(category.name)}
+                      >
                         {category.name}
                       </p>
                     </li>
@@ -131,15 +148,15 @@ export default function Filters({
               <div className={css.sizesContainer}>
                 <div className={css.box}>
                   <p className={css.containerTitle}>Розмір</p>
-                  <button onClick={() => onClearOne('sizes')}>Очистити</button>
+                  <button onClick={() => onClearOne('size')}>Очистити</button>
                 </div>
                 <div className={css.sizesBox}>
-                  {['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'].map((size) => (
+                  {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
                     <label key={size}>
                       <input
                         type="checkbox"
                         name={size}
-                        checked={selectedSizes.includes(size)}
+                        checked={selectedSize === size}
                         onChange={handleSizeChange}
                       />
                       {size.toUpperCase()}
@@ -203,12 +220,14 @@ export default function Filters({
 
                 <div className={css.radiosBox}>
                   {genderOptions.map((option) => (
-                    <label key={option.value} className={css.radio}>
+                    <label key={option.id} className={css.radio}>
                       <input
                         type="radio"
                         name="gender"
                         value={option.value}
-                        checked={gender === option.value}
+                        checked={
+                          option.value === 'all' ? gender === undefined : gender === option.value
+                        }
                         onChange={handleGenderChange}
                       />
                       <span>{option.label}</span>
@@ -231,13 +250,19 @@ export default function Filters({
             </p>
             <ul>
               <li className={css.categoryListItem}>
-                <p className={css.category} onClick={() => onCategorySelect('Усі товари')}>
+                <p
+                  className={`${css.category} ${selectedCategoryName === 'Усі товари' ? css.categoryActive : ''}`}
+                  onClick={() => onCategorySelect('Усі товари')}
+                >
                   Усі
                 </p>
               </li>
               {categories.map((category) => (
                 <li className={css.categoryListItem} key={category._id}>
-                  <p className={css.category} onClick={() => onCategorySelect(category.name)}>
+                  <p
+                    className={`${css.category} ${selectedCategoryName === category.name ? css.categoryActive : ''}`}
+                    onClick={() => onCategorySelect(category.name)}
+                  >
                     {category.name}
                   </p>
                 </li>
@@ -247,15 +272,15 @@ export default function Filters({
           <div className={css.sizesContainer}>
             <div className={css.box}>
               <p className={css.containerTitle}>Розмір</p>
-              <button onClick={() => onClearOne('sizes')}>Очистити</button>
+              <button onClick={() => onClearOne('size')}>Очистити</button>
             </div>
             <div className={css.sizesBox}>
-              {['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'].map((size) => (
+              {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
                 <label key={size}>
                   <input
                     type="checkbox"
                     name={size}
-                    checked={selectedSizes.includes(size)}
+                    checked={selectedSize === size}
                     onChange={handleSizeChange}
                   />
                   {size.toUpperCase()}
@@ -320,12 +345,14 @@ export default function Filters({
 
             <div className={css.radiosBox}>
               {genderOptions.map((option) => (
-                <label key={option.value} className={css.radio}>
+                <label key={option.id} className={css.radio}>
                   <input
                     type="radio"
                     name="gender"
                     value={option.value}
-                    checked={gender === option.value}
+                    checked={
+                      option.value === 'all' ? gender === undefined : gender === option.value
+                    }
                     onChange={handleGenderChange}
                   />
                   <span>{option.label}</span>
