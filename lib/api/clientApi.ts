@@ -3,7 +3,6 @@ import { EditCurrentUser, User } from '@/types/user';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { CategoriesResponse, Category } from '@/types/category';
 import { Order } from '@/types/order';
-import { isAxiosError } from 'axios';
 
 //! ------
 //! -AUTH-
