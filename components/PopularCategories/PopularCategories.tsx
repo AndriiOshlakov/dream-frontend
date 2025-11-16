@@ -42,17 +42,10 @@ export default function PopularCategories() {
         }
 
         const categoriesWithImages = response.map((category) => {
-          let imageUrl = category.img;
-          
-          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://dream-backend-a69s.onrender.com';
-          
-          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
-            imageUrl = `${backendUrl}${imageUrl}`;
-          } else if (imageUrl && imageUrl.startsWith('/') && !imageUrl.startsWith('//')) {
-            imageUrl = `${backendUrl}${imageUrl}`;
-          }
-          
-          const finalImageUrl = imageUrl || localCategories[category._id] || '/img/categories/others.jpg';
+
+          const finalImageUrl = category.img && (category.img.startsWith('http://') || category.img.startsWith('https://'))
+            ? category.img
+            : localCategories[category._id] || '/img/categories/others.jpg';
           
           return {
             ...category,
@@ -96,19 +89,14 @@ export default function PopularCategories() {
         const response = await getCategories(nextPage);
 
         const newCategories = response.map((category) => {
-          let imageUrl = category.img;
-          
-          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://dream-backend-a69s.onrender.com';
-          
-          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
-            imageUrl = `${backendUrl}${imageUrl}`;
-          } else if (imageUrl && imageUrl.startsWith('/') && !imageUrl.startsWith('//')) {
-            imageUrl = `${backendUrl}${imageUrl}`;
-          }
+
+          const finalImageUrl = category.img && (category.img.startsWith('http://') || category.img.startsWith('https://'))
+            ? category.img
+            : localCategories[category._id] || '/img/categories/others.jpg';
           
           return {
             ...category,
-            img: imageUrl || localCategories[category._id] || '/img/categories/others.jpg',
+            img: finalImageUrl,
           };
         });
 
