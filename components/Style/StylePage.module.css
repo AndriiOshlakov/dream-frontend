@@ -20,7 +20,11 @@
       flex-direction: column;
       gap: 32px;
    }
-
+.advantageCard{
+   flex-basis: 0;
+    flex-grow: 1;
+    
+}
    .cardIcon {
       height: 56px;
       width: 56px;
@@ -59,13 +63,7 @@
       font: Nunito Sans;
       margin-bottom: 40px;
    }
-
-   .advantagesList {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-   }
-
+ 
    .cardIcon {
       height: 56px;
       width: 56px;
@@ -102,7 +100,11 @@
       column-gap: 32px;
       justify-content: space-between;
    }
-
+.advantageCard{
+   flex-basis: 0;
+    flex-grow: 1;
+    
+}
 }
 
 
@@ -116,5 +118,9 @@
       width: 768px;
       font-size: 48px;
    }
-
+.advantageCard{
+   flex-basis: 0;
+    flex-grow: 1;
+    
+}
 }

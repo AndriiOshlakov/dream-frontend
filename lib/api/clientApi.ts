@@ -98,7 +98,47 @@ export async function fetchCategoriesClient(
 //! -------
 //! -GOODS-
 //! -------
+export interface GoodsRequestParams {
+  // categoryId?: string;
+  priceMin?: number;
+  priceMax?: number;
+  page?: number;
+}
 
+interface GoodRessponse {
+  _id: string;
+  name: string;
+  image: string;
+  price: {
+    value: number;
+    currency: string;
+  };
+  category: string;
+  size: string[];
+  description: string;
+  prevDescription: string;
+  feedbacks: string[];
+  gender: string;
+  characteristics: string[];
+}
+
+interface GoodsResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  goods: GoodRessponse[];
+}
+
+export async function getGoods({ priceMin, priceMax, page }: GoodsRequestParams) {
+  const response = await nextServer.get<GoodsResponse>('/goods', {
+    params: { priceMin, priceMax, page },
+  });
+
+  console.log('HELLO', response.data);
+
+  return response.data;
+}
 //! --------
 //! -ORDERS-
 //! --------
@@ -128,6 +168,53 @@ export const fetchMyOrders = (): Order[] => {
 //! -FEEDBACKS-
 //! -----------
 
+// export const sendFeedback = async (data: {
+//   goodId: string;
+//   author: string;
+//   description: string;
+//   rate: number;
+// }) => {
+//   const response = await nextServer.post('/feedbacks', data);
+//   return response.data;
+// };
+export async function sendFeedback(data: {
+  author: string;
+  description: string;
+  rate: number;
+  category: string;
+  productId: string;
+}) {
+  const response = await fetch('/api/feedbacks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.error || 'Помилка відправки відгуку');
+  }
+
+  return response.json();
+}
 //! ---------------
 //! -SUBSCRIPTIONS-
 //! ---------------
+export async function subscribeUser(email: string) {
+  const response = await fetch('/api/subscriptions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.error || 'Помилка підписки');
+  }
+
+  return response.json();
+}

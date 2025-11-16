@@ -1,0 +1,51 @@
+.noOrdersWrapper {
+  background: #d6eac0;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.messageText {
+  font-family: 'Inter', sans-serif;
+  line-height: 150%;
+  letter-spacing: 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: black;
+  text-align: center;
+}
+.shopButton {
+  background: #c5e1a5;
+  border-radius: 100px;
+  padding: 6px 12px;
+
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.shopButton:hover,
+.shopButton:focus {
+  background-color: #9db484;
+}
+
+.shopButton:active {
+  background-color: #3b4331;
+  color: #ffffff;
+}
+
+.shopButton:disabled {
+  background-color: #f9fcf6;
+}
+@media screen and (min-width: 1440px) {
+  .noOrdersWrapper {
+    width: 640px;
+  }
+}

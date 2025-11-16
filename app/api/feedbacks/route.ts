@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isAxiosError } from 'axios';
 import { api } from '../api';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
-    // const limit = Number(request.nextUrl.searchParams.get('limit') ?? 6);
-    const response = await api.get('/feedbacks', { params: { page } });
+    const response = await api.get('/feedbacks');
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {

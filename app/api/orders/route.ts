@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
     const body = await request.json();
     if (!body || Object.keys(body).length === 0) {
-      return NextResponse.json({ error: 'Body is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Order data is required' }, { status: 400 });
     }
     const response = await api.post('/orders', body, {
       headers: {
