@@ -1,7 +1,7 @@
 import { nextServer } from './api';
 import { EditCurrentUser, User } from '@/types/user';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
-import { CategoriesResponse, Category } from '@/types/category';
+import { CategoriesResponse } from '@/types/category';
 import { Order } from '@/types/order';
 import { ApiFeedback, Review } from '@/types/feedback';
 
@@ -60,40 +60,6 @@ export async function getCategories(page?: number) {
     params: { page },
   });
   return response.data.categories;
-}
-
-export interface FetchCategoriesResponse {
-  page: number;
-  perPage: number;
-  totalItems: number;
-  totalPages: number;
-  categories: Category[];
-}
-
-export interface FetchCategoriesParam {
-  page: string;
-  perPage: string;
-}
-
-export async function fetchCategoriesClient(
-  page = 1,
-  perPage = 6
-): Promise<FetchCategoriesResponse> {
-  const base = process.env.NEXT_PUBLIC_API_URL ?? '';
-  const trimmedBase = base.replace(/\/+$/, '');
-  const url = `${trimmedBase}/api/categories?page=${encodeURIComponent(
-    String(page)
-  )}&perPage=${encodeURIComponent(String(perPage))}`;
-
-  const response = await fetch(url, { cache: 'no-store' });
-
-  if (!response.ok) {
-    throw new Error('Fetching categories failed');
-  }
-
-  const data = (await response.json()) as FetchCategoriesResponse;
-
-  return data;
 }
 
 //! -------

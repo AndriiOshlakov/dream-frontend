@@ -9,16 +9,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Keyboard, A11y } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 
-import { fetchCategoriesClient } from '@/lib/api/clientApi';
+import { getCategories } from '@/lib/api/clientApi';
 import { Category } from '@/types/category';
 import { localCategories } from '@/constants/localCategories';
+
+const MAX_CATEGORIES = 8;
 
 export default function PopularCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalItems, setTotalItems] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
@@ -32,25 +32,45 @@ export default function PopularCategories() {
       try {
         setLoading(true);
 
-        const response = await fetchCategoriesClient(1, 3);
+        let response = await getCategories(1);
 
-        const categoriesWithImages = (response.categories || []).map((category) => ({
-          ...category,
-          img: localCategories[category._id] || '/img/categories/others.jpg',
-        }));
+        if (response.length < MAX_CATEGORIES) {
+          const secondPage = await getCategories(2);
+          const existingIds = new Set(response.map((cat) => cat._id));
+          const uniqueFromSecondPage = secondPage.filter((cat) => !existingIds.has(cat._id));
+          response = [...response, ...uniqueFromSecondPage];
+        }
 
-        setCategories(categoriesWithImages);
-        setTotalPages(response.totalPages);
-        setTotalItems(response.totalItems);
+        const categoriesWithImages = response.map((category) => {
+          let imageUrl = category.img;
+          
+          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://dream-backend-a69s.onrender.com';
+          
+          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+            imageUrl = `${backendUrl}${imageUrl}`;
+          } else if (imageUrl && imageUrl.startsWith('/') && !imageUrl.startsWith('//')) {
+            imageUrl = `${backendUrl}${imageUrl}`;
+          }
+          
+          const finalImageUrl = imageUrl || localCategories[category._id] || '/img/categories/others.jpg';
+          
+          return {
+            ...category,
+            img: finalImageUrl,
+          };
+        });
+
+        const limited = categoriesWithImages.slice(0, MAX_CATEGORIES);
+
+        setCategories(limited);
         setCurrentPage(1);
 
         setIsPrevDisabled(true);
-        setIsNextDisabled(
-          response.page >= response.totalPages || categoriesWithImages.length >= response.totalItems
-        );
+        setIsNextDisabled(limited.length === 0);
       } catch (error) {
         console.error('❌ Error fetching categories:', error);
         setCategories([]);
+        setIsNextDisabled(true);
       } finally {
         setLoading(false);
       }
@@ -68,65 +88,96 @@ export default function PopularCategories() {
 
       const nextPage = direction === 'next' ? currentPage + 1 : currentPage - 1;
 
-      if (nextPage < 1 || nextPage > totalPages) return;
+      if (nextPage < 1) return;
 
       try {
         setIsLoadingMore(true);
 
-        const response = await fetchCategoriesClient(nextPage, 3);
+        const response = await getCategories(nextPage);
 
-        const newCategories = (response.categories || []).map((category) => ({
-          ...category,
-          img: localCategories[category._id] || '/img/categories/others.jpg',
-        }));
+        const newCategories = response.map((category) => {
+          let imageUrl = category.img;
+          
+          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://dream-backend-a69s.onrender.com';
+          
+          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+            imageUrl = `${backendUrl}${imageUrl}`;
+          } else if (imageUrl && imageUrl.startsWith('/') && !imageUrl.startsWith('//')) {
+            imageUrl = `${backendUrl}${imageUrl}`;
+          }
+          
+          return {
+            ...category,
+            img: imageUrl || localCategories[category._id] || '/img/categories/others.jpg',
+          };
+        });
+
+        if (newCategories.length === 0) {
+          setIsNextDisabled(true);
+          return;
+        }
 
         // Унікальні категорії
         const existingIds = new Set(categories.map((cat) => cat._id));
         const uniqueNewCategories = newCategories.filter((cat) => !existingIds.has(cat._id));
 
+        if (uniqueNewCategories.length === 0) {
+          setIsNextDisabled(true);
+          return;
+        }
+
+        const totalLoaded = Math.min(
+          categories.length + uniqueNewCategories.length,
+          MAX_CATEGORIES
+        );
+
         if (direction === 'next') {
-          setCategories((prev) => [...prev, ...uniqueNewCategories]);
+          setCategories((prev) => [...prev, ...uniqueNewCategories].slice(0, MAX_CATEGORIES));
         } else {
-          setCategories((prev) => [...uniqueNewCategories, ...prev]);
+          setCategories((prev) => [...uniqueNewCategories, ...prev].slice(0, MAX_CATEGORIES));
         }
 
         setCurrentPage(nextPage);
         setIsPrevDisabled(nextPage <= 1);
 
-        const totalLoaded = categories.length + uniqueNewCategories.length;
-
-        setIsNextDisabled(nextPage >= totalPages || totalLoaded >= totalItems);
+        if (direction === 'next' && (totalLoaded >= MAX_CATEGORIES || uniqueNewCategories.length === 0)) {
+          setIsNextDisabled(true);
+        } else if (direction === 'prev') {
+          setIsNextDisabled(false);
+        }
       } catch (error) {
         console.error('❌ Error loading more categories:', error);
       } finally {
         setIsLoadingMore(false);
       }
     },
-    [currentPage, totalPages, totalItems, categories, isLoadingMore]
+    [currentPage, categories, isLoadingMore]
   );
 
   // -------------------------------------------------------------
   // 3) Зміна слайду — оновлення стану кнопок
   // -------------------------------------------------------------
-  const handleSlideChange = useCallback(
-    (swiper: SwiperType) => {
-      const slidesPerView = swiper.params.slidesPerView as number;
-      const currentIndex = swiper.activeIndex;
-      const totalSlides = swiper.slides.length;
-
-      const isAtEnd = currentIndex + slidesPerView >= totalSlides;
-
-      setIsPrevDisabled(!swiper.allowSlidePrev);
-      setIsNextDisabled(isAtEnd && currentPage >= totalPages);
-    },
-    [currentPage, totalPages]
-  );
+  const handleSlideChange = useCallback((swiper: SwiperType) => {
+    const currentIndex = swiper.activeIndex;
+    const slidesPerView = swiper.params.slidesPerView as number;
+    const totalSlides = swiper.slides.length;
+    
+    setIsPrevDisabled(currentIndex === 0);
+    
+    const canSlideNext = currentIndex + slidesPerView < totalSlides;
+    
+    if (canSlideNext || categories.length > totalSlides) {
+      setIsNextDisabled(false);
+    } else {
+      setIsNextDisabled(true);
+    }
+  }, [categories.length]);
 
   // -------------------------------------------------------------
   // 4) Клік по кнопці Next
   // -------------------------------------------------------------
   const handleNextClick = useCallback(async () => {
-    if (isNextDisabled || isLoadingMore) return;
+    if (isLoadingMore) return;
 
     const swiper = swiperRef.current;
     if (!swiper) return;
@@ -135,13 +186,15 @@ export default function PopularCategories() {
     const currentIndex = swiper.activeIndex;
     const totalSlides = swiper.slides.length;
 
-    if (currentIndex + slidesPerView >= totalSlides - 1 && currentPage < totalPages) {
+    const needLoadMore = !isNextDisabled && currentIndex + slidesPerView >= totalSlides - 1;
+
+    if (needLoadMore) {
       await loadMoreCategories('next');
       setTimeout(() => swiper.slideNext(), 100);
     } else {
       swiper.slideNext();
     }
-  }, [isNextDisabled, isLoadingMore, currentPage, totalPages, loadMoreCategories]);
+  }, [isNextDisabled, isLoadingMore, loadMoreCategories]);
 
   // -------------------------------------------------------------
   // 5) Клік по кнопці Prev
@@ -150,7 +203,13 @@ export default function PopularCategories() {
     if (isPrevDisabled) return;
 
     const swiper = swiperRef.current;
-    if (swiper) swiper.slidePrev();
+    if (swiper) {
+      swiper.slidePrev();
+      setTimeout(() => {
+        const newIndex = swiper.activeIndex;
+        setIsPrevDisabled(newIndex === 0);
+      }, 100);
+    }
   }, [isPrevDisabled]);
 
   // -------------------------------------------------------------
@@ -224,6 +283,11 @@ export default function PopularCategories() {
                       className={css.image}
                       fill
                       sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                      onError={(e) => {
+                        console.error('❌ Image load error for:', item.name, item.img);
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/img/categories/others.jpg';
+                      }}
                     />
                   </div>
                 </Link>
@@ -238,7 +302,7 @@ export default function PopularCategories() {
               className={`${css.btnPrev} ${isPrevDisabled ? css.disabled : ''}`}
               aria-label="Prev"
               onClick={handlePrevClick}
-              disabled={isPrevDisabled}
+              aria-disabled={isPrevDisabled}
             >
               ←
             </button>
@@ -248,7 +312,7 @@ export default function PopularCategories() {
               className={`${css.btnNext} ${isNextDisabled ? css.disabled : ''}`}
               aria-label="Next"
               onClick={handleNextClick}
-              disabled={isNextDisabled || isLoadingMore}
+              aria-disabled={isNextDisabled || isLoadingMore}
             >
               →
             </button>
