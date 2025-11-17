@@ -1,36 +1,281 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clothica - багатосторінковий адаптивний e-commerce сайт.
 
-## Getting Started
+Clothica — це багатосторінковий адаптивний вебсайт магазину одягу, створений як MVP. Проєкт реалізує
+каталог товарів, кошик, оформлення замовлення, авторизацію та особистий кабінет.
 
-First, run the development server:
+Основна задача — забезпечити сучасний і зручний інтернет-магазин із використанням сучасних
+веб-технологій.
+
+## Features
+
+- Адаптивна верстка (mobile/tablet/desktop)
+- Mobile First, CSS Modules
+- Публічні та приватні маршрути (Next.js 15)
+- Глобальний стан через Zustand
+- React Query: кешування та інвалідація
+- Indicators loading / error
+- Формы: Formik + Yup
+- Slider: Swiper.js
+- Анімації (опційно): Framer Motion / GSAP
+
+## Tech Stack
+
+- Next.js 15 (App Router)
+- React.js
+- Zustand
+- React Query
+- Formik + Yup
+- CSS Modules
+- Swiper.js
+- Prettier
+
+## Installation
+
+- git clone https://github.com/AndriiOshlakov/dream-frontend
+- cd dream-frontend
+- npm install
+- npm run dev
+
+## Usage/Examples
+
+Щоб запустити проєкт у режимі розробки:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Або зібрати продакшн:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages
 
-## Learn More
+- / — Головна
+- /categories — Категорії
+- /goods — Товари
+- /goods/[id] — Карточка товару
+- /basket — Кошик
+- /order — Оформлення
+- /profile — Кабінет
+- /auth/login — Вхід
+- /auth/register — Реєстрація
 
-To learn more about Next.js, take a look at the following resources:
+## Additional Info
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Для форматування README:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- readme.so/editor
+- dillinger.io
 
-## Deploy on Vercel
+© 2025 Clothica
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Authors
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 👨‍💻 **Sergiy Vitruk** — Backend Developer  
+  GitHub: https://github.com/SergiyVitruk
+- 👨‍💻 **Oleksandr Kuzmenko** — Backend Developer  
+  GitHub: https://github.com/alex-kuzmenko1
+- 👩‍💻 **Liudmyla Belikova** — Backend Developer  
+  GitHub: https://github.com/liudmyla21-belikova
+
+- 👩‍💻 **Andrii Oshlakov** — Frontend Developer  
+  GitHub: https://github.com/AndriiOshlakov
+- 👩‍💻 **Liudmyla Pominchuk** — Frontend Developer  
+  GitHub: https://github.com/Liudmyla537
+- 👩‍💻 **Svitlana Shumal** — Frontend Developer  
+  GitHub: https://github.com/svitlana-shumal
+- 👨‍💻 **Oleksii Rudenko** — Frontend Developer  
+  GitHub: https://github.com/oleks11-rudenko
+- 👩‍💻 **Oleksandra Balunova** — Frontend Developer  
+  GitHub: https://github.com/AleksandraCherevko
+- 👩‍💻 **Maryana Rashkevych** — Frontend Developer  
+  GitHub: https://github.com/MaryanaRashkevych
+- 👨‍💻 **Oleksandr** — Frontend Developer  
+  GitHub: https://github.com/oleksandrboo77
+- 👩‍💻 **OleksandraOvcharova** — Frontend Developer  
+  GitHub: https://github.com/OleksandraOvcharova
+
+## Documentation
+
+**📘 API Documentation (Swagger):**  
+https://dream-backend-a69s.onrender.com/api-docs
+
+**🖥️ Backend Server:**  
+https://dream-backend-a69s.onrender.com
+
+**🎨 Figma Design (UI/UX):**  
+https://www.figma.com/design/c5nshg5DfSyuEFOtyWwMcR/Clothica?node-id=9202-59537&t=kH58NcIct523QUKl-0
+
+**📝 Technical Specification (ТЗ):**  
+https://docs.google.com/spreadsheets/d/1bZy7Vg3V8DJYi15AjLOhh0sIj-xfUfkKhQvkshktCBg/edit?usp=sharing
+
+## API Reference
+
+Бекенд: https://dream-backend-a69s.onrender.com  
+Повна документація (Swagger): /api-docs
+
+---
+
+### 🔐 Auth
+
+#### Register user
+
+```http
+POST /api/auth/register
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name": "John",
+  "email": "john@gmail.com",
+  "password": "12345678"
+}
+```
+
+#### Login user
+
+```http
+POST /api/auth/login
+```
+
+#### Logout user
+
+```http
+POST /api/auth/logout
+```
+
+#### Refresh session
+
+```http
+POST /api/auth/refresh
+```
+
+---
+
+### 👤 Users
+
+#### Get current user
+
+```http
+GET /api/users/current
+```
+
+> Requires authentication (cookie)
+
+#### Update user
+
+```http
+PATCH /api/users/current
+```
+
+---
+
+### 🏷️ Categories
+
+#### Get categories
+
+```http
+GET /api/categories
+```
+
+**Query params:** | Parameter | Type | Description | |----------|------|-------------| | `page` |
+number | page number | | `limit` | number | items per page |
+
+---
+
+### 🛍️ Goods
+
+#### Get goods list
+
+```http
+GET /api/goods
+```
+
+**Query params:** | Parameter | Type | Description | |----------|------|-------------| | `category`
+| string | filter by category id | | `minPrice` | number | minimum price | | `maxPrice` | number |
+maximum price | | `page` | number | pagination | | `limit` | number | pagination |
+
+#### Get single good
+
+```http
+GET /api/goods/{id}
+```
+
+| Parameter | Type   | Description                     |
+| --------- | ------ | ------------------------------- |
+| `id`      | string | **Required**. ID of the product |
+
+---
+
+### 🧾 Orders
+
+#### Create order
+
+```http
+POST /api/orders
+```
+
+Requires auth.
+
+**Body example:**
+
+```json
+{
+  "items": [{ "goodId": "abc123", "quantity": 2 }],
+  "delivery": "NovaPoshta",
+  "payment": "card"
+}
+```
+
+#### Get my orders
+
+```http
+GET /api/orders/my
+```
+
+#### Update order status (admin only)
+
+```http
+PATCH /api/orders/{id}/status
+```
+
+---
+
+### ⭐ Feedbacks
+
+#### Create feedback
+
+```http
+POST /api/feedbacks
+```
+
+#### Get feedbacks
+
+```http
+GET /api/feedbacks
+```
+
+---
+
+### 📩 Subscriptions
+
+#### Create subscription
+
+```http
+POST /api/subscriptions
+```
+
+**Body example:**
+
+```json
+{
+  "email": "customer@example.com"
+}
+```
+
+---
