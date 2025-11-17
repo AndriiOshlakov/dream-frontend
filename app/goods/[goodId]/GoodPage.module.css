@@ -1,11 +1,14 @@
+
+
 .container {
   display: flex;
   flex-direction: column;
-  gap: 60px;
-  padding: 40px 20px;
-  max-width: 1200px;
+  gap: 32px;
+  padding: 24px 20px;
+  width: 100%;
   margin: 0 auto;
 }
+
 
 .breadcrumbs {
   display: flex;
@@ -16,7 +19,6 @@
 }
 
 .breadcrumbLink {
-  text-decoration: none;
   color: #6c6c6c;
   transition: color 0.2s ease;
 }
@@ -25,442 +27,605 @@
   color: #000;
 }
 
-.breadcrumbSeparator {
-  color: #999;
-}
 
-.breadcrumbCurrent {
-  color: #000;
-  font-weight: 500;
-}
 
-/* goodInfo */
 .good {
   display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
 }
 
+
 .imageWrapper {
+  width: 100%;
+  height: 360px;
   border-radius: 16px;
-  width: 640px;
-  height: 682px;
-  background-color: #f5f5f5;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: #f5f5f5;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image {
-  width: 640;
-  height: 683;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-/* discription */
+
 .info {
-  flex: 1;
-  min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
 .title {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 400;
   color: #111;
 }
 
-.ratingBlock {
+
+.priceBlock {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  color: #555;
-}
-
-.stars {
-  color: #f1c40f;
-  font-size: 18px;
 }
 
 .price {
-  font-size: 26px;
-  font-weight: 700;
+font-weight: 400;
+font-size: 20px;
+line-height: 140%;
+letter-spacing: 0.1em;
   color: #111;
-  margin-top: 4px;
 }
 
-.description {
-  color: #444;
+.divider {
+  color: #999;
+}
+
+.ratingInline {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  font-size: 16px;
+  color: #f1c40f;
+}
+
+.ratingValue,
+.reviewsCount {
+  font-size: 14px;
+  color: #555;
+}
+
+
+.descriptionSection {
+  font-size: 16px;
   line-height: 1.5;
-  font-size: 15px;
+  color: #222;
 }
 
-/* sizes */
+
+
 .sizeBlock {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 10px;
-  border: 1px solid var(--opacity-neutral-darkest-15);
+  padding: 12px;
+  border-radius: 12px;
 }
 
 .sizeSelect {
-  border-radius: 16px;
-  padding: 8px;
-  width: 640px;
   height: 40px;
-  cursor: pointer;
-  background: var(--opacity-transparent);
+  border-radius: 8px;
+  border: 1px solid #c8c8c8;
+  padding: 8px;
 }
+
+
 
 .cartRow {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 640px;
-  margin-top: 8px;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.buyButton {
+  flex: 1;
+  height: 40px;
+  border-radius: 100px;
+  border: none;
+  background: #ddeecc;
+  color: #000;
+  transition: background 0.2s ease;
+}
+
+.buyButton:hover {
+  background: #bcd7a0;
 }
 
 .quantityInput {
   width: 64px;
-  height: 44px;
-  border: 1px solid var(--opacity-neutral-darkest-15);
+  height: 40px;
   border-radius: 12px;
+  border: 1px solid #c8c8c8;
   text-align: center;
-  font-size: 16px;
-  color: #111;
-  outline: none;
-  transition: border-color 0.2s ease;
 }
 
-.quantityInput:focus {
-  border-color: var(--color-deco);
-}
-
-
-.buyButton {
-  flex: 1;
-  height: 44px;
-  border-radius: 100px;
-  border: 1px solid var(--color-deco);
-  background: var(--color-deco);
-  color: #000;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
-}
-
-.buyButton:hover {
-  background-color: #b8ddb9;
-}
-
-.buyButton:active {
-  transform: scale(0.98);
-}
 
 .buyNowButton {
-  width: 640px;
-  height: 44px;
+  width: 100%;
+  height: 40px;
   border-radius: 100px;
-  border: 1px solid var(--opacity-neutral-darkest-10);
-  background: var(--opacity-neutral-darkest-5);
-  color: #000;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 8px;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
+  background: #efefef;
 }
 
-.buyNowButton:hover {
-  background-color: #e8eae6;
-}
-
-.buyNowButton:active {
-  transform: scale(0.98);
-}
 
 .deliveryText {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #777;
+  font-size: 14px;
   text-align: center;
+  color: #666;
+  margin-top: 12px;
 }
 
-.detailsSection {
-  margin-top: 40px;
-  width: 640px;
+
+
+.longDescriptionSection {
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  border-top: 1px solid #e0e0e0;
-  padding-top: 20px;
+  gap: 16px;
 }
 
-.tabs {
-  display: flex;
-  gap: 24px;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 8px;
+.charTitleDes{
+font-weight: 400;
+font-size: 16px;
+line-height: 150%;
+color: var(--color-scheme-1-text);
 }
 
-.tabButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  color: #777;
-  padding: 6px 0;
-  position: relative;
-  transition: color 0.2s ease;
+
+
+.charTitle {
+font-weight: 400;
+font-size: 16px;
+line-height: 150%;
+color: var(--color-scheme-1-text);
 }
 
-.tabButton:hover {
-  color: #000;
-}
-
-.activeTab {
-  color: #000;
-}
-
-.activeTab::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #000;
-  border-radius: 2px;
-}
-
-.tabContent {
-  font-size: 15px;
-  color: #444;
+.description {
+  font-size: 16px;
   line-height: 1.5;
+  color: #222;
 }
 
-/* rewievs */
-.reviews {
-  margin-top: 40px;
-}
-
-.reviewsHeader {
+.characteristics {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  flex-direction: column;
+}
+
+.charList {
+  padding-left: 18px;
+  list-style: disc;
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
 }
 
 .reviewsHeader h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #111;
+font-weight: 400;
+font-size: 36px;
+line-height: 120%;
+letter-spacing: -0.01em;
+margin-bottom: 24px;
 }
 
 .reviewBtn {
-  background: none;
-  border: 1px solid #111;
-  padding: 6px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 14px;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
-.reviewBtn:hover {
-  background-color: #111;
-  color: #fff;
-}
-
-.loading {
-  text-align: center;
-  color: #555;
-  padding: 40px;
-}
-
-.error {
-  color: red;
-  text-align: center;
+  width: 335px;
+  height: 36px;
+  background-color: #ddeecc;
+  border-radius: 100px;
+  border: none;
+  margin-bottom: 40px;
 }
 
 .noReviews {
-  background-color: rgba(182, 204, 152, 0.4);
-  border-radius: 16px;
-  padding: 24px 0;
-  width: 753px;
-  height: 127px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  text-align: left;
-}
-
-.noReviews p {
-  font-size: 15px;
-  font-weight: 500;
-  color: #111;
+  width: 335px;
+  background: #d6eac0;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
 }
 
 .leaveReviewBtn {
+  margin-top: 10px;
+  background: #c5e1a5;
+  border-radius: 12px;
+  padding: 6px 12px;
   border: none;
-  background-color: #c6dcb1;
-  border-radius: 8px;
-  padding: 6px 14px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  width: 303px;
+  height: 36px;
 }
 
-.leaveReviewBtn:hover {
-  background-color: #b3ce9c;
-}
 
-@media (max-width: 768px) {
+
+@media (min-width: 768px) {
   .container {
-    padding: 64px 20px;
-    width: 375px;
-    margin: 0 auto;
+    min-width: 768px;
+    padding: 40px 20px;
   }
 
   .good {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
     gap: 40px;
-    width: 100%;
-    height: auto;
   }
 
   .imageWrapper {
-    width: 335px;
-    height: 357px;
     border-radius: 16px;
-    overflow: hidden;
-    background-color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 16px;
+    width: 336px;
+    height: 358px;
   }
 
   .info {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    width: calc(100% - 420px);
   }
 
-  .title {
-    font-size: 22px;
-  }
-
-  .price {
-    font-size: 20px;
-  }
-
-  .description {
-    font-size: 14px;
-    line-height: 1.4;
-  }
-
+  .buyNowButton,
   .sizeSelect {
-    padding: 8px;
-    width: 335px;
-    height: 40px;
-  }
-
-  .cartRow {
-    align-items: stretch;
     width: 100%;
-    gap: 10px;
-  }
-  .buyButton {
-    padding: 6px 12px;
-    width: 255px;
-    height: 36px;
   }
 
-  .buyNowButton {
-    padding: 6px 12px;
-    width: 335px;
-    height: 36px;
+  .sizeSelect{
+  background: var(--opacity-transparent);
+
   }
 
-  .quantityInput {
+  .longDescriptionSection {
+    width: 100%;
+
+    margin-bottom: 144px;
+  }
+.reviewsHeader h2 {
+ font-weight: 400;
+font-size: 36px;
+line-height: 120%;
+    margin-bottom: 8px;
+  } 
+  .reviewBtn {
+    align-self: flex-end;
+    width: 150px;
+    height: 36px;
+    border-radius: 100px;
+    border: 1px solid #ddeecc;
+    background-color: #ddeecc;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    font-size: 14px;
+  }
+  .reviewBtn:hover {
+    background-color: #9db484;
+  }
+  .reviewBtn:active {
+    background-color: #3b4331;
+  } 
+  .noReviews {
+    width: 704px;
+    height: 127px;
+    padding: 24px 0;
     border-radius: 16px;
-    padding: 8px;
-    width: 64px;
-    height: 40px;
+    background-color: #d6eac0;
+  
   }
+  .noReviews p {
+    font-size: 15px;
+    font-weight: 500;
+  } 
 
-  .deliveryText {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--color-scheme-1-text);
+
+  .leaveReviewBtn {
+    width: 156px;
+    height: 36px;
+    border-radius: 100px;
+    background-color: #c5e1a5;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    font-size: 14px;
   }
-  .reviewsHeader {
-    font-weight: 400;
-    font-size: 36px;
-    line-height: 120%;
-    letter-spacing: -0.01em;
-    color: var(--color-scheme-4-text);
-  }
-.leaveReviewBtn{
-border: 1px solid var(--color-deco);
-border-radius: 100px;
-padding: 6px 12px;
-width: 303px;
-height: 36px;
-
-
-
 }
 
 
 
-  .noReviews {
-border-radius: 16px;
-padding: 24px 16px;
-width: 335px;
-height: 127px;
+@media (min-width: 1440px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding: 40px 20px;
+    min-width: 1200px;
+    margin: 0 auto;
   }
-  .reviewBtn {
+  .breadcrumbs {
+    display: flex;
     align-items: center;
-    width: 335px;
-    height: 36px;
-    background: var(--color-deco);
-    border: 1px solid var(--color-deco);
-    border-radius: 100px;
-    padding-bottom: 40px;
+    gap: 6px;
+    font-size: 14px;
+    color: #6c6c6c;
   }
+  .breadcrumbLink {
+    text-decoration: none;
+    color: #6c6c6c;
+    transition: color 0.2s ease;
+  }
+  .breadcrumbLink:hover {
+    color: #000;
+  }
+  .breadcrumbSeparator {
+    color: #999;
+  }
+  .breadcrumbCurrent {
+    color: #000;
+    font-weight: 500;
+  } /* goodInfo */
+  .good {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+  }
+  .imageWrapper {
+    border-radius: 16px;
+    width: 640px;
+    height: 682px;
+    background-color: #f5f5f5;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .image {
+    width: 640;
+    height: 683;
+    object-fit: cover;
+  } /* discription */
+  .info {
+    flex: 1;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .title {
+    font-size: 40px;
+    font-weight: 400;
+    color: #111;
+  }
+  .ratingBlock {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #555;
+  }
+  .stars {
+    color: #f1c40f;
+    font-size: 18px;
+  }
+  .price {
+    font-size: 20px;
+    font-weight: 400;
+    color: #111;
+    margin-top: 4px;
+  }
+  .descriptionSection {
+    color: var(--color-scheme-1-text);
+    line-height: 150%;
+    font-size: 16px;
+    font-weight: 400;
+    width: 640px;
+  }
+  .charTitleDes {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: var(--color-scheme-1-text);
+    margin: 24px 0;
+  }
+  .charTitle {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: var(--color-scheme-1-text);
+  }
+  .characteristics {
+    margin-top: 24px;
+  }
+  .charList {
+    list-style: disc;
+  }
+  .longDescriptionSection {
+    margin-top: 24px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: var(--color-scheme-1-text);
+    width: 640px;
+    height: 544px;
+  } /* sizes */
+  .sizeBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+    border: 1px solid var(--opacity-neutral-darkest-15);
+  }
+  .sizeSelect {
+    border-radius: 16px;
+    padding: 8px;
+    width: 640px;
+    height: 40px;
+    cursor: pointer;
+    background: var(--opacity-transparent);
+  }
+  .cartRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 640px;
+    margin-top: 8px;
+    gap: 12px;
+  }
+  .quantityInput {
+    width: 64px;
+    height: 44px;
+    border: 1px solid var(--opacity-neutral-darkest-15);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+    color: #111;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .quantityInput:focus {
+    border-color: var(--color-deco);
+  }
+  .buyButton {
+    flex: 1;
+    height: 44px;
+    border-radius: 100px;
+    border: 1px solid var(--color-deco);
+    background: #ddeecc;
+    color: black;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.1s ease;
+  }
+  .buyButton:hover {
+    background-color: #9db484;
+  }
+  .buyButton:active {
+    transform: scale(0.98);
+    background-color: #3b4331;
+  }
+  .buyButton:disabled {
+    background: var(--color-deco);
+    opacity: 0.4;
+  }
+  .buyNowButton {
+    width: 640px;
+    height: 44px;
+    border-radius: 100px;
+    border: 1px solid var(--opacity-neutral-darkest-10);
+    background-color: var(--opacity-neutral-darkest-5);
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 8px;
+    transition:
+      background-color 0.2s ease,
+      transform 0.1s ease;
+  }
+  .buyNowButton:hover {
+    background: var(--opacity-neutral-darkest-15);
+  }
+  .buyNowButton:active {
+    transform: scale(0.98);
+    background: var(--opacity-neutral-darkest-50);
+  }
+  .buyNowButton:disabled {
+    background: var(--opacity-neutral-darkest-5);
+    opacity: 0.4;
+  }
+  .deliveryText {
+    margin-top: 16px;
+    padding-left: 80px;
+    font-size: 13px;
+    color: #777;
+    text-align: center;
+  } /* rewievs */
   .reviews {
     width: 100%;
-    align-items: center;
+    max-width: 1312px;
+    margin: 40px auto 0;
+    display: flex;
     flex-direction: column;
+    gap: 24px;
+  } 
+  .reviewsHeader h2 {
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--color-scheme-1-text);
+    margin-bottom: 8px;
+  } 
+  .reviewBtn {
+    align-self: flex-end;
+    width: 150px;
+    height: 36px;
+    border-radius: 100px;
+    border: 1px solid #ddeecc;
+    background-color: #ddeecc;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    font-size: 14px;
+  }
+  .reviewBtn:hover {
+    background-color: #9db484;
+  }
+  .reviewBtn:active {
+    background-color: #3b4331;
+  } 
+  .noReviews {
+    width: 753px;
+    height: 127px;
+    padding: 24px 0;
+    border-radius: 16px;
+    background-color: #d6eac0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+  .noReviews p {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-scheme-1-text);
+  } 
+  .leaveReviewBtn {
+    width: 156px;
+    height: 36px;
+    border-radius: 100px;
+    background-color: #c5e1a5;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    font-size: 14px;
+  }
+  .leaveReviewBtn:hover {
+    background-color: #9db484;
+  }
+  .leaveReviewBtn:active {
+    background-color: #3b4331;
+  }
+  .loading {
+    text-align: center;
+    color: #555;
+    padding: 40px;
+  }
+  .error {
+    color: red;
+    text-align: center;
   }
 }
