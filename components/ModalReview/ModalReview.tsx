@@ -47,7 +47,7 @@ export default function ModalReview({ onClose, productId, category }: ModalRevie
       toast.error('Оберіть рейтинг ★');
       return;
     }
-    await mutation.mutateAsync({
+    mutation.mutate({
       author: name.trim(),
       description: text.trim(),
       rate: rating,

@@ -3,7 +3,7 @@ import { EditCurrentUser, User } from '@/types/user';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { CategoriesResponse } from '@/types/category';
 import { Order } from '@/types/order';
-import { ApiFeedback, Review } from '@/types/feedback';
+import { ApiFeedback, Review, Reviews } from '@/types/feedback';
 
 //! ------
 //! -AUTH-
@@ -160,37 +160,17 @@ export async function fetchReviews(): Promise<Review[]> {
   }));
 }
 
-// export const sendFeedback = async (data: {
-//   goodId: string;
-//   author: string;
-//   description: string;
-//   rate: number;
-// }) => {
-//   const response = await nextServer.post('/feedbacks', data);
-//   return response.data;
-// };
 export async function sendFeedback(data: {
   author: string;
   description: string;
   rate: number;
   category: string;
   productId: string;
-}) {
-  const response = await fetch('/api/feedbacks', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => null);
-    throw new Error(error?.error || 'Помилка відправки відгуку');
-  }
-
-  return response.json();
+}): Promise<Reviews> {
+  const response = await nextServer.post<{ data: Reviews }>('/feedbacks', data);
+  return response.data.data;
 }
+
 //! ---------------
 //! -SUBSCRIPTIONS-
 //! ---------------
