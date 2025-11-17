@@ -7,9 +7,10 @@ import css from './AuthNavigation.module.css';
 interface AuthNavigationProps {
   variant?: 'header' | 'mobile';
   className?: string;
+  onClose?: () => void;
 }
 
-const AuthNavigation = ({ variant = 'header' }: AuthNavigationProps) => {
+const AuthNavigation = ({ variant = 'header', onClose }: AuthNavigationProps) => {
   const { isAuthenticated } = useAuthStore();
 
   const containerClass = variant === 'header' ? css.authNavigationHeader : css.authNavigationMobile;
@@ -23,6 +24,7 @@ const AuthNavigation = ({ variant = 'header' }: AuthNavigationProps) => {
         <li className={itemClass}>
           <Link
             href="/profile"
+            onClick={onClose}
             className={variant === 'header' ? css.authNavigationLinkHeader : css.signInClass}
           >
             Кабінет
@@ -33,6 +35,7 @@ const AuthNavigation = ({ variant = 'header' }: AuthNavigationProps) => {
           <li className={itemClass}>
             <Link
               href="/auth/login"
+              onClick={onClose}
               className={variant === 'header' ? css.authNavigationLinkHeader : css.signInClass}
             >
               Вхід
@@ -41,6 +44,7 @@ const AuthNavigation = ({ variant = 'header' }: AuthNavigationProps) => {
           <li className={variant === 'header' ? css.authNavigationLinkHeaderReg : itemClass}>
             <Link
               href="/auth/register"
+              onClick={onClose}
               className={
                 variant === 'header' ? css.authNavigationLinkHeader : css.registrationClass
               }
