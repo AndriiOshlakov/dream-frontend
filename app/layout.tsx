@@ -51,14 +51,16 @@ export default function RootLayout({
     <html lang="uk">
       <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
-          <Header />
-          <Container>
-            <main>
-              {children}
-              {modal}
-            </main>
-          </Container>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <Container>
+              <main>
+                {children}
+                {modal}
+              </main>
+            </Container>
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>
