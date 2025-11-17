@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import GoodsOrderList from '@/components/GoodsOrderList/GoodsOrderList';
 import { useRouter } from 'next/navigation';

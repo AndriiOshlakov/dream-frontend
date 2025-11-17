@@ -3,6 +3,7 @@ import { EditCurrentUser, User } from '@/types/user';
 import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { CategoriesResponse } from '@/types/category';
 import { Order } from '@/types/order';
+import { ApiFeedback, Review } from '@/types/feedback';
 
 //! ------
 //! -AUTH-
@@ -13,7 +14,7 @@ interface AuthResponse {
   user: User;
 }
 
-export async function register(data: RegisterRequest): Promise<AuthResponse> {
+export async function register(data?: RegisterRequest): Promise<AuthResponse> {
   const response = await nextServer.post<AuthResponse>('/auth/register', data);
   return response.data;
 }
@@ -64,11 +65,15 @@ export async function getCategories(page?: number) {
 //! -------
 //! -GOODS-
 //! -------
+
 export interface GoodsRequestParams {
-  // categoryId?: string;
+  category?: string;
   priceMin?: number;
   priceMax?: number;
   page?: number;
+  perPage?: number;
+  gender?: 'man' | 'women' | 'unisex' | undefined;
+  size?: string;
 }
 
 interface GoodRessponse {
@@ -96,9 +101,17 @@ interface GoodsResponse {
   goods: GoodRessponse[];
 }
 
-export async function getGoods({ priceMin, priceMax, page }: GoodsRequestParams) {
+export async function getGoods({
+  category,
+  priceMin,
+  priceMax,
+  page,
+  perPage,
+  gender,
+  size,
+}: GoodsRequestParams) {
   const response = await nextServer.get<GoodsResponse>('/goods', {
-    params: { priceMin, priceMax, page },
+    params: { ...(category ? { category } : {}), priceMin, priceMax, page, perPage, gender, size },
   });
 
   console.log('HELLO', response.data);
@@ -134,6 +147,66 @@ export const fetchMyOrders = (): Order[] => {
 //! -FEEDBACKS-
 //! -----------
 
+export async function fetchReviews(): Promise<Review[]> {
+  const response = await nextServer.get<ApiFeedback[]>('/feedbacks');
+
+  const feedbacks = response.data;
+
+  return feedbacks.map((feedback) => ({
+    name: feedback.author,
+    rating: feedback.rate,
+    comment: feedback.description,
+    category: feedback.category,
+  }));
+}
+
+// export const sendFeedback = async (data: {
+//   goodId: string;
+//   author: string;
+//   description: string;
+//   rate: number;
+// }) => {
+//   const response = await nextServer.post('/feedbacks', data);
+//   return response.data;
+// };
+export async function sendFeedback(data: {
+  author: string;
+  description: string;
+  rate: number;
+  category: string;
+  productId: string;
+}) {
+  const response = await fetch('/api/feedbacks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.error || 'Помилка відправки відгуку');
+  }
+
+  return response.json();
+}
 //! ---------------
 //! -SUBSCRIPTIONS-
 //! ---------------
+export async function subscribeUser(email: string) {
+  const response = await fetch('/api/subscriptions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.error || 'Помилка підписки');
+  }
+
+  return response.json();
+}

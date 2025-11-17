@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import ReviewsList from '@/components/ReviewsList/ReviewsList';
 import ModalReview from '@/components/ModalReview/ModalReview';
@@ -23,7 +23,8 @@ interface Good {
 interface Feedback {
   _id: string;
   rate: number;
-  comment: string;
+  description: string;
+  category: string;
   productId: string;
 }
 
@@ -61,32 +62,35 @@ export default function GoodPage() {
     fetchGood();
   }, [goodId]);
 
+  const fetchFeedbacks = useCallback(async () => {
+    if (!good) return;
+
+    try {
+      const res = await fetch('https://dream-backend-a69s.onrender.com/api/feedbacks');
+      const data = await res.json();
+
+      const related = data.feedbacks?.filter((f: Feedback) => f.productId === good._id);
+
+      setFeedbacks(related || []);
+
+      if (related?.length) {
+        const avg = related.reduce((sum: number, f: Feedback) => sum + f.rate, 0) / related.length;
+        setAverageRate(Math.round(avg * 2) / 2);
+      } else {
+        setAverageRate(0);
+      }
+    } catch {
+      console.warn('⚠️ Не вдалося отримати відгуки.');
+    }
+  }, [good]);
 
   useEffect(() => {
-    async function fetchFeedbacks() {
-      try {
-        const res = await fetch(`/api/feedbacks?productId=${goodId}`);
-
-        if (!res.ok) return;
-
-        const data = await res.json();
-        const list: Feedback[] = data.feedbacks || [];
-
-        setFeedbacks(list);
-
-        if (list.length > 0) {
-          const avg = list.reduce((s, f) => s + f.rate, 0) / list.length;
-          setAverageRate(Math.round(avg * 2) / 2);
-        } else {
-          setAverageRate(0);
-        }
-      } catch {
-        console.warn('Не вдалося отримати відгуки');
-      }
-    }
-
     fetchFeedbacks();
-  }, [goodId]);
+  }, [fetchFeedbacks]);
+
+  function handleAddToCart() {
+    if (good) alert(`✅ ${good.name} додано в кошик!`);
+  }
 
   if (loading) return <p className={css.loading}>Завантаження...</p>;
   if (!good) return <p className={css.error}>Товар не знайдено</p>;
@@ -192,8 +196,6 @@ export default function GoodPage() {
         <button className={css.reviewBtn} onClick={openModal}>
           Залишити відгук
         </button>
-
-
         {feedbacks.length > 0 ? (
           <ReviewsList />
         ) : (
@@ -204,8 +206,9 @@ export default function GoodPage() {
             </button>
           </div>
         )}
-
-        {isModalOpen && <ModalReview key={goodId} onClose={closeModal} goodId={goodId} />}
+        {isModalOpen && (
+          <ModalReview onClose={closeModal} productId={good._id} category={good.category.name} />
+        )}
       </section>
     </main>
   );

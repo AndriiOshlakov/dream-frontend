@@ -6,8 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import { nextServer } from '@/lib/api/api';
+import { subscribeUser } from '@/lib/api/clientApi';
 
 export default function Footer() {
   const queryClient = useQueryClient();
@@ -15,17 +14,8 @@ export default function Footer() {
   const [email, setEmail] = useState('');
 
   const mutation = useMutation({
-    mutationFn: async ({ email }: { email: string }) => {
-      try {
-        const response = await nextServer.post('/subscriptions', { email });
-        return response.data;
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          const message = error.response?.data?.message || 'Помилка підписки';
-          throw new Error(message);
-        }
-        throw new Error('Невідома помилка');
-      }
+    mutationFn: async (email: string) => {
+      return subscribeUser(email);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['email'] });
@@ -36,9 +26,10 @@ export default function Footer() {
       toast.error(error.message);
     },
   });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate({ email });
+    mutation.mutate(email);
   };
 
   return (
