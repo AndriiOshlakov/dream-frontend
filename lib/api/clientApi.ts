@@ -113,8 +113,6 @@ export async function getGoods({
     params: { ...(category ? { category } : {}), priceMin, priceMax, page, perPage, gender, size },
   });
 
-  console.log('HELLO', response.data);
-
   return response.data;
 }
 //! --------
