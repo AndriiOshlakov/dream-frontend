@@ -4,7 +4,6 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import ReviewsList from '@/components/ReviewsList/ReviewsList';
 import ModalReview from '@/components/ModalReview/ModalReview';
 import css from './GoodPage.module.css';
 
@@ -15,16 +14,18 @@ interface Good {
   image: string;
   size: string[];
   description: string;
-  fullDescription?: string;
   prevDescription?: string;
+  fullDescription?: string;
   characteristics?: string[];
+  category?: string;
 }
 
 interface Feedback {
   _id: string;
   rate: number;
-  comment: string;
+  description: string;
   productId: string;
+  author?: string;
 }
 
 export default function GoodPage() {
@@ -34,11 +35,45 @@ export default function GoodPage() {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [averageRate, setAverageRate] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setRefreshTrigger(prev => prev + 1);
+    }, 1500);
+  };
+
+
+  const nextSlide = () => {
+    if (feedbacks.length <= getVisibleCount()) return;
+    setCurrentSlide(prev => Math.min(prev + 1, feedbacks.length - getVisibleCount()));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(prev => Math.max(prev - 1, 0));
+  };
+
+
+  const getVisibleCount = () => {
+    if (typeof window === 'undefined') return 1;
+    
+    if (window.innerWidth >= 1440) return 3;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  };
+
+
+  const getVisibleFeedbacks = () => {
+    return feedbacks.slice(currentSlide, currentSlide + getVisibleCount());
+  };
+
+
+  const canGoNext = feedbacks.length > 0 && currentSlide < feedbacks.length - getVisibleCount();
+  const canGoPrev = feedbacks.length > 0 && currentSlide > 0;
 
 
   useEffect(() => {
@@ -50,9 +85,8 @@ export default function GoodPage() {
 
         const data = await res.json();
         setGood(data);
-      } catch (err) {
-        console.error(err);
-        setError('Не вдалося завантажити товар');
+      } catch {
+        console.log('Не вдалося завантажити товар');
       } finally {
         setLoading(false);
       }
@@ -63,55 +97,75 @@ export default function GoodPage() {
 
 
   useEffect(() => {
-    async function fetchFeedbacks() {
+    const loadFeedbacks = async () => {
       try {
+        console.log('🔄 Запит відгуків для товару:', goodId);
+        
         const res = await fetch(`/api/feedbacks?productId=${goodId}`);
-
-        if (!res.ok) return;
-
-        const data = await res.json();
-        const list: Feedback[] = data.feedbacks || [];
-
-        setFeedbacks(list);
-
-        if (list.length > 0) {
-          const avg = list.reduce((s, f) => s + f.rate, 0) / list.length;
-          setAverageRate(Math.round(avg * 2) / 2);
+        
+        if (res.ok) {
+          const data = await res.json();
+          const allFeedbacks: Feedback[] = data.feedbacks || data || [];
+          
+          
+          const filteredFeedbacks = allFeedbacks.filter(feedback => 
+            feedback.productId === goodId
+          );
+          
+          console.log('✅ Відфільтровані відгуки для товару:', filteredFeedbacks.length);
+          
+          setFeedbacks(filteredFeedbacks);
+          
+          if (filteredFeedbacks.length > 0) {
+            const avg = filteredFeedbacks.reduce((sum, f) => sum + f.rate, 0) / filteredFeedbacks.length;
+            setAverageRate(Math.round(avg * 2) / 2);
+          } else {
+            setAverageRate(0);
+          }
         } else {
+          console.warn('⚠️ Не вдалося отримати відгуки');
+          setFeedbacks([]);
           setAverageRate(0);
         }
-      } catch {
-        console.warn('Не вдалося отримати відгуки');
+      } catch (error) {
+        console.error('💥 Помилка завантаження відгуків:', error);
+        setFeedbacks([]);
+        setAverageRate(0);
       }
-    }
+    };
 
-    fetchFeedbacks();
-  }, [goodId]);
+    loadFeedbacks();
+  }, [goodId, refreshTrigger]);
+
+  
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, [feedbacks.length]);
+
 
   if (loading) return <p className={css.loading}>Завантаження...</p>;
   if (!good) return <p className={css.error}>Товар не знайдено</p>;
 
+  const visibleFeedbacks = getVisibleFeedbacks();
+  const authorNames = ["Олена Коваль", "Ігор Петров", "Ігор Шевченко", "Марія Іваненко", "Андрій Сидоренко"];
+
   return (
     <main className={css.container}>
-      
       <nav className={css.breadcrumbs}>
-        <a href="/goods" className={css.breadcrumbLink}>
-          Товари
-        </a>
+        <a href="/goods" className={css.breadcrumbLink}>Товари</a>
         <span className={css.breadcrumbSeparator}>›</span>
         <span className={css.breadcrumbCurrent}>{good.name}</span>
       </nav>
 
-      {/* продукт  */}
       <section className={css.good}>
         <div className={css.imageWrapper}>
-          <img src={good.image} alt={good.name} className={css.image} loading="lazy" />
+          <img src={good.image} alt={good.name} className={css.image} />
         </div>
 
         <div className={css.info}>
           <h1 className={css.title}>{good.name}</h1>
 
-          {/* ціна рейтинг  */}
+          {/* ціна + рейтинг */}
           <div className={css.priceBlock}>
             <span className={css.price}>
               {good.price.value} {good.price.currency}
@@ -129,73 +183,82 @@ export default function GoodPage() {
                   </span>
                 );
               })}
-
               <span className={css.ratingValue}>({averageRate.toFixed(1)})</span>
               <span className={css.reviewsCount}>• {feedbacks.length} відгуків</span>
             </div>
           </div>
 
-
+          {/* короткий опис */}
           <section className={css.descriptionSection}>
-            {good.prevDescription && <p className={css.prevDescription}>{good.prevDescription}</p>}
+            {good.prevDescription && (
+              <p className={css.prevDescription}>{good.prevDescription}</p>
+            )}
           </section>
 
-          {/* розмір */}
+          {/* Розмір */}
           <div className={css.sizeBlock}>
             <p>Розмір:</p>
             <select className={css.sizeSelect}>
               {good.size.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
+                <option key={s}>{s}</option>
               ))}
             </select>
           </div>
-          {/* додати до карти */}
+
+          {/* кошик */}
           <div className={css.cartRow}>
             <button className={css.buyButton}>Додати в кошик</button>
             <input type="number" min="1" defaultValue="1" className={css.quantityInput} />
           </div>
 
           <button className={css.buyNowButton}>Купити зараз</button>
-          <p className={css.deliveryText}>Безкоштовна доставка для замовлень від 1000 грн</p>
+          <p className={css.deliveryText}>Безкоштовна доставка від 1000 грн</p>
 
-          {error && <p className={css.error}>{error}</p>}
-      {/* повний опис */}
-      <section className={css.longDescriptionSection}>
-        <h3 className={css.charTitleDes}>Опис</h3>
-        {good.description && <p className={css.description}>{good.description}</p>}
+          {/* ПОВНИЙ ОПИС */}
+          <section className={css.longDescriptionSection}>
+            <h3 className={css.charTitleDes}>Опис</h3>
 
-        {good.characteristics && good.characteristics.length > 0 && (
-          <div className={css.characteristics}>
-            <h3 className={css.charTitle}>Основні характеристики</h3>
-            <ul className={css.charList}>
-              {good.characteristics.map((item, idx) => (
-                <li key={idx} className={css.charItem}>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
+            {good.description && (
+              <p className={css.description}>{good.description}</p>
+            )}
+
+            {good.characteristics?.length ? (
+              <div className={css.characteristics}>
+                <h3 className={css.charTitle}>Основні характеристики</h3>
+                <ul className={css.charList}>
+                  {good.characteristics.map((item, idx) => (
+                    <li key={idx} className={css.charItem}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </section>
         </div>
       </section>
 
-
-
-      {/* відгуки */}
       <section className={css.reviews}>
-        <div className={css.reviewsHeader}>
+        <div className={css.reviewsTop}>
           <h2>Відгуки клієнтів</h2>
-        </div>
-        <button className={css.reviewBtn} onClick={openModal}>
-          Залишити відгук
-        </button>
 
+          <button className={css.reviewBtn} onClick={openModal}>
+            Залишити відгук
+          </button>
+        </div>
 
         {feedbacks.length > 0 ? (
-          <ReviewsList />
+          <div className={css.reviewsList}>
+            {visibleFeedbacks.map(feedback => (
+              <div key={feedback._id} className={css.reviewItem}>
+                <div className={css.rating}>
+                  {'★'.repeat(feedback.rate)}{'☆'.repeat(5 - feedback.rate)}
+                </div>
+                <p className={css.reviewText}>{feedback.description}</p>
+                <div className={css.reviewAuthor}>
+                  <strong>{feedback.author || authorNames[Math.floor(Math.random() * authorNames.length)]}</strong>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className={css.noReviews}>
             <p>У цього товару ще немає відгуків</p>
@@ -205,7 +268,37 @@ export default function GoodPage() {
           </div>
         )}
 
-        {isModalOpen && <ModalReview key={goodId} onClose={closeModal} goodId={goodId} />}
+        
+        <div className={css.arrows}>
+          <button 
+            className={`${css.arrowBtn} ${!canGoPrev ? css.arrowBtnDisabled : ''}`}
+            onClick={prevSlide}
+            disabled={!canGoPrev}
+          >
+            <svg width="24" height="24">
+              <use href="/symbol-defs.svg#icon-arrow_back" />
+            </svg>
+          </button>
+
+          <button 
+            className={`${css.arrowBtn} ${!canGoNext ? css.arrowBtnDisabled : ''}`}
+            onClick={nextSlide}
+            disabled={!canGoNext}
+          >
+            <svg width="24" height="24">
+              <use href="/symbol-defs.svg#icon-arrow_forward" />
+            </svg>
+          </button>
+        </div>
+
+        {isModalOpen && (
+          <ModalReview
+            key={Date.now()} 
+            onClose={closeModal}
+            productId={goodId}
+            category={good.category || 'general'}
+          />
+        )}
       </section>
     </main>
   );

@@ -3,20 +3,31 @@
 import { useShopStore } from '@/lib/store/cartStore';
 import css from './GoodsOrderList.module.css';
 import Image from 'next/image';
+import MessageNoInfo from '../MessageNoInfo/MessageNoInfo';
+import { useRouter } from 'next/navigation';
 
 export default function GoodsOrderList() {
   const { cartItems, removeFromCart, updateQuantity } = useShopStore();
+  const router = useRouter();
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const delivery = subtotal > 0 ? 50 : 0;
   const total = subtotal + delivery;
+
+  const handleGoToGoods = () => {
+    router.push('/goods');
+  };
 
   return (
     <div className={css.orderContainer}>
       <ul className={css.orderList}>
         {cartItems.length === 0 ? (
           <li className={css.orderItem}>
-            <p>Ваш кошик порожній</p>
+            <MessageNoInfo
+              text="Ваш кошик порожній, мерщій до покупок!"
+              buttonText="До покупок"
+              onClick={handleGoToGoods}
+            />
           </li>
         ) : (
           cartItems.map((item) => (
@@ -35,12 +46,23 @@ export default function GoodsOrderList() {
                 <div className={css.orderGoodWrapper}>
                   <h3 className={css.orderGoodName}>{item.name}</h3>
                   <div className={css.orderRaiting}>
-                    <span className={css.stars}>⭐{item.rating}</span>
-                    <span className={css.reviews}>({item.reviewsCount})</span>
+                    <span className={css.orderStars}>
+                      <svg className={css.orderStarsIcon} width="16" height="16">
+                        <use href="symbol-defs.svg#icon-star-filled" />
+                      </svg>
+                      {item.rating}
+                    </span>
+                    <span className={css.orderReviews}>
+                      <svg className={css.orderReviewsIcon} width="16" height="16">
+                        <use href="symbol-defs.svg#icon-comment" />
+                      </svg>
+                      ({item.reviewsCount})
+                    </span>
                   </div>
                 </div>
 
                 <div className={css.orderGoodRigth}>
+                  <div className={css.orderPrice}>{item.price * item.quantity} ₴</div>
                   <div className={css.orderGoodRigthActions}>
                     <input
                       type="number"
@@ -50,10 +72,11 @@ export default function GoodsOrderList() {
                       onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
                     />
                     <button className={css.orderDeleteBtn} onClick={() => removeFromCart(item.id)}>
-                      ✕
+                      <svg width="24" height="24">
+                        <use href="symbol-defs.svg#icon-delete" />
+                      </svg>
                     </button>
                   </div>
-                  <div className={css.orderPrice}>{item.price * item.quantity} ₴</div>
                 </div>
               </div>
             </li>
@@ -71,8 +94,8 @@ export default function GoodsOrderList() {
             <span className={css.dorderDeliveryPrice}>Доставка:</span>
             <span className={css.orderDeliveryPriceValue}>{delivery} ₴</span>
           </div>
-          <div className={css.orderTotalPrice}>
-            <span className={css.torderTotalPrice}>Всього:</span>
+          <div className={css.orderPriceItem}>
+            <span className={css.orderTotalPrice}>Всього:</span>
             <span className={css.orderTotalPriceValue}>{total} ₴</span>
           </div>
         </div>

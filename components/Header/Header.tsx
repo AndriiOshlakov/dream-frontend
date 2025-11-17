@@ -6,9 +6,12 @@ import { useState, useEffect } from 'react';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import css from './Header.module.css';
 import Container from '../Container/Container';
+import { useShopStore } from '@/lib/store/cartStore';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const cartItems = useShopStore((s) => s.cartItems);
+  const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
@@ -61,6 +64,7 @@ export default function Header() {
               <svg className={css.headerBasketIcon} width="24" height="24">
                 <use href="/symbol-defs.svg#icon-shopping_cart" />
               </svg>
+              {totalCount > 0 && <span className={css.cartBadge}>{totalCount}</span>}
             </Link>
           </div>
         </div>
