@@ -1,96 +1,42 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Keyboard } from 'swiper/modules';
-import type { Swiper as SwiperType } from 'swiper';
-import 'swiper/css';
-
-import type { Category } from '../../types/category';
-import css from './CategoriesList.module.css';
+import Link from 'next/link';
 import Image from 'next/image';
+import css from './CategoriesList.module.css';
+import { useCategories } from '@/hooks/useCategories';
 
-interface CategoriesListProps {
-  categories: Category[];
-  onCategoryClick?: (category: Category) => void;
-}
+export default function CategoriesList() {
+  const { categories, loading } = useCategories();
 
-export default function CategoriesList({ categories, onCategoryClick }: CategoriesListProps) {
-  const swiperRef = useRef<SwiperType | null>(null);
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
+  if (loading) {
+    return <p>Завантаження категорій...</p>;
+  }
 
-  if (!categories.length) return null;
-
-  const handlePrev = () => {
-    swiperRef.current?.slidePrev();
-  };
-
-  const handleNext = () => {
-    swiperRef.current?.slideNext();
-  };
+  if (categories.length === 0) {
+    return <p>Категорій не знайдено.</p>;
+  }
 
   return (
-    <div className={css.wrapper}>
-      <button
-        type="button"
-        onClick={handlePrev}
-        disabled={isBeginning}
-        aria-label="Попередні категорії"
-        className={`${css.navButton} ${css.prevButton}`}
-      >
-        ‹
-      </button>
-
-      {/* <Swiper
-        modules={[Keyboard]}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        onSlideChange={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        keyboard={{ enabled: true, onlyInViewport: true }}
-        spaceBetween={16}
-        breakpoints={{
-          0: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1440: { slidesPerView: 3 },
-        }}
-        className={css.swiper}
-        tag="ul"
-      >
-        {categories.map((category) => (
-          <SwiperSlide key={category.id} tag="li" className={css.slide}>
-            <button type="button" className={css.card} onClick={() => onCategoryClick?.(category)}>
-              <div className={css.imageWrapper}>
+    <section className={css.categoriesSection}>
+      <div className="container">
+        <h2 className={css.title}>Категорії</h2>
+        <ul className={css.list}>
+          {categories.map((cat) => (
+            <li key={cat._id} className={css.item}>
+              <Link href={'/categories'} className={css.card}>
                 <Image
-                  src={category.imageUrl}
-                  alt={category.title}
+                  src={cat.img ?? '/img/categories/default.png'}
+                  alt={cat.name}
+                  width={336}
+                  height={223}
                   className={css.image}
-                  loading="lazy"
-                  width={416}
-                  height={277}
                 />
-              </div>
-              <p className={css.title}>{category.title}</p>
-            </button>
-          </SwiperSlide>
-        ))}
-      </Swiper> */}
-
-      <button
-        type="button"
-        onClick={handleNext}
-        disabled={isEnd}
-        aria-label="Наступні категорії"
-        className={`${css.navButton} ${css.nextButton}`}
-      >
-        ›
-      </button>
-    </div>
+                <p className={css.name}>{cat.name}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
