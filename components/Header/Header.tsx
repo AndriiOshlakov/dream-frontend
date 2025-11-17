@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import css from './Header.module.css';
 import Container from '../Container/Container';
-import CartIcon from '../CartIcon/CartIcon';
 import { useShopStore } from '@/lib/store/cartStore';
 
 export default function Header() {
