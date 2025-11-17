@@ -4,9 +4,20 @@ import { useQuery } from '@tanstack/react-query';
 import css from './Profile.module.css';
 import OrderItem from '@/components/OrderItem/OrderItem';
 import ProfileForm from '@/components/ProfileForm/ProfileForm';
-import { fetchMyOrders } from '@/lib/api/clientApi';
+import { logout, fetchMyOrders } from '@/lib/api/clientApi';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function ProfileClient() {
+  const router = useRouter();
+  const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated);
+
+  const handleLogout = async () => {
+    await logout();
+    clearIsAuthenticated();
+    router.push('/auth/login');
+  };
+
   const {
     data: orders,
     isLoading,
@@ -54,7 +65,9 @@ export default function ProfileClient() {
         </section>
       </div>
 
-      <button className={css.logoutButton}>Вийти з кабінету</button>
+      <button onClick={handleLogout} className={css.logoutButton}>
+        Вийти з кабінету
+      </button>
     </div>
   );
 }
