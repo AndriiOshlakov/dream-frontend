@@ -36,5 +36,5 @@ export interface Good {
   reviewsCount: number;
   rating?: number;
   prevDescription?: string;
-  characteristics?: string;
+  characteristics?: string[];
 }
