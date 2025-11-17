@@ -1,0 +1,250 @@
+.section {
+  background-color: #f3f9ed;
+  padding: 48px 0;
+}
+
+.section .container {
+  width: 100%;
+  max-width: 395px;
+  padding: 0 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: "Nunito Sans", Montserrat, sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #000;
+  max-width: 227px;
+  white-space: normal;
+  margin: 0;
+}
+
+.allBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.05);
+  color: #000;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s,
+    transform 0.1s;
+  margin-top: 4px;
+}
+
+.allBtn:hover,
+.allBtn:focus {
+  background: #c5e1a5;
+  border-color: #c5e1a5;
+}
+
+.allBtn:active {
+  background: #1b5e20;
+  border-color: #1b5e20;
+  color: #fff;
+  transform: translateY(1px);
+}
+
+/* ===== Слайдер ===== */
+
+.sliderWrapper {
+  position: relative;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  background-color: transparent;
+  border-radius: 16px;
+  padding: 0;
+  width: 335px;
+}
+
+.cardButton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* Зображення */
+
+.imgWrap {
+  width: 100%;
+  height: 277px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.imgWrap:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.imgWrap:hover .img {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+/* Назва категорії */
+
+.categoryName {
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+}
+
+/* ===== Стрілки ===== */
+
+.arrows {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.arrowBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #c5e1a5;
+  background: #c5e1a5;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+  pointer-events: auto;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  stroke: #000;
+  fill: none;
+}
+
+.arrowBtn:hover:not(:disabled),
+.arrowBtn:focus-visible:not(:disabled) {
+  background: #92b46e;
+  border-color: #92b46e;
+}
+
+.arrowBtn:active:not(:disabled) {
+  background: #1b5e20;
+  border-color: #1b5e20;
+}
+
+.arrowBtn:active:not(:disabled) .icon {
+  stroke: #fff;
+}
+
+.arrowBtn:disabled {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  cursor: default;
+  pointer-events: none;
+}
+
+.arrowBtn:disabled .icon {
+  stroke: rgba(0, 0, 0, 0.25);
+}
+
+/***** ===== TABLET ≥768px ===== *****/
+@media (min-width: 768px) {
+  .section {
+    padding: 48px 0;
+  }
+
+  .section .container {
+    max-width: 736px;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .card {
+    width: 336px;
+  }
+
+  .imgWrap {
+    height: 223px;
+  }
+
+  .arrowBtn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/***** ===== DESKTOP ≥1440px ===== *****/
+@media (min-width: 1440px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .section .container {
+    max-width: 1312px;
+  }
+
+  .card {
+    width: 416px;
+  }
+
+  .imgWrap {
+    height: 277px;
+  }
+}
