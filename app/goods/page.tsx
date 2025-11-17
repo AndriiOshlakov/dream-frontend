@@ -172,6 +172,8 @@ export default function GoodsPage() {
 
                   <button>
                     <Link href={`../goods/${good._id}`}>Детальніше</Link>
+                  
+
                   </button>
                 </li>
               ))}

@@ -21,3 +21,6 @@ export async function GET(request: NextRequest, { params }: RequestServerProps) 
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+
+

@@ -5,9 +5,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import ReviewsList from '@/components/ReviewsList/ReviewsList';
-import css from './GoodPage.module.css';
-
 import ModalReview from '@/components/ModalReview/ModalReview';
+import css from './GoodPage.module.css';
 
 interface Good {
   _id: string;
@@ -16,9 +15,10 @@ interface Good {
   category: { name: string };
   image: string;
   size: string[];
-  characteristics?: string[];
   description: string;
-  feedbacks?: string[];
+  fullDescription?: string;
+  prevDescription?: string;
+  characteristics?: string[];
 }
 
 interface Feedback {
@@ -30,57 +30,31 @@ interface Feedback {
 }
 
 export default function GoodPage() {
-  const params = useParams();
-  const goodId = params.goodId as string;
+  const { goodId } = useParams() as { goodId: string };
 
   const [good, setGood] = useState<Good | null>(null);
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [averageRate, setAverageRate] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [, setIsClient] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     async function fetchGood() {
       try {
-        const res = await fetch('https://dream-backend-a69s.onrender.com/api/goods', {
-          headers: { Accept: 'application/json' },
-        });
+        const res = await fetch(`/api/goods/${goodId}`, { cache: 'no-store' });
+
+        if (!res.ok) throw new Error('Помилка завантаження товару');
 
         const data = await res.json();
-        const found = data.goods?.find((item: Good) => item._id === goodId);
-
-        if (found) setGood(found);
-        else throw new Error('Товар не знайдено');
-      } catch {
-        console.warn('⚠️ Сервер недоступний — використано мокові дані.');
-
-        const mock: Good = {
-          _id: '6877b9f116ae59c7b60d0107',
-          name: "Світшот 'Minimal Black'",
-          price: { value: 1299, currency: 'грн' },
-          category: { name: 'Худі та кофти' },
-          image: 'https://ftp.goit.study/img/goods/6877b9f116ae59c7b60d0107.webp',
-          size: ['XS', 'S', 'M', 'L', 'XL'],
-          description:
-            'Світшот Minimal Black — втілення стриманості та універсальності. Його дизайн побудований на простоті: глибокий чорний колір, акуратний круглий виріз і прямий крій.',
-          // feedbacks: ['1', '2', '3', '4', '5'],
-          characteristics: [
-            'Матеріал: 80% бавовна, 20% поліестер',
-            'Крій: прямий',
-            'Горловина: круглий виріз',
-            'Сезон: Осінь/Зима/Весна',
-          ],
-        };
-        setGood(mock);
-        setError('⚠️ Сервер недоступний, показано тестові дані.');
+        setGood(data);
+      } catch (err) {
+        console.error(err);
+        setError('Не вдалося завантажити товар');
       } finally {
         setLoading(false);
       }
@@ -124,6 +98,7 @@ export default function GoodPage() {
 
   return (
     <main className={css.container}>
+      
       <nav className={css.breadcrumbs}>
         <a href="/goods" className={css.breadcrumbLink}>
           Товари
@@ -132,6 +107,7 @@ export default function GoodPage() {
         <span className={css.breadcrumbCurrent}>{good.name}</span>
       </nav>
 
+      {/* продукт  */}
       <section className={css.good}>
         <div className={css.imageWrapper}>
           <img src={good.image} alt={good.name} className={css.image} loading="lazy" />
@@ -140,30 +116,36 @@ export default function GoodPage() {
         <div className={css.info}>
           <h1 className={css.title}>{good.name}</h1>
 
+          {/* ціна рейтинг  */}
           <div className={css.priceBlock}>
             <span className={css.price}>
               {good.price.value} {good.price.currency}
             </span>
+
             <span className={css.divider}>|</span>
+
             <div className={css.ratingInline}>
               {Array.from({ length: 5 }).map((_, i) => {
                 const diff = averageRate - i;
-                let star = '☆';
-                if (diff >= 1) star = '★';
-                else if (diff === 0.5) star = '⯪';
+
                 return (
                   <span key={i} className={css.star}>
-                    {star}
+                    {diff >= 1 ? '★' : diff === 0.5 ? '⯪' : '☆'}
                   </span>
                 );
               })}
+
               <span className={css.ratingValue}>({averageRate.toFixed(1)})</span>
               <span className={css.reviewsCount}>• {feedbacks.length} відгуків</span>
             </div>
           </div>
 
-          <p className={css.description}>{good.description}</p>
 
+          <section className={css.descriptionSection}>
+            {good.prevDescription && <p className={css.prevDescription}>{good.prevDescription}</p>}
+          </section>
+
+          {/* розмір */}
           <div className={css.sizeBlock}>
             <p>Розмір:</p>
             <select className={css.sizeSelect}>
@@ -174,11 +156,9 @@ export default function GoodPage() {
               ))}
             </select>
           </div>
-
+          {/* додати до карти */}
           <div className={css.cartRow}>
-            <button className={css.buyButton} onClick={handleAddToCart}>
-              Додати в кошик
-            </button>
+            <button className={css.buyButton}>Додати в кошик</button>
             <input type="number" min="1" defaultValue="1" className={css.quantityInput} />
           </div>
 
@@ -186,18 +166,30 @@ export default function GoodPage() {
           <p className={css.deliveryText}>Безкоштовна доставка для замовлень від 1000 грн</p>
 
           {error && <p className={css.error}>{error}</p>}
+      {/* повний опис */}
+      <section className={css.longDescriptionSection}>
+        <h3 className={css.charTitleDes}>Опис</h3>
+        {good.description && <p className={css.description}>{good.description}</p>}
+
+        {good.characteristics && good.characteristics.length > 0 && (
+          <div className={css.characteristics}>
+            <h3 className={css.charTitle}>Основні характеристики</h3>
+            <ul className={css.charList}>
+              {good.characteristics.map((item, idx) => (
+                <li key={idx} className={css.charItem}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
         </div>
       </section>
-      {/* <div className={css.descriptionBlock}>
-  <h3 className={css.descriptionTitle}>Опис</h3>
-  <p className={css.descriptionText}>{good.description}</p>
-  <ul className={css.characteristicsList}>
-    {good.characteristics?.map((char, i) => (
-      <li key={i}>{char}</li>
-    ))}
-  </ul>
-</div> */}
 
+
+
+      {/* відгуки */}
       <section className={css.reviews}>
         <div className={css.reviewsHeader}>
           <h2>Відгуки клієнтів</h2>
