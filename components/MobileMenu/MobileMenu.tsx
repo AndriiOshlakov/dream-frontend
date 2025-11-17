@@ -48,7 +48,7 @@ export default function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClo
           </ul>
         </div>
 
-        <AuthNavigation variant="mobile" />
+        <AuthNavigation variant="mobile" onClose={onClose} />
       </div>
     </Container>
   );

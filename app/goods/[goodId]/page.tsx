@@ -151,12 +151,14 @@ export default function GoodPage() {
 
   return (
     <main className={css.container}>
+      
       <nav className={css.breadcrumbs}>
         <a href="/goods" className={css.breadcrumbLink}>Товари</a>
         <span className={css.breadcrumbSeparator}>›</span>
         <span className={css.breadcrumbCurrent}>{good.name}</span>
       </nav>
 
+      {/* продукт  */}
       <section className={css.good}>
         <div className={css.imageWrapper}>
           <img src={good.image} alt={good.name} className={css.image} />
@@ -183,6 +185,7 @@ export default function GoodPage() {
                   </span>
                 );
               })}
+
               <span className={css.ratingValue}>({averageRate.toFixed(1)})</span>
               <span className={css.reviewsCount}>• {feedbacks.length} відгуків</span>
             </div>
@@ -236,6 +239,9 @@ export default function GoodPage() {
         </div>
       </section>
 
+
+
+      {/* відгуки */}
       <section className={css.reviews}>
         <div className={css.reviewsTop}>
           <h2>Відгуки клієнтів</h2>
