@@ -1,4 +1,3 @@
-
 // src/types/goods.ts
 
 /** Відповідь бекенду при пагінації */
@@ -36,4 +35,6 @@ export interface Good {
   sizes: string[];
   reviewsCount: number;
   rating?: number;
+  prevDescription?: string;
+  characteristics?: string;
 }

@@ -4,7 +4,8 @@ import { RegisterRequest, LoginRequest } from '@/types/auth';
 import { CategoriesResponse } from '@/types/category';
 import { Order } from '@/types/order';
 import { ApiFeedback, Review, Reviews } from '@/types/feedback';
-
+import { isAxiosError } from 'axios';
+import { Good } from '@/types/goods';
 //! ------
 //! -AUTH-
 //! ------
@@ -187,4 +188,28 @@ export async function subscribeUser(email: string) {
   }
 
   return response.json();
+}
+
+//
+
+// Функція отримання товару за ID
+
+export interface FetchGoodByIdResponse {
+  good: Good;
+  success: boolean;
+  message?: string;
+}
+
+export async function fetchGoodById(id: string): Promise<FetchGoodByIdResponse> {
+  try {
+    const { data } = await nextServer.get<FetchGoodByIdResponse>(`/goods/${id}`, {
+      withCredentials: false,
+    });
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Fetching good failed');
+    }
+    throw new Error('Fetching good failed');
+  }
 }
