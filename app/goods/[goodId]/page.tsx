@@ -12,6 +12,7 @@ interface Good {
   _id: string;
   name: string;
   price: { value: number; currency: string };
+  category: { name: string };
   image: string;
   size: string[];
   description: string;
