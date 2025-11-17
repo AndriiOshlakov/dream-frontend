@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import GoodsOrderList from '@/components/GoodsOrderList/GoodsOrderList';
 import MessageNoInfo from '../MessageNoInfo/MessageNoInfo';
@@ -9,20 +9,11 @@ import css from './BasketModal.module.css';
 export default function BasketModal() {
   const router = useRouter();
   const { cartItems } = useShopStore();
-  const [closing, setClosing] = useState(false);
-  const [nextRoute, setNextRoute] = useState<string | null>(null);
 
   const handleClose = useCallback(() => {
-    setClosing(true);
-  }, []);
+    router.back();
+  }, [router]);
 
-  const handleAnimationEnd = useCallback(() => {
-    if (!closing) return;
-
-    if (nextRoute) {
-      router.push(nextRoute);
-    }
-  }, [closing, nextRoute, router]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -33,40 +24,42 @@ export default function BasketModal() {
   }, [handleClose]);
 
   useEffect(() => {
-    const originalBody = document.body.style.overflow;
-    const originalHtml = document.documentElement.style.overflow;
+    const originalOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
 
     return () => {
-      document.body.style.overflow = originalBody;
-      document.documentElement.style.overflow = originalHtml;
+      document.body.style.overflow = originalOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
     };
   }, []);
+  
+
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) handleClose();
   };
 
   const handleGoToGoods = () => {
-    setNextRoute('/goods');
-    setClosing(true);
+    handleClose();
+    setTimeout(() => {
+      router.push('/goods');
+    }, 200);
   };
 
   const handleGoToOrder = () => {
-    setClosing(true);
-    setNextRoute('/order');
+    handleClose();
+    setTimeout(() => {
+      router.push('/order');
+    }, 200);
   };
+ 
 
   return (
-    <div
-      className={`${css.basketModalBackdrop} ${closing ? css.fadeOut : css.fadeIn}`}
-      onClick={handleBackdropClick}
-    >
-      <div
-        className={`${css.basketModal} ${closing ? css.slideOut : css.slideIn}`}
-        onAnimationEnd={handleAnimationEnd}
-      >
+    <div className={css.basketModalBackdrop} onClick={handleBackdropClick}>
+      <div className={css.basketModal}>
         <div className={css.basketModalCloseBtnContainer}>
           <button className={css.basketModalCloseButton} onClick={handleClose}>
             <svg className={css.mbasketMenuCloseBtnIcon} width="24" height="24">
