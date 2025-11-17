@@ -15,3 +15,11 @@ export interface Review {
   comment: string;
   category: string;
 }
+
+export interface Reviews {
+  author: string;
+  description: string;
+  rate: number;
+  category: string;
+  productId: string;
+}
