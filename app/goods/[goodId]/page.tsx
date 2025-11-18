@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -43,38 +41,33 @@ export default function GoodPage() {
   const closeModal = () => {
     setIsModalOpen(false);
     setTimeout(() => {
-      setRefreshTrigger(prev => prev + 1);
+      setRefreshTrigger((prev) => prev + 1);
     }, 1500);
   };
 
-
   const nextSlide = () => {
     if (feedbacks.length <= getVisibleCount()) return;
-    setCurrentSlide(prev => Math.min(prev + 1, feedbacks.length - getVisibleCount()));
+    setCurrentSlide((prev) => Math.min(prev + 1, feedbacks.length - getVisibleCount()));
   };
 
   const prevSlide = () => {
-    setCurrentSlide(prev => Math.max(prev - 1, 0));
+    setCurrentSlide((prev) => Math.max(prev - 1, 0));
   };
-
 
   const getVisibleCount = () => {
     if (typeof window === 'undefined') return 1;
-    
+
     if (window.innerWidth >= 1440) return 3;
     if (window.innerWidth >= 768) return 2;
     return 1;
   };
 
-
   const getVisibleFeedbacks = () => {
     return feedbacks.slice(currentSlide, currentSlide + getVisibleCount());
   };
 
-
   const canGoNext = feedbacks.length > 0 && currentSlide < feedbacks.length - getVisibleCount();
   const canGoPrev = feedbacks.length > 0 && currentSlide > 0;
-
 
   useEffect(() => {
     async function fetchGood() {
@@ -95,29 +88,28 @@ export default function GoodPage() {
     fetchGood();
   }, [goodId]);
 
-
   useEffect(() => {
     const loadFeedbacks = async () => {
       try {
         console.log('🔄 Запит відгуків для товару:', goodId);
-        
+
         const res = await fetch(`/api/feedbacks?productId=${goodId}`);
-        
+
         if (res.ok) {
           const data = await res.json();
           const allFeedbacks: Feedback[] = data.feedbacks || data || [];
-          
-          
-          const filteredFeedbacks = allFeedbacks.filter(feedback => 
-            feedback.productId === goodId
+
+          const filteredFeedbacks = allFeedbacks.filter(
+            (feedback) => feedback.productId === goodId
           );
-          
+
           console.log('✅ Відфільтровані відгуки для товару:', filteredFeedbacks.length);
-          
+
           setFeedbacks(filteredFeedbacks);
-          
+
           if (filteredFeedbacks.length > 0) {
-            const avg = filteredFeedbacks.reduce((sum, f) => sum + f.rate, 0) / filteredFeedbacks.length;
+            const avg =
+              filteredFeedbacks.reduce((sum, f) => sum + f.rate, 0) / filteredFeedbacks.length;
             setAverageRate(Math.round(avg * 2) / 2);
           } else {
             setAverageRate(0);
@@ -137,23 +129,28 @@ export default function GoodPage() {
     loadFeedbacks();
   }, [goodId, refreshTrigger]);
 
-  
   useEffect(() => {
     setCurrentSlide(0);
   }, [feedbacks.length]);
-
 
   if (loading) return <p className={css.loading}>Завантаження...</p>;
   if (!good) return <p className={css.error}>Товар не знайдено</p>;
 
   const visibleFeedbacks = getVisibleFeedbacks();
-  const authorNames = ["Олена Коваль", "Ігор Петров", "Ігор Шевченко", "Марія Іваненко", "Андрій Сидоренко"];
+  const authorNames = [
+    'Олена Коваль',
+    'Ігор Петров',
+    'Ігор Шевченко',
+    'Марія Іваненко',
+    'Андрій Сидоренко',
+  ];
 
   return (
     <main className={css.container}>
-      
       <nav className={css.breadcrumbs}>
-        <a href="/goods" className={css.breadcrumbLink}>Товари</a>
+        <a href="/goods" className={css.breadcrumbLink}>
+          Товари
+        </a>
         <span className={css.breadcrumbSeparator}>›</span>
         <span className={css.breadcrumbCurrent}>{good.name}</span>
       </nav>
@@ -193,9 +190,7 @@ export default function GoodPage() {
 
           {/* короткий опис */}
           <section className={css.descriptionSection}>
-            {good.prevDescription && (
-              <p className={css.prevDescription}>{good.prevDescription}</p>
-            )}
+            {good.prevDescription && <p className={css.prevDescription}>{good.prevDescription}</p>}
           </section>
 
           {/* Розмір */}
@@ -221,16 +216,16 @@ export default function GoodPage() {
           <section className={css.longDescriptionSection}>
             <h3 className={css.charTitleDes}>Опис</h3>
 
-            {good.description && (
-              <p className={css.description}>{good.description}</p>
-            )}
+            {good.description && <p className={css.description}>{good.description}</p>}
 
             {good.characteristics?.length ? (
               <div className={css.characteristics}>
                 <h3 className={css.charTitle}>Основні характеристики</h3>
                 <ul className={css.charList}>
                   {good.characteristics.map((item, idx) => (
-                    <li key={idx} className={css.charItem}>{item}</li>
+                    <li key={idx} className={css.charItem}>
+                      {item}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -238,8 +233,6 @@ export default function GoodPage() {
           </section>
         </div>
       </section>
-
-
 
       {/* відгуки */}
       <section className={css.reviews}>
@@ -253,14 +246,17 @@ export default function GoodPage() {
 
         {feedbacks.length > 0 ? (
           <div className={css.reviewsList}>
-            {visibleFeedbacks.map(feedback => (
+            {visibleFeedbacks.map((feedback) => (
               <div key={feedback._id} className={css.reviewItem}>
                 <div className={css.rating}>
-                  {'★'.repeat(feedback.rate)}{'☆'.repeat(5 - feedback.rate)}
+                  {'★'.repeat(feedback.rate)}
+                  {'☆'.repeat(5 - feedback.rate)}
                 </div>
                 <p className={css.reviewText}>{feedback.description}</p>
                 <div className={css.reviewAuthor}>
-                  <strong>{feedback.author || authorNames[Math.floor(Math.random() * authorNames.length)]}</strong>
+                  <strong>
+                    {feedback.author || authorNames[Math.floor(Math.random() * authorNames.length)]}
+                  </strong>
                 </div>
               </div>
             ))}
@@ -274,9 +270,8 @@ export default function GoodPage() {
           </div>
         )}
 
-        
         <div className={css.arrows}>
-          <button 
+          <button
             className={`${css.arrowBtn} ${!canGoPrev ? css.arrowBtnDisabled : ''}`}
             onClick={prevSlide}
             disabled={!canGoPrev}
@@ -286,7 +281,7 @@ export default function GoodPage() {
             </svg>
           </button>
 
-          <button 
+          <button
             className={`${css.arrowBtn} ${!canGoNext ? css.arrowBtnDisabled : ''}`}
             onClick={nextSlide}
             disabled={!canGoNext}
@@ -299,7 +294,7 @@ export default function GoodPage() {
 
         {isModalOpen && (
           <ModalReview
-            key={Date.now()} 
+            key={Date.now()}
             onClose={closeModal}
             productId={goodId}
             category={good.category || 'general'}
