@@ -3,8 +3,12 @@
     padding-bottom: 64px;
 }
 
+.containerWrapper {
+    padding: 0 px;
+  }
+
 .title {
-    font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 36px;
   line-height: 1.2;
