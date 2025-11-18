@@ -1,44 +1,52 @@
 /* ========== MOBILE FIRST (320–767) ========== */
 
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 24px 20px;
-  width: 100%;
-  max-width: 375px;
-  margin: 0 auto;
+  padding-top: 64px;
+  padding-bottom: 64px;
 }
 
 /* Breadcrumbs */
 .breadcrumbs {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 14px;
   color: #6c6c6c;
 }
-
+.breadcrumbCurrent {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: #000;
+}
+.breadcrumbSeparator {
+  color: #000;
+}
 .breadcrumbLink {
-  color: #6c6c6c;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: #000;
+  /* color: #6c6c6c; */
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.breadcrumbLink:hover {
+.breadcrumbLink:hover,
+.breadcrumbLink:focus {
   color: #000;
 }
-
-
 
 /* PRODUCT */
 
 .good {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 32px;
 }
-
 
 .imageWrapper {
   width: 100%;
@@ -64,9 +72,12 @@
 }
 
 .title {
-  font-size: 22px;
+  font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
-  color: #111;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #000;
 }
 
 /* price + rating */
@@ -80,9 +91,9 @@
 .price {
   font-weight: 400;
   font-size: 20px;
-  line-height: 140%;
+  line-height: 1.4;
   letter-spacing: 0.1em;
-  color: #111;
+  color: #000;
 }
 
 .divider {
@@ -97,13 +108,13 @@
 
 .star {
   font-size: 16px;
-  color: black;
+  color: #000;
 }
 
 .ratingValue,
 .reviewsCount {
   font-size: 14px;
-  color: #555;
+  color: #000;
 }
 
 /* short description */
@@ -111,25 +122,37 @@
 .descriptionSection {
   font-size: 16px;
   line-height: 1.5;
-  color: #222;
+  color: #000;
 }
 
+.prevDescription {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
 /* sizes */
 
 .sizeBlock {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 12px;
   border-radius: 12px;
 }
-
+.sizeTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
 .sizeSelect {
-  height: 40px;
-  border-radius: 8px;
-  background: var(--opacity-transparent);
-  border: 1px solid #c8c8c8;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
   padding: 8px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /* cart row */
@@ -141,74 +164,90 @@
 }
 
 .buyButton {
-  flex: 1;
-  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
+  border: 1px solid #c5e1a5;
   border-radius: 100px;
-  border: none;
-  background: var(--color-deco);
-  color: #000;
-  transition: background 0.2s ease;
-  font-size: 15px;
-  font-weight: 500;
+  padding-block: 6px;
+  padding-inline: 12px;
+  width: 255px;
+  height: 36px;
+  background-color: #c5e1a5;
 }
 
-.buyButton:hover {
-  background: var(--color-deco-dark);
+.buyButton:hover,
+.buyButton:focus {
+  background-color: #9db484;
 }
 
 .buyButton:active {
-  background: var(--color-deco-darkest);
+  background-color: #3b4331;
   transform: scale(0.98);
 }
 
 .buyButton:disabled {
-  background: #ddeecc;
+  background-color: #c5e1a5;
   opacity: 0.4;
 }
 
 .quantityInput {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 8px;
   width: 64px;
   height: 40px;
-  border-radius: 12px;
-  border: 1px solid #c8c8c8;
-  text-align: center;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /* buy now */
 
 .buyNowButton {
-  width: 100%;
-  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0);
   border-radius: 100px;
-  background: var(--opacity-neutral-darkest-5);
-  font-size: 15px;
+  padding-block: 6px;
+  padding-inline: 12px;
+  height: 36px;
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
   font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
 }
 
-.buyNowButton:hover{
-background: var(--opacity-neutral-darkest-15);
+.buyNowButton:hover,
+.buyNowButton:focus {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
-.buyNowButton:active{
-background: var(--opacity-neutral-darkest-50);
-transform: scale(0.98);
-
+.buyNowButton:active {
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: scale(0.98);
 }
 
-.buyNowButton:disabled{
-
-background: var(--opacity-neutral-darkest-5);
-opacity: 0.4;
-
+.buyNowButton:disabled {
+  background-color: rgba(0, 0, 0, 0.05);
+  opacity: 0.4;
 }
 
 /* delivery */
 
 .deliveryText {
-  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
   text-align: center;
-  color: #666;
-  margin-top: 12px;
+  color: #000;
+  margin-top: 2px;
 }
 
 /* long description + characteristics */
@@ -217,27 +256,29 @@ opacity: 0.4;
   margin-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 .charTitleDes {
+  margin-top: 2px;
   font-weight: 400;
   font-size: 16px;
-  line-height: 150%;
-  color: var(--color-scheme-1-text);
+  line-height: 1.5;
+  color: #000;
 }
 
 .charTitle {
   font-weight: 400;
   font-size: 16px;
-  line-height: 150%;
-  color: var(--color-scheme-1-text);
+  line-height: 1.5;
+  color: #000;
 }
 
 .description {
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
-  color: #222;
+  color: #000;
 }
 
 .characteristics {
@@ -248,6 +289,7 @@ opacity: 0.4;
 .charList {
   padding-left: 18px;
   list-style: disc;
+  margin-bottom: 48px;
 }
 
 .charItem {
@@ -272,56 +314,60 @@ opacity: 0.4;
   gap: 16px;
   margin-bottom: 24px;
 }
-
-.reviewsTop h2 {
+.reviewTitle {
+  font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
-  font-size: 28px;
-  line-height: 120%;
+  font-size: 36px;
+  line-height: 1.2;
   letter-spacing: -0.01em;
-  margin-bottom: 0;
+  color: #000;
+  margin-bottom: 24px;
 }
 
 /* кнопка "Залишити відгук" для мобильной версии */
 .reviewBtn {
-  width: 100%;
-  max-width: 335px;
   height: 36px;
-  background-color: #ddeecc;
+  background-color: #c5e1a5;
   border-radius: 100px;
   border: 1px solid #ddeecc;
-  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.25s ease;
   margin-bottom: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
 }
-
-.reviewBtn:hover {
-  background-color: #bcd7a0;
+.reviewBtn:hover,
+.reviewBtn:focus {
+  background-color: #9db484;
 }
 
 .reviewBtn:active {
   background-color: #3b4331;
+  transform: scale(0.98);
 }
 
-
+.reviewBtn:disabled {
+  background-color: #c5e1a5;
+  opacity: 0.4;
+}
 .reviewsList {
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
-  gap: 32px;
-  margin-bottom: 60px;
+  gap: 64px;
+  /* height: 181px; */
+  align-items: stretch;
 }
 
 .reviewItem {
-  width: 100%;
-  min-height: 156px;
-  height: auto;
-  border-radius: 12px;
-  padding: 20px;
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
-  box-shadow: none;
-  border: none;
+  flex-direction: column;
+  height: auto;
 }
 
 .rating {
@@ -331,68 +377,62 @@ opacity: 0.4;
   letter-spacing: 2px;
 }
 
-
-.reviewItem {
-  width: 20px;
-  height: 19px;
-  fill: currentColor; 
-}
-
 .reviewText {
-  font-family: var(--second-family);
+  font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
   font-size: 18px;
-  line-height: 140%;
+  line-height: 1.4;
   letter-spacing: -0.01em;
-  color: var(--color-scheme-4-text);
-  margin-bottom: 16px;
+  color: #000;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
   flex-grow: 1;
 }
 
 .reviewAuthor {
-  font-size: 14px;
-  color: #666;
-  padding-top: 12px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
 }
-
-.reviewAuthor strong {
-  color: #333;
-}
-
 
 .noReviews {
-  width: 100%;
-  background: #d6eac0;
-  border-radius: 12px;
-  padding: 40px 20px;
-  text-align: center;
-  margin-bottom: 40px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
   gap: 16px;
+  border-radius: 16px;
+  padding-block: 24px;
+  padding-inline: 16px;
+  height: 127px;
+  background-color: #d6eac0;
 }
 
-.noReviews p {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--color-scheme-1-text);
-  margin: 0;
+.noReviewsTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  color: #000;
 }
-
 
 .leaveReviewBtn {
-  background: #ddeecc;
+  border: 1px solid #c5e1a5;
   border-radius: 100px;
-  padding: 8px 16px;
-  border: 1px solid #ddeecc;
+  padding-block: 6px;
+  padding-inline: 12px;
+  background-color: #c5e1a5;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
   height: 36px;
   cursor: pointer;
-  font-size: 14px;
   transition: background-color 0.25s ease;
-  min-width: 160px;
 }
 
 .leaveReviewBtn:hover {
@@ -403,12 +443,11 @@ opacity: 0.4;
   background-color: #3b4331;
 }
 
-
 .arrows {
   margin-top: 40;
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 9px;
 }
 
 .arrowBtn {
@@ -421,19 +460,20 @@ opacity: 0.4;
   justify-content: center;
   align-items: center;
   transition: 0.2s ease;
-  cursor: pointer;
 }
 
 .arrowBtn svg {
-  fill: black;
+  fill: #000;
+  stroke: #000;
 }
 
-.arrowBtn:hover {
-  background: #bcd7a0;
+.arrowBtn:hover,
+.arrowBtn:focus {
+  background-color: #bcd7a0;
 }
 
 .arrowBtn:active {
-  background: #3b4331;
+  background-color: #3b4331;
 }
 
 .arrowBtnDisabled {
@@ -460,23 +500,19 @@ opacity: 0.4;
 /* ========== TABLET (min-width: 768px) ========== */
 
 @media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-    padding: 40px 20px;
-  }
-
   .good {
     flex-direction: row;
-    gap: 40px;
+    gap: 32px;
   }
 
   .imageWrapper {
     width: 336px;
-    height: 358px;
+    height: 374px;
   }
 
   .info {
-    width: calc(100% - 420px);
+    gap: 24px;
+    width: calc(100% - 368px);
   }
 
   .sizeSelect,
@@ -488,28 +524,14 @@ opacity: 0.4;
     background: var(--opacity-transparent);
   }
 
-  .longDescriptionSection {
-    width: 100%;
-    margin-bottom: 144px;
-  }
-
   /* REVIEWS для планшета */
   .reviewsTop {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-  }
-
-  .reviewsTop h2 {
-    font-weight: 400;
-    font-size: 36px;
-    line-height: 120%;
-    margin-bottom: 0;
   }
 
   .reviewBtn {
-    width: 150px;
     align-self: auto;
     margin-bottom: 0;
   }
@@ -518,7 +540,6 @@ opacity: 0.4;
   .reviewsList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
     margin-bottom: 40px;
   }
 
@@ -532,21 +553,14 @@ opacity: 0.4;
   .noReviews {
     width: 100%;
     max-width: 704px;
-    height: 160px;
+    height: 127px;
     padding: 40px 0;
     border-radius: 16px;
   }
 
   .leaveReviewBtn {
-    width: 156px;
-    height: 36px;
-    border-radius: 100px;
-    background-color: #ddeecc;
-    border: 1px solid #ddeecc;
-    padding: 6px 12px;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-    font-size: 14px;
+    width: 160px;
+    margin: 0 auto;
   }
 
   .leaveReviewBtn:hover {
@@ -568,34 +582,24 @@ opacity: 0.4;
 
 @media (min-width: 1440px) {
   .container {
-    gap: 60px;
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding-top: 112px;
+    padding-bottom: 112px;
   }
 
   .good {
     flex-wrap: wrap;
-    gap: 40px;
     align-items: flex-start;
   }
 
   .imageWrapper {
     width: 640px;
-    height: 682px;
-  }
-  .image {
-    width: 640px;
-    height: 683px;
-    object-fit: cover;
+    height: 698px;
   }
 
   .info {
     flex: 1;
-    min-width: 320px;
-    gap: 14px;
   }
-  .title {
+  /* .title {
     font-size: 40px;
   }
   .price {
@@ -614,12 +618,8 @@ opacity: 0.4;
   .charTitleDes,
   .charTitle {
     font-size: 16px;
-    line-height: 150%;
+    line-height: 1.5;
     color: var(--color-scheme-1-text);
-  }
-
-  .charTitleDes {
-    margin: 24px 0;
   }
 
   .characteristics {
@@ -639,84 +639,16 @@ opacity: 0.4;
     width: 640px;
     height: 544px;
   }
-
-  .sizeBlock {
-    gap: 6px;
-    margin-top: 10px;
-    border: 1px solid var(--opacity-neutral-darkest-15);
-  }
-  .sizeSelect {
-    border-radius: 16px;
-    padding: 8px;
-    width: 640px;
-    height: 40px;
-    cursor: pointer;
-  }
   .cartRow {
     align-items: center;
     justify-content: space-between;
     width: 640px;
     margin-top: 8px;
-    gap: 12px;
+    gap: 16px;
   }
-
-  .quantityInput {
-    width: 64px;
-    height: 44px;
-    border: 1px solid var(--opacity-neutral-darkest-15);
-    border-radius: 12px;
-    text-align: center;
-    font-size: 16px;
-    color: #111;
-    outline: none;
-    transition: border-color 0.2s ease;
-  }
-
-  .quantityInput:focus {
-    border-color: var(--color-deco);
-  }
-
   .buyButton {
+    width: 100%;
     height: 44px;
-    border: 1px solid var(--color-deco);
-    background: #ddeecc;
-  }
-
-  .buyButton:hover {
-    background: #bcd7a0;
-  }
-
-  .buyButton:active {
-    background: #3b4331;
-  }
-  .buyNowButton {
-    width: 640px;
-    height: 44px;
-    border-radius: 100px;
-    border: 1px solid var(--opacity-neutral-darkest-10);
-    background-color: var(--opacity-neutral-darkest-5);
-    margin-top: 8px;
-  }
-
-  .buyNowButton:hover {
-    background: var(--opacity-neutral-darkest-15);
-  }
-
-  .buyNowButton:active {
-    transform: scale(0.98);
-    background: var(--opacity-neutral-darkest-50);
-  }
-
-  .buyNowButton:disabled {
-    background: var(--opacity-neutral-darkest-5);
-    opacity: 0.4;
-  }
-  .deliveryText {
-    margin-top: 16px;
-    padding-left: 80px;
-    font-size: 13px;
-    color: #777;
-    text-align: center;
   }
 
   .reviews {
@@ -727,9 +659,9 @@ opacity: 0.4;
   }
 
   .reviewsTop h2 {
-font-weight: 400;
-font-size: 36px;
-line-height: 120%;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 120%;
     color: var(--color-scheme-1-text);
     margin-bottom: 0;
   }
@@ -748,7 +680,6 @@ line-height: 120%;
     background: #3b4331;
   }
 
-
   .reviewsList {
     display: grid;
     grid-template-columns: repeat(3, 416px);
@@ -764,7 +695,7 @@ line-height: 120%;
   }
 
   .noReviews {
-    width:753px;
+    width: 753px;
     max-width: 1200px;
     height: 180px;
     padding: 50px 0;
@@ -784,7 +715,37 @@ line-height: 120%;
     background: #3b4331;
   }
 
- 
+  .arrows {
+    justify-content: flex-end;
+    margin-top: 20px;
+  }  */
+  .buyButton {
+    width: 100%;
+    height: 44px;
+  }
+  .cartRow {
+    align-items: center;
+    justify-content: space-between;
+    width: 640px;
+    margin-top: 8px;
+    gap: 16px;
+  }
+  .noReviews {
+    margin-left: 0;
+  }
+  .reviewsList {
+    display: grid;
+    grid-template-columns: repeat(3, 416px);
+    gap: 32px;
+    margin-bottom: 40px;
+    justify-content: center;
+  }
+
+  .reviewItem {
+    width: 416px;
+    min-height: auto;
+    height: auto;
+  }
   .arrows {
     justify-content: flex-end;
     margin-top: 20px;
