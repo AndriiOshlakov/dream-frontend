@@ -56,11 +56,8 @@ export default function RootLayout({
             <Header />
              <Container>
               <main>
-{/* ⭐️ FIX: Wrap children and modal in a Fragment to make them one single unit ⭐️ */}
-<>
 {children}
 {modal}
-</>
 </main>
             </Container>
             <Footer />
