@@ -5,24 +5,35 @@
 
 .containerWrapper {
     padding: 0 px;
-  }
+}
 
 .title {
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 36px;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: #000;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  text-align: center;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #000;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    text-align: center;
 }
+
+@media (max-width: 767) {
+    .title {
+        font-size: 36px;
+    }
+}
+
 @media (min-width: 768px) and (max-width: 1439px) {
     .section {
         padding-top: 64px;
         padding-bottom: 64px;
+    }
+
+    .title {
+        font-size: 36px;
     }
 }
 

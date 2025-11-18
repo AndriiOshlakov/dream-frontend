@@ -13,7 +13,7 @@
 .title {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 400;
-  font-size: 36px;
+  font-size: 48px;
   line-height: 1.2;
   letter-spacing: -0.01em;
   color: #000;
@@ -199,10 +199,17 @@
   .button {
     margin-top: 0;
   }
+
+  .title {
+    font-size: 36px;
+  }
 }
 
 /* Адаптивні стилі для стрілок та зображень */
 @media screen and (min-width: 375px) and (max-width: 767px) {
+  .title {
+    font-size: 36px;
+  }
 
   .title_button {
     align-items: flex-end;
@@ -239,6 +246,7 @@
   .title {
     width: auto;
     margin: 0;
+    font-size: 36px;
   }
 
   .title_button {
