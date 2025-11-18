@@ -6,11 +6,13 @@ export interface OrderGoodsItem {
   total: number;
 }
 
+export type OrderStatus = "pending" | "completed" | "cancelled" | "processing" | "packing";
+
 export interface Order {
   _id: string;
   userId: string;
   goods: OrderGoodsItem[];
-  status: string;
+  status: OrderStatus;
   createdAt: string;
   updatedAt: string;
 }
