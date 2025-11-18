@@ -156,7 +156,7 @@ export default function CreateOrder() {
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0); 
 
     return (
-        <>
+        <div>
             <h2 className={css.title}>Оформити замовлення</h2>
             <div className={css.container}>
                 <ul className={css.list}>
@@ -248,6 +248,6 @@ export default function CreateOrder() {
     </div>
 )}
 
-        </>
+        </div>
     )
 }
