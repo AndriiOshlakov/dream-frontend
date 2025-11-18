@@ -49,9 +49,11 @@ export default function CreateOrder() {
         text: '', 
         type: 'error' 
     });
-
+    const [mounted, setMounted] = useState(false);
     const { cartItems, clearCart } = useShopStore();
-    
+     useEffect(() => {
+    setMounted(true);
+  }, []);
       
     // ⭐️ LOGIC 1: Fetch User Profile Data (Correct) ⭐️
     useEffect(() => {
@@ -234,7 +236,7 @@ export default function CreateOrder() {
             </div>
             
 {/* ⭐️ ADJUSTMENT: Use modalInfo state for dynamic content ⭐️ */}
-{modalInfo.show && (
+{mounted && modalInfo.show && (
     <div className={css.modalBackdrop}>
         <div className={css.modalContent}>
             <MessageNoInfo
