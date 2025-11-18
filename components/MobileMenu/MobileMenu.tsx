@@ -8,7 +8,7 @@ export default function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClo
     <Container>
       <div className={`${css.mobileMenu} ${isOpen ? css.isOpen : ''}`}>
         <div className={css.mobileMenuHeader}>
-          <Link href="/">
+          <Link href="/" className={css.mobileMenuHeaderLogo}>
             <svg width="84" height="36">
               <use href="symbol-defs.svg#icon-Company-Logo" />
             </svg>

@@ -15,7 +15,16 @@
   transform: translateX(100%);
   transition: transform 0.9s ease-in-out;
 }
+.mobileMenuHeaderLogo {
+  display: inline-block;
+  transition: transform 0.25s ease-in-out;
+  transform-origin: center;
+}
 
+.mobileMenuHeaderLogo:hover,
+.mobileMenuHeaderLogo:focus {
+  transform: scale(1.05);
+}
 .isOpen {
   opacity: 1;
   visibility: visible;
@@ -42,6 +51,7 @@
 .mobileMenuCloseBtn:hover,
 .mobileMenuCloseBtn:focus {
   background-color: #9db484;
+  border: 1px solid #9db484;
 }
 
 .mobileMenuCloseBtn:active {
@@ -76,11 +86,17 @@
   line-height: 1.5;
   letter-spacing: 0;
   color: #000;
+  display: inline-block;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+  transform-origin: center;
 }
 .mobileMenuLink:hover,
 .mobileMenuLink:focus {
   text-decoration: underline;
   text-underline-offset: 3px;
+  transform: scale(1.05);
 }
 
 .mobileMenuLink:active {
@@ -108,6 +124,7 @@
 .mobileMenuBasket:hover,
 .mobileMenuBasket:focus {
   background-color: #9db484;
+  border: 1px solid #9db484;
 }
 
 .mobileMenuBasket:active {

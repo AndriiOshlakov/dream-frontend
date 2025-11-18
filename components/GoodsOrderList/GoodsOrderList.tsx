@@ -19,10 +19,10 @@ export default function GoodsOrderList() {
   };
 
   return (
-    <div className={css.orderContainer}>
-      <ul className={css.orderList}>
+    <div className={css.goodsOrderContainer}>
+      <ul className={css.goodsOrderList}>
         {cartItems.length === 0 ? (
-          <li className={css.orderItem}>
+          <li className={css.goodsOrderItem}>
             <MessageNoInfo
               text="Ваш кошик порожній, мерщій до покупок!"
               buttonText="До покупок"
@@ -31,29 +31,29 @@ export default function GoodsOrderList() {
           </li>
         ) : (
           cartItems.map((item) => (
-            <li key={item.id} className={css.orderItem}>
+            <li key={item.id} className={css.goodsOrderItem}>
               {item.image && (
                 <Image
                   src={item.image}
                   alt={item.name}
                   width={82}
                   height={101}
-                  className={css.orderImg}
+                  className={css.goodsOrderImg}
                 />
               )}
 
-              <div className={css.orderGoodInfo}>
-                <div className={css.orderGoodWrapper}>
-                  <h3 className={css.orderGoodName}>{item.name}</h3>
-                  <div className={css.orderRaiting}>
-                    <span className={css.orderStars}>
-                      <svg className={css.orderStarsIcon} width="16" height="16">
+              <div className={css.goodsOrderGoodInfo}>
+                <div className={css.goodsOrderGoodWrapper}>
+                  <h3 className={css.goodsOrderGoodName}>{item.name}</h3>
+                  <div className={css.goodsOrderRaiting}>
+                    <span className={css.goodsOrderStars}>
+                      <svg className={css.goodsOrderStarsIcon} width="16" height="16">
                         <use href="symbol-defs.svg#icon-star-filled" />
                       </svg>
                       {item.rating}
                     </span>
-                    <span className={css.orderReviews}>
-                      <svg className={css.orderReviewsIcon} width="16" height="16">
+                    <span className={css.goodsOrderReviews}>
+                      <svg className={css.goodsOrderReviewsIcon} width="16" height="16">
                         <use href="symbol-defs.svg#icon-comment" />
                       </svg>
                       ({item.reviewsCount})
@@ -61,17 +61,20 @@ export default function GoodsOrderList() {
                   </div>
                 </div>
 
-                <div className={css.orderGoodRigth}>
-                  <div className={css.orderPrice}>{item.price * item.quantity} ₴</div>
-                  <div className={css.orderGoodRigthActions}>
+                <div className={css.goodsOrderGoodRigth}>
+                  <div className={css.goodsOrderPrice}>{item.price * item.quantity} ₴</div>
+                  <div className={css.goodsOrderGoodRigthActions}>
                     <input
                       type="number"
                       min={1}
                       value={item.quantity}
-                      className={css.orderQuantity}
+                      className={css.goodsOrderQuantity}
                       onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
                     />
-                    <button className={css.orderDeleteBtn} onClick={() => removeFromCart(item.id)}>
+                    <button
+                      className={css.goodsOrderDeleteBtn}
+                      onClick={() => removeFromCart(item.id)}
+                    >
                       <svg width="24" height="24">
                         <use href="symbol-defs.svg#icon-delete" />
                       </svg>
@@ -85,18 +88,18 @@ export default function GoodsOrderList() {
       </ul>
 
       {cartItems.length > 0 && (
-        <div className={css.orderTotalPriceWrapper}>
-          <div className={css.orderPriceItem}>
-            <span className={css.orderProvisionalPrice}>Проміжний підсумок:</span>
+        <div className={css.goodsOrderTotalPriceWrapper}>
+          <div className={css.goodsOrderPriceItem}>
+            <span className={css.goodsOrderProvisionalPrice}>Проміжний підсумок:</span>
             <span className={css.orderProvisionalPriceValue}>{subtotal} ₴</span>
           </div>
-          <div className={css.orderPriceItem}>
-            <span className={css.dorderDeliveryPrice}>Доставка:</span>
-            <span className={css.orderDeliveryPriceValue}>{delivery} ₴</span>
+          <div className={css.goodsOrderPriceItem}>
+            <span className={css.goodsOrderDeliveryPrice}>Доставка:</span>
+            <span className={css.goodsOrderDeliveryPriceValue}>{delivery} ₴</span>
           </div>
-          <div className={css.orderPriceItem}>
-            <span className={css.orderTotalPrice}>Всього:</span>
-            <span className={css.orderTotalPriceValue}>{total} ₴</span>
+          <div className={css.goodsOrderPriceItem}>
+            <span className={css.goodsOrderTotalPrice}>Всього:</span>
+            <span className={css.goodsOrderTotalPriceValue}>{total} ₴</span>
           </div>
         </div>
       )}
