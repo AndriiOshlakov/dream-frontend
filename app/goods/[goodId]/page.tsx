@@ -189,7 +189,7 @@ export default function GoodPage() {
       {/* продукт  */}
       <section className={css.good}>
         <div className={css.imageWrapper}>
-          <Image src={good.image} alt={good.name} fill={true} className={css.image} />
+          <Image src={good.image} alt={good.name} width={640} height={683} className={css.image} />
         </div>
 
         <div className={css.info}>
