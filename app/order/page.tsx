@@ -1,4 +1,5 @@
 "use client";
+export const ssr = false;
 import css from "./CreateOrderPage.module.css";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
