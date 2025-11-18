@@ -32,9 +32,6 @@ export default function GoodsList() {
   const [isEnd, setIsEnd] = useState(false);
   const [activeDot, setActiveDot] = useState(0);
 
-  const canGoPrev = !isBeginning;
-  const canGoNext = !isEnd;
-
   useEffect(() => {
     let isCancelled = false;
 
@@ -79,7 +76,7 @@ export default function GoodsList() {
   };
 
   return (
-    <section className={css.section}>
+    <section id="popular_goods" className={css.section}>
       <div className="container">
         <div className={css.header}>
           <h2 className={css.title}>Популярні товари</h2>
@@ -204,7 +201,6 @@ export default function GoodsList() {
                   type="button"
                   className={css.arrowBtn}
                   onClick={handlePrev}
-                  disabled={!canGoPrev}
                   aria-label="Попередні товари"
                 >
                   <svg className={css.icon}>
@@ -216,7 +212,6 @@ export default function GoodsList() {
                   type="button"
                   className={css.arrowBtn}
                   onClick={handleNext}
-                  disabled={!canGoNext}
                   aria-label="Наступні товари"
                 >
                   <svg className={css.icon}>
@@ -233,11 +228,8 @@ export default function GoodsList() {
 }
 
 const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
-
 const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
-
 const API_ROOT: string = API_BASE.replace(/\/api$/, "");
-
 const DOTS_COUNT = 5;
 
 const buildImageSrc = (image: string): string => {
@@ -280,8 +272,10 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
   const id = getIdFromRaw(raw);
 
   const feedbacksUnknown = (raw as { feedbacks?: unknown }).feedbacks;
-  let reviewsCount = 0;
-  let rating = 0;
+
+  // значення за замовчуванням, щоб не показувати 0
+  let reviewsCount = 1; 
+  let rating = 4.8; 
 
   if (isRawFeedbackArray(feedbacksUnknown) && feedbacksUnknown.length > 0) {
     reviewsCount = feedbacksUnknown.length;
@@ -300,6 +294,8 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
     if (numericRatings.length > 0) {
       const sum = numericRatings.reduce((acc, n) => acc + n, 0);
       rating = Math.round((sum / numericRatings.length) * 10) / 10;
+    } else {
+      rating = 4.8;
     }
   }
 
@@ -342,3 +338,4 @@ const fetchGoods = async (): Promise<Good[]> => {
 
   return typed.goods.map(mapRawGoodToGood);
 };
+
