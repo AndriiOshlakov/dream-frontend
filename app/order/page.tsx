@@ -245,9 +245,9 @@ export default function CreateOrder() {
                 onClick={() => setModalInfo({ show: false, text: '', type: 'error' })} 
             />
         </div>
-    </>
+    </div>
 )}
 
-        </div>
+        </>
     )
 }
