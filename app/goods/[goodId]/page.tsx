@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import ModalReview from '@/components/ModalReview/ModalReview';
 import css from './GoodPage.module.css';
+import { useShopStore } from '@/lib/store/cartStore';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Good {
   _id: string;
@@ -36,7 +39,10 @@ export default function GoodPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
 
+  const { addToCart } = useShopStore();
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -78,6 +84,9 @@ export default function GoodPage() {
 
         const data = await res.json();
         setGood(data);
+        if (data && data.size && data.size.length > 0) {
+          setSelectedSize(data.size[0]);
+        }
       } catch {
         console.log('Не вдалося завантажити товар');
       } finally {
@@ -87,6 +96,28 @@ export default function GoodPage() {
 
     fetchGood();
   }, [goodId]);
+
+  // ⬅️ NEW HANDLER: Add item to cart ⬅️
+  const handleAddToCart = () => {
+    if (!good || !selectedSize || quantity < 1) {
+      alert('Будь ласка, оберіть розмір та вкажіть дійсну кількість.');
+      return;
+    }
+
+    const itemToAdd = {
+      id: good._id,
+      name: good.name,
+      price: good.price.value,
+      quantity: quantity,
+      image: good.image,
+      rating: averageRate,
+      reviewsCount: feedbacks.length,
+      size: selectedSize, // ⬅️ Pass the selected size
+    };
+
+    addToCart(itemToAdd);
+    alert(`"${good.name}" (${selectedSize}, x${quantity}) додано до кошика!`);
+  };
 
   useEffect(() => {
     const loadFeedbacks = async () => {
@@ -148,9 +179,9 @@ export default function GoodPage() {
   return (
     <main className={css.container}>
       <nav className={css.breadcrumbs}>
-        <a href="/goods" className={css.breadcrumbLink}>
+        <Link href="/goods" className={css.breadcrumbLink}>
           Товари
-        </a>
+        </Link>
         <span className={css.breadcrumbSeparator}>›</span>
         <span className={css.breadcrumbCurrent}>{good.name}</span>
       </nav>
@@ -158,7 +189,7 @@ export default function GoodPage() {
       {/* продукт  */}
       <section className={css.good}>
         <div className={css.imageWrapper}>
-          <img src={good.image} alt={good.name} className={css.image} />
+          <Image src={good.image} alt={good.name} className={css.image} />
         </div>
 
         <div className={css.info}>
@@ -196,17 +227,34 @@ export default function GoodPage() {
           {/* Розмір */}
           <div className={css.sizeBlock}>
             <p>Розмір:</p>
-            <select className={css.sizeSelect}>
+            <select
+              className={css.sizeSelect}
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)} // ⬅️ Update selectedSize
+            >
               {good.size.map((s) => (
-                <option key={s}>{s}</option>
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
           </div>
 
           {/* кошик */}
           <div className={css.cartRow}>
-            <button className={css.buyButton}>Додати в кошик</button>
-            <input type="number" min="1" defaultValue="1" className={css.quantityInput} />
+            <button
+              className={css.buyButton}
+              onClick={handleAddToCart} // ⬅️ Call the handler
+            >
+              Додати в кошик
+            </button>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))} // ⬅️ Update quantity
+              className={css.quantityInput}
+            />
           </div>
 
           <button className={css.buyNowButton}>Купити зараз</button>

@@ -49,15 +49,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk">
-      <body className={`${inter.variable} ${nunito.variable} `}>
+      <body className={`${inter.variable} ${nunito.variable} `}
+        suppressHydrationWarning={true}>
         <TanStackProvider>
           <AuthProvider>
             <Header />
-            <Container>
+             <Container>
               <main>
-                {children}
-                {modal}
-              </main>
+{children}
+{modal}
+</main>
             </Container>
             <Footer />
           </AuthProvider>
