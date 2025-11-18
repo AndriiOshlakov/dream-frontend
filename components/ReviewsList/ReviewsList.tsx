@@ -99,7 +99,11 @@ export default function ReviewsList() {
                   ))}
                 </p>
 
-                <p className={css.comment}>{review.comment}</p>
+                <p className={css.comment}>
+                  {review.comment.length > 25
+                    ? `${review.comment.substring(0, 100)}..`
+                    : review.comment}
+                </p>
 
                 <div className={css.cardFooter}>
                   <p className={css.name}>{review.name}</p>
@@ -117,7 +121,7 @@ export default function ReviewsList() {
             disabled={isAtStart}
             aria-label="Попередні відгуки"
           >
-            <svg width="48" height="48">
+            <svg width="24" height="24">
               <use href="/symbol-defs.svg#icon-arrow_back" />
             </svg>
           </button>
@@ -128,7 +132,7 @@ export default function ReviewsList() {
             disabled={isAtEnd}
             aria-label="Наступні відгуки"
           >
-            <svg width="48" height="48">
+            <svg width="24" height="24">
               <use href="/symbol-defs.svg#icon-arrow_forward" />
             </svg>
           </button>
