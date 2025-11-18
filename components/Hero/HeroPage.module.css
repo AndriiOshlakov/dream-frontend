@@ -109,20 +109,36 @@
         color: black;
         cursor: pointer;
     }
-
+.linksCategory{
+     background-color: rgba(0, 0, 0, 0.05);
+}
     .links:hover,
     .links:focus {
-        background-color: rgb(0, 0, 0, 0.15);
+        background-color: #9DB484;
+        border: 1px solid #4E5A42;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+    .linksCategory:hover,
+    .linksCategory:focus {background-color: rgb(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+
+    }
+
 
     .links:active {
-        background-color: rgb(0, 0, 0, 0.5);
-        color: aliceblue;
+        background-color: #3B4331;
+        border: 1px solid #C5E1A5;
+        color: white;
         transform: translateY(1px);
         box-shadow: none;
     }
-
+.linksCategory:active {
+        background-color: rgb(0, 0, 0, 0.5);
+         border: 1px solid #FFFFFF;
+        color: white;
+        transform: translateY(1px);
+        box-shadow: none;
+    }
     .heroImage {
         width: 100%;
         height: auto;
