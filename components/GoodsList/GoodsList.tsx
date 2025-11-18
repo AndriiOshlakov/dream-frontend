@@ -14,6 +14,8 @@ import type { RawGood, Good } from "../../types/goods";
 import Loader from "../Loader/Loader";
 import { api } from "@/app/api/api";
 
+/* ===== Типи для фідбеків ===== */
+
 type RawFeedback = {
   rating?: number;
   rate?: number;
@@ -21,6 +23,8 @@ type RawFeedback = {
   value?: number;
   stars?: number;
 };
+
+/* ===== Компонент ===== */
 
 export default function GoodsList() {
   const [goods, setGoods] = useState<Good[]>([]);
@@ -31,9 +35,6 @@ export default function GoodsList() {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [activeDot, setActiveDot] = useState(0);
-
-  const canGoPrev = !isBeginning;
-  const canGoNext = !isEnd;
 
   useEffect(() => {
     let isCancelled = false;
@@ -204,7 +205,6 @@ export default function GoodsList() {
                   type="button"
                   className={css.arrowBtn}
                   onClick={handlePrev}
-                  disabled={!canGoPrev}
                   aria-label="Попередні товари"
                 >
                   <svg className={css.icon}>
@@ -216,7 +216,6 @@ export default function GoodsList() {
                   type="button"
                   className={css.arrowBtn}
                   onClick={handleNext}
-                  disabled={!canGoNext}
                   aria-label="Наступні товари"
                 >
                   <svg className={css.icon}>
@@ -231,6 +230,8 @@ export default function GoodsList() {
     </section>
   );
 }
+
+/* ===== Константи та хелпери ===== */
 
 const RAW_BASE_URL: string = api.defaults.baseURL ?? "";
 const API_BASE: string = RAW_BASE_URL.replace(/\/+$/, "");
@@ -277,8 +278,10 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
   const id = getIdFromRaw(raw);
 
   const feedbacksUnknown = (raw as { feedbacks?: unknown }).feedbacks;
-  let reviewsCount = 0;
-  let rating = 0;
+
+  // значення за замовчуванням, щоб не показувати 0
+  let reviewsCount = 1; // мінімум 1
+  let rating = 4.8; // базовий рейтинг
 
   if (isRawFeedbackArray(feedbacksUnknown) && feedbacksUnknown.length > 0) {
     reviewsCount = feedbacksUnknown.length;
@@ -297,6 +300,8 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
     if (numericRatings.length > 0) {
       const sum = numericRatings.reduce((acc, n) => acc + n, 0);
       rating = Math.round((sum / numericRatings.length) * 10) / 10;
+    } else {
+      rating = 4.8;
     }
   }
 

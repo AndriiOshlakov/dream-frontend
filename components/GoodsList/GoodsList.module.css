@@ -9,7 +9,7 @@
   padding: 0 20px;
   margin: 0 auto;
   box-sizing: border-box;
-  position: relative;       
+  position: relative;
 }
 
 .header {
@@ -32,7 +32,7 @@
   margin: 0 0 40px;
 }
 
-/* buttons */
+/* ==== buttons base ==== */
 .button,
 .allBtn,
 .detailsBtn {
@@ -51,9 +51,11 @@
   font-size: 16px;
   line-height: 1.5;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.1s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s,
+    transform 0.1s;
 }
 
+/* кнопка "Всі товари" */
 .allBtn {
   width: 108px;
   height: 36px;
@@ -63,26 +65,60 @@
   margin-top: 4px;
 }
 
+/* hover / focus / active лише для .button (якщо десь буде використана) */
 .button:hover,
-.allBtn:hover,
-.detailsBtn:hover,
-.button:focus,
-.allBtn:focus,
-.detailsBtn:focus {
+.button:focus {
   background: #c5e1a5;
   border-color: #c5e1a5;
 }
 
-.button:active,
-.allBtn:active,
-.detailsBtn:active {
+.button:active {
   background: #1b5e20;
   border-color: #1b5e20;
   color: #fff;
   transform: translateY(1px);
 }
 
-/* list */
+/* ==== Кнопка Детальніше ==== */
+.detailsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  background: rgba(0, 0, 0, 0.05);
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s,
+    transform 0.1s;
+  margin-top: 16px;
+}
+
+/* Детальніше + Всі товари — однаковий hover/focus/active */
+.detailsBtn:hover,
+.detailsBtn:focus,
+.allBtn:hover,
+.allBtn:focus {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.detailsBtn:active,
+.allBtn:active {
+  background: #1b5e20;
+  border-color: #1b5e20;
+  color: #fff;
+  transform: translateY(1px);
+}
+
+/* ==== list ==== */
 .list {
   display: grid;
   grid-template-columns: 1fr;
@@ -98,13 +134,12 @@
   flex-direction: column;
   padding: 0;
   width: 335px;
-  
 }
 
 /* image */
 .imgWrap {
   width: 100%;
-  height: 412px;
+  height: 413px; /* mobile: 335x413 */
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
@@ -218,40 +253,7 @@
   color: #000;
 }
 
-/* ===== КНОПКА “Детальніше” ===== */
-.detailsBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;              /* рівно по ширині картки */
-  height: 40px;
-  padding: 4px 10px;
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0);
-  background: rgba(0, 0, 0, 0.05);
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #000;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.1s;
-  margin-top: 16px;
-}
-
-.detailsBtn:hover,
-.detailsBtn:focus {
-  background: #c5e1a5;
-  border-color: #c5e1a5;
-}
-
-.detailsBtn:active {
-  background: #1b5e20;
-  border-color: #1b5e20;
-  color: #fff;
-  transform: translateY(1px);
-}
-
+/* ==== контролы свайпера ==== */
 
 .controls {
   margin-top: 24px;
@@ -265,7 +267,7 @@
 .dots {
   display: inline-flex;
   align-items: center;
-  gap: 9px;                
+  gap: 9px;
 }
 
 .dot,
@@ -286,17 +288,17 @@
 .arrows {
   display: inline-flex;
   gap: 12px;
-  z-index: 5;            
+  z-index: 5;
 }
 
 /* ====== BUTTON STATES FOR SLIDER ARROWS ====== */
 
 .arrowBtn {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  border: 1px solid #c5e1a5; 
-  background: #c5e1a5;      
+  border: 1px solid #c5e1a5;
+  background: #c5e1a5;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -304,49 +306,41 @@
   transition: background 0.2s, border-color 0.2s, opacity 0.2s;
 }
 
-/* Іконка */
-.arrowBtn .icon {
-  width: 18px;
-  height: 18px;
-  stroke: #000;        
+/* Іконка стрілки */
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: #000;
   fill: none;
 }
 
 /* Hover / Focus (активна) */
-.arrowBtn:hover:not(:disabled),
-.arrowBtn:focus-visible:not(:disabled) {
-  background: #92b46e;        
-  border-color: #92b46e;
+.arrowBtn:hover,
+.arrowBtn:focus-visible {
+  background: #9db484;
+  border-color: #4e5a42;
 }
 
 /* Active (при натисканні) */
-.arrowBtn:active:not(:disabled) {
-  background: #1b5e20;        
+.arrowBtn:active {
+  background: #1b5e20;
   border-color: #1b5e20;
 }
 
-.arrowBtn:active:not(:disabled) .icon {
-  stroke: #fff;               
+.arrowBtn:active .icon {
+  stroke: #fff;
 }
 
-/* ===== DISABLED STATE ===== */
-
+/* Disabled (залишили на випадок перевикористання) */
 .arrowBtn:disabled {
-  background: rgba(0, 0, 0, 0.05);  
-  border-color: rgba(0, 0, 0, 0.1); 
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
   cursor: default;
-  pointer-events: none;            
+  pointer-events: none;
 }
 
 .arrowBtn:disabled .icon {
-  stroke: rgba(0, 0, 0, 0.25);     
-}
-
-
-.icon {
-  width: 18px;
-  height: 18px;
-  color: #000;
+  stroke: rgba(0, 0, 0, 0.25);
 }
 
 /***** ===== TABLET ≥768px =====*****/
@@ -376,7 +370,7 @@
   }
 
   .imgWrap {
-    height: 416px;
+    height: 414px; /* tablet: 336x414 */
   }
 
   .price {
@@ -387,7 +381,6 @@
     width: 100%;
   }
 
-  
   .controls {
     margin-top: 32px;
     justify-content: center;
@@ -397,28 +390,21 @@
     justify-content: center;
   }
 
-    .arrows {
+  .arrows {
     position: absolute;
-    top: -400px;               
+    top: -400px;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 765px;           
+    width: 765px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    pointer-events: none;   
+    pointer-events: none;
     z-index: 5;
   }
 
   .arrowBtn {
-    width: 48px;
-    height: 48px;
-    pointer-events: auto;               
-  }
-
-  .icon {
-    width: 24px;
-    height: 24px;
+    pointer-events: auto;
   }
 }
 
@@ -429,7 +415,7 @@
   }
 
   .section .container {
-    max-width: 1312px;                
+    max-width: 1312px;
     margin: 0 auto;
   }
 
@@ -443,7 +429,7 @@
   }
 
   .imgWrap {
-    height: 376px;
+    height: 375px; /* desktop: 304x375 */
   }
 
   .title {
@@ -467,24 +453,14 @@
 
   .arrows {
     position: absolute;
-    top: -375px;               
+    top: -375px;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 1380px;           
+    width: 1380px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    pointer-events: none;   
+    pointer-events: none;
     z-index: 5;
-  }
-
-  .arrowBtn {
-    width: 48px;
-    height: 48px;
-  }
-
-  .icon {
-    width: 24px;
-    height: 24px;
   }
 }
