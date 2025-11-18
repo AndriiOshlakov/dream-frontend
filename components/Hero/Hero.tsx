@@ -21,8 +21,8 @@ export default function Hero() {
                 </p>
                 </div>
                 <div className={css.actions}>
-                    <a href="#" className={css.links}>До товарів</a>
-                  <a href="#" className={css.links}>Дослідити категорії</a>
+                    <a href="#ToGoods" className={css.links}>До товарів</a>
+                  <a href="#PopularCategories" className={`${css.links} ${css.linksCategory}`}>Дослідити категорії</a>
     </div>
     </div>
      <picture>
