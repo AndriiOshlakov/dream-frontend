@@ -2,7 +2,7 @@
 
 import { toast } from 'react-toastify';
 import css from './ModalReview.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { sendFeedback } from '@/lib/api/clientApi';
 
@@ -40,7 +40,7 @@ export default function ModalReview({ onClose, productId, category }: ModalRevie
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!rating) {
@@ -56,6 +56,20 @@ export default function ModalReview({ onClose, productId, category }: ModalRevie
     });
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
   const StarIcon = ({
     filled,
     onClick,
@@ -81,8 +95,8 @@ export default function ModalReview({ onClose, productId, category }: ModalRevie
   );
 
   return (
-    <div className={css.backdrop}>
-      <div className={css.modalReviewContainer}>
+    <div className={css.backdrop} onClick={onClose}>
+      <div className={css.modalReviewContainer} onClick={(e) => e.stopPropagation()}>
         <button type="button" className={css.reviewCloseBtn} onClick={onClose}>
           <svg className={css.reviewClose} width="24" height="24">
             <use href="/symbol-defs.svg#icon-close" />
