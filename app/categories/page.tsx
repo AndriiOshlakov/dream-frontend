@@ -1,6 +1,5 @@
 'use client';
 
-import Container from '@/components/Container/Container';
 import CategoriesList from '@/components/CategoriesList/CategoriesList';
 import css from './CategoriesPage.module.css';
 
