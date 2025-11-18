@@ -1,11 +1,12 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import ModalReview from '@/components/ModalReview/ModalReview';
 import css from './GoodPage.module.css';
+import { useShopStore } from '@/lib/store/cartStore';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Good {
   _id: string;
@@ -38,7 +39,10 @@ export default function GoodPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
 
+  const { addToCart } = useShopStore();
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -80,6 +84,9 @@ export default function GoodPage() {
 
         const data = await res.json();
         setGood(data);
+        if (data && data.size && data.size.length > 0) {
+          setSelectedSize(data.size[0]);
+        }
       } catch {
         console.log('Не вдалося завантажити товар');
       } finally {
@@ -89,6 +96,28 @@ export default function GoodPage() {
 
     fetchGood();
   }, [goodId]);
+
+  // ⬅️ NEW HANDLER: Add item to cart ⬅️
+  const handleAddToCart = () => {
+    if (!good || !selectedSize || quantity < 1) {
+      alert('Будь ласка, оберіть розмір та вкажіть дійсну кількість.');
+      return;
+    }
+
+    const itemToAdd = {
+      id: good._id,
+      name: good.name,
+      price: good.price.value,
+      quantity: quantity,
+      image: good.image,
+      rating: averageRate,
+      reviewsCount: feedbacks.length,
+      size: selectedSize, // ⬅️ Pass the selected size
+    };
+
+    addToCart(itemToAdd);
+    alert(`"${good.name}" (${selectedSize}, x${quantity}) додано до кошика!`);
+  };
 
   useEffect(() => {
     const loadFeedbacks = async () => {
@@ -148,13 +177,35 @@ export default function GoodPage() {
   ];
 
   return (
-    <main>
+    <main className={css.container}>
+      <nav className={css.breadcrumbs}>
+        <Link href="/goods" className={css.breadcrumbLink}>
+          Товари
+        </Link>
+        <span className={css.breadcrumbSeparator}>›</span>
+        <span className={css.breadcrumbCurrent}>{good.name}</span>
+      </nav>
+
       {/* продукт  */}
-      <section className={css.container}>
-        <div className={css.good}>
-          <div className={css.imageWrapper}>
-            <img src={good.image} alt={good.name} className={css.image} />
-          </div>
+      <section className={css.good}>
+        <div className={css.imageWrapper}>
+          <Image src={good.image} alt={good.name} className={css.image} />
+        </div>
+
+        <div className={css.info}>
+          <h1 className={css.title}>{good.name}</h1>
+
+          {/* ціна + рейтинг */}
+          <div className={css.priceBlock}>
+            <span className={css.price}>
+              {good.price.value} {good.price.currency}
+            </span>
+
+            <span className={css.divider}>|</span>
+
+            <div className={css.ratingInline}>
+              {Array.from({ length: 5 }).map((_, i) => {
+                const diff = averageRate - i;
 
           <div className={css.info}>
             <nav className={css.breadcrumbs}>
@@ -207,35 +258,66 @@ export default function GoodPage() {
               </select>
             </div>
 
-            {/* кошик */}
-            <div className={css.cartRow}>
-              <button className={css.buyButton}>Додати в кошик</button>
-              <input type="number" min="1" defaultValue="1" className={css.quantityInput} />
-            </div>
+          {/* короткий опис */}
+          <section className={css.descriptionSection}>
+            {good.prevDescription && <p className={css.prevDescription}>{good.prevDescription}</p>}
+          </section>
 
-            <button className={css.buyNowButton}>Купити зараз</button>
-            <p className={css.deliveryText}>Безкоштовна доставка для замовлень від 1000 грн</p>
-
-            {/* ПОВНИЙ ОПИС */}
-            <section className={css.longDescriptionSection}>
-              <h3 className={css.charTitleDes}>Опис</h3>
-
-              {good.description && <p className={css.description}>{good.description}</p>}
-
-              {good.characteristics?.length ? (
-                <div className={css.characteristics}>
-                  <h3 className={css.charTitle}>Основні характеристики</h3>
-                  <ul className={css.charList}>
-                    {good.characteristics.map((item, idx) => (
-                      <li key={idx} className={css.charItem}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-            </section>
+          {/* Розмір */}
+          <div className={css.sizeBlock}>
+            <p>Розмір:</p>
+            <select
+              className={css.sizeSelect}
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)} // ⬅️ Update selectedSize
+            >
+              {good.size.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {/* кошик */}
+          <div className={css.cartRow}>
+            <button
+              className={css.buyButton}
+              onClick={handleAddToCart} // ⬅️ Call the handler
+            >
+              Додати в кошик
+            </button>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))} // ⬅️ Update quantity
+              className={css.quantityInput}
+            />
+          </div>
+
+          <button className={css.buyNowButton}>Купити зараз</button>
+          <p className={css.deliveryText}>Безкоштовна доставка від 1000 грн</p>
+
+          {/* ПОВНИЙ ОПИС */}
+          <section className={css.longDescriptionSection}>
+            <h3 className={css.charTitleDes}>Опис</h3>
+
+            {good.description && <p className={css.description}>{good.description}</p>}
+
+            {good.characteristics?.length ? (
+              <div className={css.characteristics}>
+                <h3 className={css.charTitle}>Основні характеристики</h3>
+                <ul className={css.charList}>
+                  {good.characteristics.map((item, idx) => (
+                    <li key={idx} className={css.charItem}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </section>
         </div>
       </section>
 
