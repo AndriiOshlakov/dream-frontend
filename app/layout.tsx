@@ -49,15 +49,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk">
-      <body className={`${inter.variable} ${nunito.variable} `}>
+      <body className={`${inter.variable} ${nunito.variable} `}
+        suppressHydrationWarning={true}>
         <TanStackProvider>
           <AuthProvider>
             <Header />
-            <Container>
+             <Container>
               <main>
-                {children}
-                {modal}
-              </main>
+{/* ⭐️ FIX: Wrap children and modal in a Fragment to make them one single unit ⭐️ */}
+<>
+{children}
+{modal}
+</>
+</main>
             </Container>
             <Footer />
           </AuthProvider>

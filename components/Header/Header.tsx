@@ -63,7 +63,7 @@ export default function Header() {
             <Link className={`${css.headerBasket} ${css.headerIconBtn}`} href="/order">
               <svg className={css.headerBasketIcon} width="24" height="24">
                 <use href="/symbol-defs.svg#icon-shopping_cart" />
-              </svg>
+              </svg>n 
               {totalCount > 0 && <span className={css.cartBadge}>{totalCount}</span>}
             </Link>
           </div>
