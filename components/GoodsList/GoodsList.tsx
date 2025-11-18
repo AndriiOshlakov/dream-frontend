@@ -80,7 +80,7 @@ export default function GoodsList() {
   };
 
   return (
-    <section className={css.section}>
+    <section id="popular_goods" className={css.section}>
       <div className="container">
         <div className={css.header}>
           <h2 className={css.title}>Популярні товари</h2>
