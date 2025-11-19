@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import ModalReview from '@/components/ModalReview/ModalReview';
 import css from './GoodPage.module.css';
 import { useShopStore } from '@/lib/store/cartStore';
@@ -50,7 +50,7 @@ export default function GoodPage() {
       setRefreshTrigger((prev) => prev + 1);
     }, 1500);
   };
-
+  const router = useRouter();
   const nextSlide = () => {
     if (feedbacks.length <= getVisibleCount()) return;
     setCurrentSlide((prev) => Math.min(prev + 1, feedbacks.length - getVisibleCount()));
@@ -119,11 +119,30 @@ export default function GoodPage() {
     alert(`"${good.name}" (${selectedSize}, x${quantity}) додано до кошика!`);
   };
 
+  const handleBuyNow = () => {
+    if (!good || !selectedSize || quantity < 1) {
+      alert('Будь ласка, оберіть розмір та вкажіть дійсну кількість.');
+      return;
+    }
+
+    const itemToAdd = {
+      id: good._id,
+      name: good.name,
+      price: good.price.value,
+      quantity: quantity,
+      image: good.image,
+      rating: averageRate,
+      reviewsCount: feedbacks.length,
+      size: selectedSize,
+    };
+
+    addToCart(itemToAdd);
+    router.push('/order');
+  };
+
   useEffect(() => {
     const loadFeedbacks = async () => {
       try {
-        console.log('🔄 Запит відгуків для товару:', goodId);
-
         const res = await fetch(`/api/feedbacks?productId=${goodId}`);
 
         if (res.ok) {
@@ -133,8 +152,6 @@ export default function GoodPage() {
           const filteredFeedbacks = allFeedbacks.filter(
             (feedback) => feedback.productId === goodId
           );
-
-          console.log('✅ Відфільтровані відгуки для товару:', filteredFeedbacks.length);
 
           setFeedbacks(filteredFeedbacks);
 
@@ -146,7 +163,6 @@ export default function GoodPage() {
             setAverageRate(0);
           }
         } else {
-          console.warn('⚠️ Не вдалося отримати відгуки');
           setFeedbacks([]);
           setAverageRate(0);
         }
@@ -257,7 +273,9 @@ export default function GoodPage() {
             />
           </div>
 
-          <button className={css.buyNowButton}>Купити зараз</button>
+          <button className={css.buyNowButton} onClick={handleBuyNow}>
+            Купити зараз
+          </button>
           <p className={css.deliveryText}>Безкоштовна доставка від 1000 грн</p>
 
           {/* ПОВНИЙ ОПИС */}

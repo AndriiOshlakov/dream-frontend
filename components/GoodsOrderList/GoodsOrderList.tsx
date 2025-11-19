@@ -5,6 +5,7 @@ import css from './GoodsOrderList.module.css';
 import Image from 'next/image';
 import MessageNoInfo from '../MessageNoInfo/MessageNoInfo';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function GoodsOrderList() {
   const { cartItems, removeFromCart, updateQuantity } = useShopStore();
@@ -13,6 +14,12 @@ export default function GoodsOrderList() {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const delivery = subtotal > 0 ? 50 : 0;
   const total = subtotal + delivery;
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('totalPrice', JSON.stringify(total));
+    }
+  }, [total]);
 
   const handleGoToGoods = () => {
     router.push('/goods');
