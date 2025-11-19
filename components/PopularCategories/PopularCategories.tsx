@@ -12,6 +12,7 @@ import type { Swiper as SwiperType } from 'swiper';
 import { getCategories } from '@/lib/api/clientApi';
 import { Category } from '@/types/category';
 import { localCategories } from '@/constants/localCategories';
+import Loader from '../Loader/Loader';
 
 const MAX_CATEGORIES = 8;
 
@@ -208,7 +209,7 @@ export default function PopularCategories() {
       <section className={css.section} id="PopularCategories">
         <div className={css.container}>
           <h2 className={css.title}>Популярні категорії</h2>
-          <p>Завантаження категорій...</p>
+          <Loader />
         </div>
       </section>
     );
@@ -292,7 +293,9 @@ export default function PopularCategories() {
               onClick={handlePrevClick}
               aria-disabled={isPrevDisabled}
             >
-              ←
+              <svg className={css.icon}>
+                <use href="/symbol-defs.svg#icon-arrow_back" />
+              </svg>
             </button>
 
             <button
@@ -302,7 +305,9 @@ export default function PopularCategories() {
               onClick={handleNextClick}
               aria-disabled={isNextDisabled || isLoadingMore}
             >
-              →
+              <svg className={css.icon}>
+                <use href="/symbol-defs.svg#icon-arrow_forward" />
+              </svg>
             </button>
           </div>
         </div>

@@ -7,6 +7,7 @@ import css from './CategoriesList.module.css';
 import { getCategories } from '@/lib/api/clientApi';
 import { Category } from '@/types/category';
 import { localCategories } from '@/constants/localCategories';
+import Loader from '../Loader/Loader';
 
 const INITIAL_PER_PAGE_DESKTOP = 6;
 const INITIAL_PER_PAGE_TABLET = 4;
@@ -211,7 +212,7 @@ export default function CategoriesList() {
     return (
       <section className={css.categoriesSection}>
         <div className="container">
-          <p>Завантаження категорій...</p>
+          <Loader />
         </div>
       </section>
     );

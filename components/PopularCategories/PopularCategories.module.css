@@ -145,6 +145,15 @@
   background-color: #c5e1a5;
 }
 
+/* Іконка стрілки */
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: #000;
+  fill: none;
+}
+
+/* Hover / Focus (активна) */
 .btnPrev:hover:not(.disabled),
 .btnNext:hover:not(.disabled) {
   background-color: #9db484;
