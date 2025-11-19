@@ -6,6 +6,15 @@
   margin: 0 auto;
   padding: 48px 20px;
 }
+.footerLogo {
+  display: inline-block;
+  transition: transform 0.25s ease-in-out;
+  transform-origin: center;
+}
+.footerLogo:hover,
+.footerLogo:focus {
+  transform: translateY(-2px);
+}
 .footerTop {
   display: flex;
   flex-direction: column;
@@ -38,25 +47,29 @@
   text-align: center;
 }
 
-.footerNavigation :global(a) {
+.footerNavigation {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
   text-align: center;
   color: #000;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+  transform-origin: center;
 }
 .footerNavigation:hover,
 .footerNavigation:focus {
-  color: #9db484;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  /* transform: scale(1.05); */
+  transform: translateY(-2px);
   text-underline-offset: 4px;
   text-decoration: underline;
 }
 .footerNavigation:active {
   color: #9db484;
-}
-.footerNavigation:disabled {
-  color: #000000;
 }
 .footerSubscribe {
   display: flex;
@@ -91,7 +104,11 @@
   gap: 16px;
   margin-top: 24px;
 }
-
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
 .footerInput {
   display: flex;
   align-items: center;
@@ -112,8 +129,14 @@
 }
 .footerInput:hover,
 .footerInput:focus {
-  border: #d6eac0;
+  border: 1px solid #4e5a42;
   outline: none;
+}
+.errorMessage {
+  color: red;
+  font-size: 14px;
+  margin-left: 8px;
+  margin-bottom: -20px;
 }
 .footerBtn {
   display: flex;
@@ -121,7 +144,7 @@
   justify-content: center;
   flex-direction: row;
   gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0);
+  border: 1px solid #c5e1a5;
   border-radius: 100px;
   padding-block: 6px;
   padding-inline: 12px;
@@ -174,7 +197,10 @@
 .socialLink {
   fill: #000;
 }
-
+/* .socialLink:hover,
+.socialLink:focus {
+  transform: scale(1.05);
+} */
 @media screen and (min-width: 768px) {
   .container {
     max-width: 768px;
