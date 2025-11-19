@@ -26,7 +26,8 @@
 .dashboard {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 32px;
+  width: 100%;
 }
 
 .ordersSection {
@@ -84,7 +85,9 @@
   line-height: 150%;
 }
 
-@media (min-width: 768px) {
+/* ========== DESKTOP (min-width: 1440px) ========== */
+
+@media (min-width: 1440px) {
   .profile {
     padding: 112px 0 80px;
   }
@@ -92,6 +95,7 @@
   .dashboard {
     grid-template-columns: 1fr 1fr;
     align-items: start;
+    gap: 16px;
   }
 
   .ordersSection {

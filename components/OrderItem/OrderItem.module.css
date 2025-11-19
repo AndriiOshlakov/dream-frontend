@@ -1,8 +1,8 @@
 .itemContainer {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   gap: 16px;
   align-items: center;
+  justify-content: space-between;
 }
 
 .date {
@@ -17,9 +17,27 @@
   line-height: 150%;
 }
 
+.priceColumn {
+  margin-left: auto;
+}
+
+.statusColumn {
+  display: none;
+}
+
+/* ========== TABLET (min-width: 768px) ========== */
+
 @media (min-width: 768px) {
   .itemContainer {
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    align-items: start;
+  }
+
+  .priceColumn {
+    margin-left: 0;
+  }
+
+  .statusColumn {
+    display: block;
   }
 }

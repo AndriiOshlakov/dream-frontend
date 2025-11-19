@@ -1,5 +1,5 @@
 import css from './OrderItem.module.css';
-import type { Order, OrderGoodsItem } from '@/types/order';
+import type { Order, OrderStatus, OrderGoodsItem } from '@/types/order';
 
 function formatDate(iso: string) {
   try {
@@ -8,6 +8,18 @@ function formatDate(iso: string) {
   } catch {
     return iso;
   }
+}
+
+function getStatusText(status: OrderStatus): string {
+  return (
+    {
+      pending: 'Очікує обробки',
+      completed: 'Виконано',
+      cancelled: 'Скасовано',
+      processing: 'У процесі',
+      packing: 'Комплектується',
+    }[status] || 'Невідомий статус'
+  );
 }
 
 type OrderItemProps = {
@@ -19,19 +31,19 @@ export default function OrderItem({ order }: OrderItemProps) {
 
   return (
     <div className={css.itemContainer}>
-      <div>
+      <div className={css.infoColumn}>
         <time dateTime={order.createdAt}>{formatDate(order.createdAt)}</time>
         <div className={css.label}>#{order._id.slice(0, 8)}</div>
       </div>
 
-      <div>
+      <div className={css.priceColumn}>
         <div className={css.label}>Сума:</div>
         <div className={css.value}>{total} грн</div>
       </div>
 
-      <div>
+      <div className={css.statusColumn}>
         <div className={css.label}>Статус:</div>
-        <div className={css.value}>В обробці</div>
+        <div className={css.value}>{getStatusText(order.status)}</div>
       </div>
     </div>
   );
