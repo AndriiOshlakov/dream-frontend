@@ -8,11 +8,14 @@ import MessageNoInfo from '@/components/MessageNoInfo/MessageNoInfo';
 import { logout, fetchMyOrders, editMe } from '@/lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useShopStore } from '@/lib/store/cartStore';
 import { EditCurrentUser } from '@/types/user';
 
 export default function ProfileClient() {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
+
+  const clearCart = useShopStore((state) => state.clearCart);
 
   const router = useRouter();
   const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated);
@@ -26,6 +29,7 @@ export default function ProfileClient() {
   const handleLogout = async () => {
     await logout();
     clearIsAuthenticated();
+    clearCart();
     router.push('/auth/login');
   };
 

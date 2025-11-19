@@ -38,26 +38,26 @@ export const useShopStore = create<CartState>()(
       //     return { cartItems: [...state.cartItems, item] };
       //   }),
 
-        addToCart: (item) => // ⬅️ UPDATED LOGIC
-         set((state) => {
-         // Check for an existing item with the SAME ID AND SAME SIZE
-          const existing = state.cartItems.find(
-                (i) => i.id === item.id && i.size === item.size
-            );
+      addToCart: (
+        item // ⬅️ UPDATED LOGIC
+      ) =>
+        set((state) => {
+          // Check for an existing item with the SAME ID AND SAME SIZE
+          const existing = state.cartItems.find((i) => i.id === item.id && i.size === item.size);
 
-            if (existing) {
+          if (existing) {
             return {
-            cartItems: state.cartItems.map((i) =>
-             // If ID and Size match, increment quantity
-             i.id === item.id && i.size === item.size
-                    ? { ...i, quantity: i.quantity + item.quantity } 
-                    : i
-     ),
-  };
- }
-  // If new size or new item, add to the cart
-  return { cartItems: [...state.cartItems, item] };
-  }),
+              cartItems: state.cartItems.map((i) =>
+                // If ID and Size match, increment quantity
+                i.id === item.id && i.size === item.size
+                  ? { ...i, quantity: i.quantity + item.quantity }
+                  : i
+              ),
+            };
+          }
+          // If new size or new item, add to the cart
+          return { cartItems: [...state.cartItems, item] };
+        }),
       removeFromCart: (id) =>
         set((state) => ({
           cartItems: state.cartItems.filter((item) => item.id !== id),
@@ -67,7 +67,9 @@ export const useShopStore = create<CartState>()(
 
       updateQuantity: (id, quantity) =>
         set((state) => ({
-          cartItems: state.cartItems.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item)),
+          cartItems: state.cartItems.map((item) =>
+            item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
+          ),
         })),
     }),
     {
