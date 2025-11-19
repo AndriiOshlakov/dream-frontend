@@ -172,3 +172,5 @@ export async function subscribeUser(email: string) {
 
   return response.json();
 }
+
+
