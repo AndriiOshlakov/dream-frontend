@@ -37,13 +37,11 @@
   .authNavigationLinkHeaderReg:focus {
     background-color: #9db484;
     color: #4e5a42;
-    border: 1px solid #4e5a42;
   }
 
   .authNavigationLinkHeaderReg:active {
     background-color: #3b4331;
     color: #ffffff;
-    border: 1px solid #c5e1a5;
   }
 
   .authNavigationItemHeader {
@@ -59,13 +57,11 @@
   .authNavigationItemHeader:focus {
     background-color: #9db484;
     color: #4e5a42;
-    border: 1px solid #4e5a42;
   }
 
   .authNavigationItemHeader:active {
     background-color: #3b4331;
     color: #ffffff;
-    border: 1px solid #c5e1a5;
   }
 }
 
@@ -102,13 +98,11 @@
 .signInClass:focus {
   background-color: #9db484;
   color: #000000;
-  border: 1px solid #4e5a42;
 }
 
 .signInClass:active {
   background-color: #3b4331;
   color: #ffffff;
-  border: 1px solid #c5e1a5;
 }
 
 .registrationClass {
@@ -139,12 +133,10 @@
 .registrationClass:focus {
   background-color: #9db484;
   color: #000000;
-  border: 1px solid #4e5a42;
 }
 .registrationClass:active {
   background-color: #3b4331;
   color: #ffffff;
-  border: 1px solid #c5e1a5;
 }
 
 @media screen and (min-width: 768px) {

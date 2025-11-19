@@ -50,7 +50,6 @@
 .headerBasket:hover,
 .headerBasket:focus {
   background-color: #9db484;
-  border: 1px solid #4e5a42;
 }
 
 .headerNavigationList {
@@ -78,7 +77,6 @@
 .burgerBtn:hover,
 .burgerBtn:focus {
   background-color: #9db484;
-  border: 1px solid #4e5a42;
 }
 
 .burgerBtn:active {

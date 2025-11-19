@@ -23,7 +23,7 @@ export default function Header() {
         <div className={css.headerContainer}>
           <Link href="/" className={css.headerLogo}>
             <svg width="84" height="36">
-              <use href="/symbol-defs.svg#icon-Company-Logo" />
+              <use xlinkHref="/symbol-defs.svg#icon-Company-Logo" />
             </svg>
           </Link>
           <nav className={css.headerNavigation}>
@@ -55,14 +55,14 @@ export default function Header() {
               className={`${css.burgerBtn} ${css.headerIconBtn}`}
             >
               <svg width="24" height="24">
-                <use href="/symbol-defs.svg#icon-menu" />
+                <use xlinkHref="/symbol-defs.svg#icon-menu" />
               </svg>
             </button>
 
             {/* basket */}
-            <Link className={`${css.headerBasket} ${css.headerIconBtn}`} href="/basket?modal=1">
+            <Link className={`${css.headerBasket} ${css.headerIconBtn}`} href="/basket">
               <svg className={css.headerBasketIcon} width="24" height="24">
-                <use href="/symbol-defs.svg#icon-shopping_cart" />
+                <use xlinkHref="/symbol-defs.svg#icon-shopping_cart" />
               </svg>
               {totalCount > 0 && <span className={css.cartBadge}>{totalCount}</span>}
             </Link>
