@@ -14,9 +14,13 @@ interface ModalReviewProps {
   category: string;
 }
 
-const validationSchema = Yup.object({
-  name: Yup.string().max(20, "Ім'я занадто довге").required("Ім'я є обов'язковим полем"),
-  text: Yup.string().max(500, 'Коментар занадто довгий'),
+const validationSchema = Yup.object().shape({
+  name: Yup.string().trim().max(20, "Ім'я занадто довге").required("Ім'я є обов'язковим полем"),
+  text: Yup.string()
+    .trim()
+    .min(10, 'Коментар має бути не меньше 10 символів!')
+    .max(500, 'Коментар занадто довгий')
+    .required("Коментар є обов'язковим"),
 });
 
 export default function ModalReview({ onClose, productId, category }: ModalReviewProps) {
