@@ -7,6 +7,7 @@ import css from './GoodPage.module.css';
 import { useShopStore } from '@/lib/store/cartStore';
 import Link from 'next/link';
 import Image from 'next/image';
+import Loader from '@/components/Loader/Loader';
 
 interface Good {
   _id: string;
@@ -180,7 +181,7 @@ export default function GoodPage() {
     setCurrentSlide(0);
   }, [feedbacks.length]);
 
-  if (loading) return <p className={css.loading}>Завантаження...</p>;
+  if (loading) return <Loader />;
   if (!good) return <p className={css.error}>Товар не знайдено</p>;
 
   const visibleFeedbacks = getVisibleFeedbacks();
