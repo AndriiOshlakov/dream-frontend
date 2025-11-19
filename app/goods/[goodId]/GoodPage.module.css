@@ -700,19 +700,10 @@
     width: 640px;
     height: 44px;
     border-radius: 100px;
-    border: 1px solid var(--opacity-neutral-darkest-10);
-    background-color: var(--opacity-neutral-darkest-5);
     margin-top: 8px;
   }
 
-  .buyNowButton:hover {
-    background: var(--opacity-neutral-darkest-15);
-  }
 
-  .buyNowButton:active {
-    transform: scale(0.98);
-    background: var(--opacity-neutral-darkest-50);
-  }
 
   .buyNowButton:disabled {
     background: var(--opacity-neutral-darkest-5);

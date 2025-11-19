@@ -94,6 +94,7 @@
         border-radius: 100px;
         max-width: 158px;
         height: 36px;
+        padding: 6px 12px;
         background-color: #c5e1a5;
         margin: 32px auto 0;
     }
@@ -202,6 +203,7 @@
         justify-content: center;
         border: 1px solid #c5e1a5;
         border-radius: 100px;
+        padding: 6px 12px;
         max-width: 158px;
         height: 36px;
         background-color: #c5e1a5;
