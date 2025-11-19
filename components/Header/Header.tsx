@@ -60,7 +60,7 @@ export default function Header() {
             </button>
 
             {/* basket */}
-            <Link className={`${css.headerBasket} ${css.headerIconBtn}`} href="/basket">
+            <Link className={`${css.headerBasket} ${css.headerIconBtn}`} href="/basket?modal=1">
               <svg className={css.headerBasketIcon} width="24" height="24">
                 <use href="/symbol-defs.svg#icon-shopping_cart" />
               </svg>
