@@ -15,21 +15,28 @@
 
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useShopStore } from '@/lib/store/cartStore';
+import BasketModal from '@/components/BasketModal/BasketModal';
 
 export default function BasketPage() {
   const router = useRouter();
-  const params = useSearchParams();
+  const { cartItems } = useShopStore();
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    const isModal = params.get('modal') === '1';
+    // чекати, поки Zustand завантажить стан
+    setIsHydrated(true);
+  }, []);
 
-    // Якщо НЕ модалка → редіректимо на order
-    if (!isModal) {
+  useEffect(() => {
+    if (isHydrated && cartItems.length === 0) {
       router.replace('/order');
     }
-  }, [params, router]);
+  }, [isHydrated, cartItems, router]);
 
-  return null;
+  if (!isHydrated) return null; // не рендерити нічого поки стан не завантажено
+
+  return <BasketModal />;
 }

@@ -76,8 +76,8 @@ npm start
 
 - 👨‍💻 **Sergiy Vitruk** — Backend Developer  
   GitHub: https://github.com/SergiyVitruk
-- 👨‍💻 **Oleksandr Kuzmenko** — Backend Developer  
-  GitHub: https://github.com/alex-kuzmenko1
+- 👨‍💻 **Oleksii Izmaylov** — Backend Developer  
+  GitHub: https://github.com/Diaktez
 - 👩‍💻 **Liudmyla Belikova** — Backend Developer  
   GitHub: https://github.com/liudmyla21-belikova
 
@@ -85,6 +85,8 @@ npm start
   GitHub: https://github.com/AndriiOshlakov
 - 👩‍💻 **Liudmyla Pominchuk** — Frontend Developer  
   GitHub: https://github.com/Liudmyla537
+- 👩‍💻 **Svitlana Holovenko** — Frontend Developer  
+  GitHub: https://github.com/Suzy-Lana777
 - 👩‍💻 **Svitlana Shumal** — Frontend Developer  
   GitHub: https://github.com/svitlana-shumal
 - 👨‍💻 **Oleksii Rudenko** — Frontend Developer  
@@ -93,10 +95,11 @@ npm start
   GitHub: https://github.com/AleksandraCherevko
 - 👩‍💻 **Maryana Rashkevych** — Frontend Developer  
   GitHub: https://github.com/MaryanaRashkevych
-- 👨‍💻 **Oleksandr** — Frontend Developer  
+- 👨‍💻 **Oleksandr Bondarenko** — Frontend Developer  
   GitHub: https://github.com/oleksandrboo77
 - 👩‍💻 **OleksandraOvcharova** — Frontend Developer  
   GitHub: https://github.com/OleksandraOvcharova
+- 👨‍💻 **Oleksandr Kuzmenko** — Frontend Developer GitHub: https://github.com/alex-kuzmenko
 
 ## Documentation
 
@@ -132,7 +135,7 @@ POST /api/auth/register
 ```json
 {
   "name": "John",
-  "email": "john@gmail.com",
+  "phone": "+380661234567",
   "password": "12345678"
 }
 ```
@@ -141,6 +144,15 @@ POST /api/auth/register
 
 ```http
 POST /api/auth/login
+```
+
+**Body (JSON):**
+
+```json
+{
+  "phone": "+380971234567",
+  "password": "securePassword123"
+}
 ```
 
 #### Logout user
