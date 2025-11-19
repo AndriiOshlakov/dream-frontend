@@ -32,6 +32,7 @@
   margin: 0 0 40px;
 }
 
+/* базова кнопка (якщо десь ще буде) */
 .button,
 .allBtn,
 .detailsBtn {
@@ -64,7 +65,7 @@
   margin-top: 4px;
 }
 
-/* hover / focus / active лише для .button (якщо десь буде використана) */
+/* hover / focus / active лише для .button (на всякий випадок) */
 .button:hover,
 .button:focus {
   background: #c5e1a5;
@@ -137,7 +138,7 @@
 
 .imgWrap {
   width: 100%;
-  height: 413px; 
+  height: 413px; /* mobile: 335x413 */
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
@@ -262,23 +263,41 @@
   position: relative;
 }
 
+/* ----- dots (5 штук, різний розмір) ----- */
 .dots {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 9px; /* як на макеті */
 }
 
+/* базовий вигляд точки */
 .dot,
 .dotActive {
-  width: 8px;
-  height: 8px;
   border-radius: 50%;
-}
-
-.dot {
   background: rgba(0, 0, 0, 0.25);
 }
 
+/* найменші – по краях (1 і 5) */
+.dots .dot:nth-child(1),
+.dots .dot:nth-child(5) {
+  width: 8px;
+  height: 8px;
+}
+
+/* середні – 2 і 4 */
+.dots .dot:nth-child(2),
+.dots .dot:nth-child(4) {
+  width: 10px;
+  height: 10px;
+}
+
+/* центральна – найбільша (3-тя) */
+.dots .dot:nth-child(3) {
+  width: 12px;
+  height: 12px;
+}
+
+/* активна точка чорна */
 .dotActive {
   background: #000;
 }
@@ -312,7 +331,7 @@
   fill: none;
 }
 
-/* Hover / Focus (активна) */
+/* Hover / Focus */
 .arrowBtn:hover,
 .arrowBtn:focus-visible {
   background: #9db484;
@@ -328,7 +347,7 @@
   stroke: #fff;
 }
 
-/* Disabled */
+/* Disabled (на всяк випадок, зараз не використовується) */
 .arrowBtn:disabled {
   background: rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.1);
@@ -352,7 +371,6 @@
   }
 
   .title {
-    /* font-size: 36px; */
     margin-bottom: 40px;
     max-width: none;
   }
@@ -394,7 +412,7 @@
     transform: translate(-50%, -50%);
     width: 765px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space_between;
     align-items: center;
     pointer-events: none;
     z-index: 5;
@@ -461,3 +479,5 @@
     z-index: 5;
   }
 }
+
+
