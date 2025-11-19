@@ -78,7 +78,6 @@ export default function RegistrationForm() {
                 type="text"
                 name="name"
                 placeholder="Ваше ім’я"
-                required
               />
               <ErrorMessage className={css.errorText} component="span" name="name" />
             </label>
@@ -89,7 +88,6 @@ export default function RegistrationForm() {
                 type="tel"
                 name="phone"
                 placeholder="+38 (0__) ___-__-__"
-                required
               />
               <ErrorMessage className={css.errorText} component="span" name="phone" />
             </label>
@@ -100,7 +98,6 @@ export default function RegistrationForm() {
                 type="password"
                 name="password"
                 placeholder="********"
-                required
               />
               <ErrorMessage className={css.errorText} component="span" name="password" />
             </label>
