@@ -75,14 +75,42 @@
 }
 
 .logoutButton {
-  text-align: center;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 6px 12px;
   border-radius: 100px;
-  background: #e8eae6;
-  color: #000;
-  font-size: 15px;
+  background: rgba(0, 0, 0, 0.05);
+  font-family: Inter, system-ui, sans-serif;
   font-weight: 500;
-  line-height: 150%;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.1s;
+}
+
+.logoutButton:hover,
+.logoutButton:focus {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.logoutButton:active {
+  background: #1b5e20;
+  color: #fff;
+}
+
+/* ========== TABLET (min-width: 768px) ========== */
+
+@media (min-width: 768px) {
+  .logoutButton {
+    width: auto;
+  }
 }
 
 /* ========== DESKTOP (min-width: 1440px) ========== */
