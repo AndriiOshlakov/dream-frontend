@@ -16,7 +16,7 @@
   font-weight: 400;
   line-height: 1;
   min-width: 11px;
-  height: 12px; 
+  height: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,7 +26,16 @@
   background-color: #d6eac0;
   width: 100%;
 }
+.headerLogo {
+  display: inline-block;
+  transition: transform 0.25s ease-in-out;
+  transform-origin: center;
+}
 
+.headerLogo:hover,
+.headerLogo:focus {
+  transform: scale(1.05);
+}
 .headerContainer {
   padding-top: 24px;
   padding-bottom: 24px;
@@ -41,16 +50,9 @@
 .headerBasket:hover,
 .headerBasket:focus {
   background-color: #9db484;
+  border: 1px solid #4e5a42;
 }
 
-.headerBasket:active {
-  background-color: #3b4331;
-  color: #ffffff;
-}
-
-.headerBasket:disabled {
-  background-color: #f9fcf6;
-}
 .headerNavigationList {
   display: none;
 }
@@ -76,6 +78,7 @@
 .burgerBtn:hover,
 .burgerBtn:focus {
   background-color: #9db484;
+  border: 1px solid #4e5a42;
 }
 
 .burgerBtn:active {
@@ -131,21 +134,22 @@
     line-height: 1.5;
     letter-spacing: 0;
     color: #000000;
+    display: inline-block;
+    transition:
+      transform 0.2s ease,
+      color 0.2s ease;
+    transform-origin: center;
   }
 
   .headerLink:hover,
   .headerLink:focus {
     text-decoration: underline;
     text-underline-offset: 3px;
-    color: #9db484;
+    transform: scale(1.05);
   }
 
   .headerLink:active {
     color: #9db484;
-  }
-
-  .headerLink:disabled {
-    color: #000000;
   }
 }
 

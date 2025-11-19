@@ -177,6 +177,11 @@
 .reviewBtn:active {
   background: #3b4331;
 }
+.errorText {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+}
 /* ---------- Tablet and Desktop ---------- */
 @media (min-width: 768px) {
   .modalReviewContainer {

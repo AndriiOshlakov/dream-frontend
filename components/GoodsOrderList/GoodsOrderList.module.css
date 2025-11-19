@@ -1,9 +1,9 @@
-.orderContainer {
+.goodsOrderContainer {
   min-width: 280px;
   width: 100%;
 }
 
-.orderList {
+.goodsOrderList {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -14,30 +14,30 @@
   padding-right: 8px;
 }
 
-.orderList::-webkit-scrollbar {
+.goodsOrderList::-webkit-scrollbar {
   width: 14px;
   height: 64px;
 }
 
-.orderList::-webkit-scrollbar-track {
+.goodsOrderList::-webkit-scrollbar-track {
   border: 5px solid;
   border-radius: 8px;
   background-clip: content-box;
 }
 
-.orderList::-webkit-scrollbar-thumb {
+.goodsOrderList::-webkit-scrollbar-thumb {
   background: #00000040;
   border-radius: 8px;
 }
 
-.orderContainer {
+.goodsOrderContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.orderQuantity,
-.orderPrice {
+.goodsOrderQuantity,
+.goodsOrderPrice {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 16px;
@@ -45,14 +45,14 @@
   white-space: nowrap;
 }
 
-.orderRaiting {
+.goodsOrderRaiting {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 150%;
 }
 
-.orderItem {
+.goodsOrderItem {
   display: flex;
   flex-wrap: nowrap;
   gap: 24px;
@@ -60,13 +60,13 @@
   justify-content: center;
 }
 
-.orderImg {
+.goodsOrderImg {
   border-radius: 16px;
   width: 82px;
   height: 101px;
 }
 
-.orderGoodName {
+.goodsOrderGoodName {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 18px;
@@ -80,7 +80,7 @@
   word-break: break-word;
 }
 
-.orderGoodInfo {
+.goodsOrderGoodInfo {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -88,37 +88,37 @@
   min-width: 0;
 }
 
-.orderStars {
+.goodsOrderStars {
   display: flex;
   justify-content: center;
   gap: 4px;
 }
 
-.orderReviews {
+.goodsOrderReviews {
   display: flex;
   justify-content: center;
   gap: 4px;
 }
-.orderGoodWrapper {
+.goodsOrderGoodWrapper {
   display: flex;
   flex-direction: column;
   overflow: hidden;
   max-width: 150px;
 }
 
-.orderRaiting {
+.goodsOrderRaiting {
   display: flex;
   flex-direction: row;
   gap: 12px;
 }
 
-.orderGoodRigth {
+.goodsOrderGoodRigth {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.orderGoodRigthActions {
+.goodsOrderGoodRigthActions {
   display: flex;
   flex-direction: row;
   gap: 16px;
@@ -126,7 +126,7 @@
   justify-content: space-between;
 }
 
-.orderQuantity {
+.goodsOrderQuantity {
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 16px;
   padding: 8px;
@@ -137,7 +137,7 @@
   color: #000000;
 }
 
-.orderDeleteBtn {
+.goodsOrderDeleteBtn {
   border-radius: 100px;
   width: 40px;
   height: 40px;
@@ -146,44 +146,45 @@
   align-items: center;
   justify-content: center;
 }
-.orderDeleteBtn:hover,
-.orderDeleteBtn:focus {
-  background-color: #9db484;
+.goodsOrderDeleteBtn:hover,
+.goodsOrderDeleteBtn:focus {
+  background-color: #00000026;
+  border: 1px solid #00000080;
 }
 
-.orderDeleteBtn:active {
+.goodsOrderDeleteBtn:active {
   background-color: #3b4331;
   color: #ffffff;
 }
 
-.orderDeleteBtn:disabled {
+.goodsOrderDeleteBtn:disabled {
   background-color: #f9fcf6;
 }
 
-.orderTotalPriceWrapper {
+.goodsOrderTotalPriceWrapper {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.orderProvisionalPrice,
-.orderDeliveryPrice {
+.goodsOrderProvisionalPrice,
+.goodsOrderDeliveryPrice {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 150%;
 }
 
-.orderProvisionalPrice,
-.orderProvisionalPriceValue {
+.goodsOrderProvisionalPrice,
+.goodsOrderProvisionalPriceValue {
   margin-top: 13.5px;
   margin-bottom: 5.5px;
 }
 
-.orderDeliveryPrice,
-.orderDeliveryProvisionalPriceValue {
+.goodsOrderDeliveryPrice,
+.goodsOrderDeliveryProvisionalPriceValue {
   margin: 4px 0;
 }
-.orderTotalPrice,
-.orderTotalPriceValue {
+.goodsOrderTotalPrice,
+.goodsOrderTotalPriceValue {
   margin: 12px 0;
   font-size: 20px;
   font-family: 'Inter', sans-serif;
@@ -191,33 +192,33 @@
   line-height: 150%;
 }
 
-.orderTotalPriceValue,
-.orderDeliveryPriceValue,
-.orderProvisionalPriceValue {
+.goodsOrderTotalPriceValue,
+.goodsOrderDeliveryPriceValue,
+.goodsOrderProvisionalPriceValue {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.orderPriceItem {
+.goodsOrderPriceItem {
   display: flex;
   justify-content: space-between;
 }
 
 @media only screen and (min-width: 768px) {
-  .orderGoodInfo {
+  .goodsOrderGoodInfo {
     gap: 0;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
 
-  .orderInfoWrapper {
-    flex: 0 0 auto; 
+  .goodsOrderInfoWrapper {
+    flex: 0 0 auto;
   }
 
-  .orderGoodRigth,
-  .orderGoodRigthActions {
+  .goodsOrderGoodRigth,
+  .goodsOrderGoodRigthActions {
     flex-direction: row;
     align-items: center;
     gap: 32px;
@@ -225,11 +226,11 @@
 }
 
 @media only screen and (min-width: 1440px) {
-  .orderTotalPriceWrapper {
+  .goodrOrderTotalPriceWrapper {
     min-height: 503px;
   }
 
-  .orderList {
+  .goodsOorderList {
     max-height: 452px;
   }
 }
