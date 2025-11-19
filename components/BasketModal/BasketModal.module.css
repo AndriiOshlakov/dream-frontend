@@ -193,9 +193,6 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .basketModal {
-  }
-
   .basketModalPrimaryButton,
   .basketModalSecondaryButton {
     width: 234.5px;
