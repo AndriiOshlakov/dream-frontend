@@ -5,6 +5,7 @@ import GoodsOrderList from '@/components/GoodsOrderList/GoodsOrderList';
 import MessageNoInfo from '../MessageNoInfo/MessageNoInfo';
 import { useShopStore } from '@/lib/store/cartStore';
 import css from './BasketModal.module.css';
+import Container from '../Container/Container';
 
 export default function BasketModal() {
   const router = useRouter();
@@ -13,7 +14,6 @@ export default function BasketModal() {
   const handleClose = useCallback(() => {
     router.back();
   }, [router]);
-
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -35,8 +35,6 @@ export default function BasketModal() {
       document.documentElement.style.overflow = originalHtmlOverflow;
     };
   }, []);
-  
-
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) handleClose();
@@ -55,41 +53,42 @@ export default function BasketModal() {
       router.push('/order');
     }, 200);
   };
- 
 
   return (
-    <div className={css.basketModalBackdrop} onClick={handleBackdropClick}>
-      <div className={css.basketModal}>
-        <div className={css.basketModalCloseBtnContainer}>
-          <button className={css.basketModalCloseButton} onClick={handleClose}>
-            <svg className={css.mbasketMenuCloseBtnIcon} width="24" height="24">
-              <use href="/symbol-defs.svg#icon-close" />
-            </svg>
-          </button>
+    <Container>
+      <div className={css.basketModalBackdrop} onClick={handleBackdropClick}>
+        <div className={css.basketModal}>
+          <div className={css.basketModalCloseBtnContainer}>
+            <button className={css.basketModalCloseButton} onClick={handleClose}>
+              <svg className={css.mbasketMenuCloseBtnIcon} width="24" height="24">
+                <use href="/symbol-defs.svg#icon-close" />
+              </svg>
+            </button>
+          </div>
+
+          <h2 className={css.basketModalTitle}>Ваш кошик</h2>
+
+          {cartItems.length > 0 ? (
+            <>
+              <GoodsOrderList />
+              <div className={css.basketModalActions}>
+                <button className={css.basketModalSecondaryButton} onClick={handleGoToGoods}>
+                  Продовжити покупки
+                </button>
+                <button className={css.basketModalPrimaryButton} onClick={handleGoToOrder}>
+                  Оформити замовлення
+                </button>
+              </div>
+            </>
+          ) : (
+            <MessageNoInfo
+              text="Ваш кошик порожній, мерщій до покупок!"
+              buttonText="До покупок"
+              onClick={handleGoToGoods}
+            />
+          )}
         </div>
-
-        <h2 className={css.basketModalTitle}>Ваш кошик</h2>
-
-        {cartItems.length > 0 ? (
-          <>
-            <GoodsOrderList />
-            <div className={css.basketModalActions}>
-              <button className={css.basketModalSecondaryButton} onClick={handleGoToGoods}>
-                Продовжити покупки
-              </button>
-              <button className={css.basketModalPrimaryButton} onClick={handleGoToOrder}>
-                Оформити замовлення
-              </button>
-            </div>
-          </>
-        ) : (
-          <MessageNoInfo
-            text="Ваш кошик порожній, мерщій до покупок!"
-            buttonText="До покупок"
-            onClick={handleGoToGoods}
-          />
-        )}
       </div>
-    </div>
+    </Container>
   );
 }
