@@ -10,19 +10,19 @@ export default function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClo
         <div className={css.mobileMenuHeader}>
           <Link href="/" className={css.mobileMenuHeaderLogo}>
             <svg width="84" height="36">
-              <use xlinkHref="symbol-defs.svg#icon-Company-Logo" />
+              <use href="/symbol-defs.svg#icon-Company-Logo" />
             </svg>
           </Link>
 
           <div className={css.mobileMenuNavigationBtn}>
             <button className={css.mobileMenuCloseBtn} onClick={onClose}>
               <svg className={css.mobileMenuCloseBtnIcon} width="24" height="24">
-                <use xlinkHref="/symbol-defs.svg#icon-close" />
+                <use href="/symbol-defs.svg#icon-close" />
               </svg>
             </button>
             <Link className={css.mobileMenuBasket} href="/order" onClick={onClose}>
               <svg className={css.mobileMenuBasketIcon} width="19" height="20">
-                <use xlinkHref="/symbol-defs.svg#icon-shopping_cart" />
+                <use href="/symbol-defs.svg#icon-shopping_cart" />
               </svg>
             </Link>
           </div>

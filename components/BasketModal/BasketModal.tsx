@@ -61,7 +61,7 @@ export default function BasketModal() {
           <div className={css.basketModalCloseBtnContainer}>
             <button className={css.basketModalCloseButton} onClick={handleClose}>
               <svg className={css.mbasketMenuCloseBtnIcon} width="24" height="24">
-                <use xlinkHref="/symbol-defs.svg#icon-close" />
+                <use href="/symbol-defs.svg#icon-close" />
               </svg>
             </button>
           </div>

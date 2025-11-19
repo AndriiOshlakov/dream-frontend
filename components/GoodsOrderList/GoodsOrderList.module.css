@@ -149,12 +149,10 @@
 .goodsOrderDeleteBtn:hover,
 .goodsOrderDeleteBtn:focus {
   background-color: #00000026;
-  border: 1px solid #00000080;
 }
 
 .goodsOrderDeleteBtn:active {
   background-color: #3b4331;
-  color: #ffffff;
 }
 
 .goodsOrderDeleteBtn:disabled {
