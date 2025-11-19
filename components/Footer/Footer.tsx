@@ -3,15 +3,14 @@
 import css from './Footer.module.css';
 import Link from 'next/link';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { subscribeUser } from '@/lib/api/clientApi';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 export default function Footer() {
   const queryClient = useQueryClient();
-
-  const [email, setEmail] = useState('');
 
   const mutation = useMutation({
     mutationFn: async (email: string) => {
@@ -20,17 +19,17 @@ export default function Footer() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['email'] });
       toast.success('Дякуємо за підписку!');
-      setEmail('');
     },
     onError: (error: Error) => {
       toast.error(error.message);
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    mutation.mutate(email);
-  };
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .required("Email є обов'язковим")
+      .matches(/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/, 'Некоректний формат email'),
+  });
 
   return (
     <footer className={css.footer}>
@@ -62,20 +61,38 @@ export default function Footer() {
             <p className={css.footerDescription}>
               Приєднуйтесь до нашої розсилки, щоб бути в курсі новин та акцій.
             </p>
-            <form className={css.footerForm} onSubmit={handleSubmit}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Введіть ваш email"
-                className={css.footerInput}
-                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-              />
-              <button type="submit" className={css.footerBtn} disabled={mutation.isPending}>
-                {mutation.isPending ? 'Надсилаємо...' : 'Підписатися'}
-              </button>
-            </form>
+            <Formik
+              initialValues={{ email: '' }}
+              validationSchema={validationSchema}
+              onSubmit={(values, { resetForm }) => {
+                mutation.mutate(values.email, {
+                  onSuccess: () => {
+                    resetForm();
+                  },
+                });
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form className={css.footerForm} noValidate>
+                  <div className={css.inputWrapper}>
+                    <Field
+                      type="text"
+                      name="email"
+                      placeholder="Введіть ваш email"
+                      className={css.footerInput}
+                    />
+                    <ErrorMessage name="email" component="div" className={css.errorMessage} />
+                  </div>
+                  <button
+                    type="submit"
+                    className={css.footerBtn}
+                    disabled={mutation.isPending || isSubmitting}
+                  >
+                    {mutation.isPending ? 'Надсилаємо...' : 'Підписатися'}
+                  </button>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
 
