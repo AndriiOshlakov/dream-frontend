@@ -14,6 +14,63 @@
   margin: 112px 0;
 }
 
+.navigation {
+  display: flex;
+  gap: 9px;
+  justify-content: end;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: #000;
+  fill: none;
+}
+
+.iconStar {
+  stroke: #000;
+}
+
+.navButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #c5e1a5;
+  background: #c5e1a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navButtonDisabled {
+  /* border: 1px solid #c5e1a5; */
+  background: #c5e1a5;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.navButton:hover,
+.navButton:focus-visible {
+  background: #9db484;
+  border-color: #4e5a42;
+}
+
+.navButton:active {
+  background: #1b5e20;
+  border-color: #1b5e20;
+}
+
+.navButton:active .icon {
+  stroke: #fff;
+}
+
+.navButton:disabled .icon {
+  stroke: rgba(0, 0, 0, 0.25);
+}
+
 .title {
   font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
@@ -68,7 +125,7 @@
   justify-content: end;
 }
 
-.navButton {
+/* .navButton {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -86,7 +143,7 @@
   background: #c5e1a5;
   cursor: not-allowed;
   opacity: 0.4;
-}
+} */
 
 .swiperContainer {
   width: 100%;
@@ -180,7 +237,7 @@
     justify-content: end;
   }
 
-  .navButton {
+  /* .navButton {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -198,7 +255,7 @@
     background: #c5e1a5;
     cursor: not-allowed;
     opacity: 0.4;
-  }
+  } */
 
   .swiperContainer {
     width: 100%;
@@ -271,10 +328,17 @@
     text-decoration-skip-ink: none;
   }
 
-  .navigation {
+  /* .navigation {
     display: flex;
     gap: 9px;
     justify-content: end;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    stroke: #000;
+    fill: none;
   }
 
   .navButton {
@@ -296,6 +360,25 @@
     cursor: not-allowed;
     opacity: 0.4;
   }
+
+  .navButton:hover,
+  .navButton:focus-visible {
+    background: #9db484;
+    border-color: #4e5a42;
+  }
+
+  .navButton:active {
+    background: #1b5e20;
+    border-color: #1b5e20;
+  }
+
+  .navButton:active .icon {
+    stroke: #fff;
+  }
+
+  .navButton:disabled .icon {
+    stroke: rgba(0, 0, 0, 0.25);
+  } */
 
   .swiperContainer {
     width: 100%;
