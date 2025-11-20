@@ -76,6 +76,21 @@ export default function GoodsList() {
   const canGoPrev = !isBeginning;
   const canGoNext = !isEnd;
 
+  const getDotClass = (index: number): string => {
+    const center = activeDot; // активна крапка
+
+    if (index === center) {
+      // центральна велика
+      return `${css.dot} ${css.dotBig} ${css.dotActive}`;
+    }
+
+    if (index === center - 1 || index === center + 1) {
+      return `${css.dot} ${css.dotMedium}`;
+    }
+
+     return `${css.dot} ${css.dotSmall}`;
+  };
+
   return (
     <section id="popular_goods" className={css.section}>
       <div className="container">
@@ -116,11 +131,13 @@ export default function GoodsList() {
               onSlideChange={(swiper) => {
                 setIsBeginning(swiper.isBeginning);
                 setIsEnd(swiper.isEnd);
+
                 const realIndex =
                   typeof swiper.realIndex === "number"
                     ? swiper.realIndex
                     : swiper.activeIndex;
-                setActiveDot(realIndex % DOTS_COUNT);
+
+               setActiveDot(realIndex % DOTS_COUNT);
               }}
               aria-label="Популярні товари — слайдер товарів"
             >
@@ -165,12 +182,11 @@ export default function GoodsList() {
                           <svg className={css.star} aria-hidden="true">
                             <use href="/symbol-defs.svg#icon-star-filled" />
                           </svg>
-                          <span className={css.ratingValue}>{ratingValue}</span>
+                          <span className={css.ratingValue}>
+                            {ratingValue}
+                          </span>
 
-                          <svg
-                            className={css.commentIcon}
-                            aria-hidden="true"
-                          >
+                          <svg className={css.commentIcon} aria-hidden="true">
                             <use href="/symbol-defs.svg#icon-comment" />
                           </svg>
                           <span className={css.reviewsCount}>
@@ -180,10 +196,7 @@ export default function GoodsList() {
                       </div>
                     </Link>
 
-                    <Link
-                      href={`/goods/${good.id}`}
-                      className={css.detailsBtn}
-                    >
+                    <Link href={`/goods/${good.id}`} className={css.detailsBtn}>
                       Детальніше
                     </Link>
                   </SwiperSlide>
@@ -194,12 +207,7 @@ export default function GoodsList() {
             <div className={css.controls}>
               <div className={css.dots} aria-hidden>
                 {Array.from({ length: DOTS_COUNT }).map((_, index) => (
-                  <span
-                    key={index}
-                    className={`${css.dot} ${
-                      index === activeDot ? css.dotActive : ""
-                    }`}
-                  />
+                  <span key={index} className={getDotClass(index)} />
                 ))}
               </div>
 
@@ -294,7 +302,6 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
   };
 };
 
-/* підрахунок відгуків і рейтинга */
 const fetchFeedbackStatsForGood = async (
   goodId: string
 ): Promise<{ rating: number; reviewsCount: number }> => {
@@ -308,6 +315,7 @@ const fetchFeedbackStatsForGood = async (
     }
 
     const data: unknown = await res.json();
+
     let allFeedbacks: GoodsFeedback[] = [];
 
     if (Array.isArray(data)) {
@@ -329,7 +337,7 @@ const fetchFeedbackStatsForGood = async (
       filteredFeedbacks.reduce((sum, f) => sum + f.rate, 0) /
       filteredFeedbacks.length;
 
-    const rounded = Math.round(avg * 2) / 2; // крок 0.5
+    const rounded = Math.round(avg * 2) / 2;
 
     return {
       rating: rounded,
@@ -340,14 +348,12 @@ const fetchFeedbackStatsForGood = async (
   }
 };
 
-/** спочатку товар а потім за id відгук */
 const fetchGoods = async (): Promise<Good[]> => {
   if (!API_BASE) {
     throw new Error("baseURL не налаштований у api.defaults.baseURL");
   }
 
   const url = `${API_BASE}/goods`;
-
   const response = await fetch(url, {
     cache: "no-store",
   });
@@ -364,6 +370,7 @@ const fetchGoods = async (): Promise<Good[]> => {
   }
 
   const baseGoods = typed.goods.map(mapRawGoodToGood);
+
   const goodsWithStats = await Promise.all(
     baseGoods.map(async (good) => {
       const { rating, reviewsCount } = await fetchFeedbackStatsForGood(good.id);
