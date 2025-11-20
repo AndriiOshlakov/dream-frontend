@@ -63,7 +63,6 @@
 .footerNavigation:focus {
   text-decoration: underline;
   text-underline-offset: 3px;
-  /* transform: scale(1.05); */
   transform: translateY(-2px);
   text-underline-offset: 4px;
   text-decoration: underline;
@@ -148,7 +147,6 @@
   border-radius: 100px;
   padding-block: 6px;
   padding-inline: 12px;
-  width: 124px;
   height: 36px;
   background: rgba(0, 0, 0, 0.05);
   font-family: 'Inter', sans-serif;
@@ -197,10 +195,6 @@
 .socialLink {
   fill: #000;
 }
-/* .socialLink:hover,
-.socialLink:focus {
-  transform: scale(1.05);
-} */
 @media screen and (min-width: 768px) {
   .container {
     max-width: 768px;
@@ -246,8 +240,6 @@
     height: 37px;
   }
   .footerBtn {
-    width: 111px;
-    height: 33px;
     font-size: 14px;
   }
   .rights {
