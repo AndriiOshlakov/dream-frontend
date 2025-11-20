@@ -25,11 +25,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 122px;
   height: 36px;
-  padding: 6px 16px;
+  padding: 6px 12px;
   border: 1px solid rgba(255, 255, 255, 0);
   border-radius: 100px;
-  background: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.05);
   color: #000;
   font-family: Inter, sans-serif;
   font-weight: 500;
@@ -44,13 +45,13 @@
 
 .button:hover,
 .button:focus {
-  background: #c5e1a5;
-  border-color: #c5e1a5;
+  background-color: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .button:active {
-  background: #1b5e20;
-  border-color: #1b5e20;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0);
   color: #fff;
   transform: translateY(1px);
 }
