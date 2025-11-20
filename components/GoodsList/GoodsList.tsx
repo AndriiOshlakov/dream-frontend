@@ -14,12 +14,10 @@ import type { RawGood, Good } from "../../types/goods";
 import Loader from "../Loader/Loader";
 import { api } from "@/app/api/api";
 
-type RawFeedback = {
-  rating?: number;
-  rate?: number;
-  score?: number;
-  value?: number;
-  stars?: number;
+type GoodsFeedback = {
+  _id: string;
+  rate: number;
+  productId: string;
 };
 
 export default function GoodsList() {
@@ -74,6 +72,9 @@ export default function GoodsList() {
   const handleNext = () => {
     swiperRef.current?.slideNext();
   };
+
+  const canGoPrev = !isBeginning;
+  const canGoNext = !isEnd;
 
   return (
     <section id="popular_goods" className={css.section}>
@@ -166,7 +167,10 @@ export default function GoodsList() {
                           </svg>
                           <span className={css.ratingValue}>{ratingValue}</span>
 
-                          <svg className={css.commentIcon} aria-hidden="true">
+                          <svg
+                            className={css.commentIcon}
+                            aria-hidden="true"
+                          >
                             <use href="/symbol-defs.svg#icon-comment" />
                           </svg>
                           <span className={css.reviewsCount}>
@@ -176,7 +180,10 @@ export default function GoodsList() {
                       </div>
                     </Link>
 
-                    <Link href={`/goods/${good.id}`} className={css.detailsBtn}>
+                    <Link
+                      href={`/goods/${good.id}`}
+                      className={css.detailsBtn}
+                    >
                       Детальніше
                     </Link>
                   </SwiperSlide>
@@ -199,8 +206,11 @@ export default function GoodsList() {
               <div className={css.arrows}>
                 <button
                   type="button"
-                  className={css.arrowBtn}
+                  className={`${css.arrowBtn} ${
+                    !canGoPrev ? css.arrowBtnDisabled : ""
+                  }`}
                   onClick={handlePrev}
+                  disabled={!canGoPrev}
                   aria-label="Попередні товари"
                 >
                   <svg className={css.icon}>
@@ -210,8 +220,11 @@ export default function GoodsList() {
 
                 <button
                   type="button"
-                  className={css.arrowBtn}
+                  className={`${css.arrowBtn} ${
+                    !canGoNext ? css.arrowBtnDisabled : ""
+                  }`}
                   onClick={handleNext}
+                  disabled={!canGoNext}
                   aria-label="Наступні товари"
                 >
                   <svg className={css.icon}>
@@ -245,10 +258,6 @@ const buildImageSrc = (image: string): string => {
   return `${API_ROOT}/${normalizedPath}`;
 };
 
-const isRawFeedbackArray = (value: unknown): value is RawFeedback[] => {
-  return Array.isArray(value);
-};
-
 const getIdFromRaw = (raw: RawGood): string => {
   const rawId = (raw as { _id?: string | { $oid: string } })._id;
 
@@ -270,35 +279,6 @@ const getIdFromRaw = (raw: RawGood): string => {
 
 const mapRawGoodToGood = (raw: RawGood): Good => {
   const id = getIdFromRaw(raw);
-
-  const feedbacksUnknown = (raw as { feedbacks?: unknown }).feedbacks;
-
-  // значення за замовчуванням, щоб не показувати 0
-  let reviewsCount = 1; 
-  let rating = 4.8; 
-
-  if (isRawFeedbackArray(feedbacksUnknown) && feedbacksUnknown.length > 0) {
-    reviewsCount = feedbacksUnknown.length;
-
-    const numericRatings = feedbacksUnknown
-      .map((f: RawFeedback): number | null => {
-        if (typeof f.rating === "number") return f.rating;
-        if (typeof f.rate === "number") return f.rate;
-        if (typeof f.score === "number") return f.score;
-        if (typeof f.value === "number") return f.value;
-        if (typeof f.stars === "number") return f.stars;
-        return null;
-      })
-      .filter((val): val is number => val !== null);
-
-    if (numericRatings.length > 0) {
-      const sum = numericRatings.reduce((acc, n) => acc + n, 0);
-      rating = Math.round((sum / numericRatings.length) * 10) / 10;
-    } else {
-      rating = 4.8;
-    }
-  }
-
   const sizes = Array.isArray(raw.size) ? raw.size : [];
 
   return {
@@ -309,11 +289,58 @@ const mapRawGoodToGood = (raw: RawGood): Good => {
     currency: raw.price?.currency ?? "грн",
     categoryId: undefined,
     sizes,
-    reviewsCount,
-    rating,
+    reviewsCount: 0,
+    rating: 0,
   };
 };
 
+/* підрахунок відгуків і рейтинга */
+const fetchFeedbackStatsForGood = async (
+  goodId: string
+): Promise<{ rating: number; reviewsCount: number }> => {
+  try {
+    const res = await fetch(`/api/feedbacks?productId=${goodId}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return { rating: 0, reviewsCount: 0 };
+    }
+
+    const data: unknown = await res.json();
+    let allFeedbacks: GoodsFeedback[] = [];
+
+    if (Array.isArray(data)) {
+      allFeedbacks = data as GoodsFeedback[];
+    } else {
+      const obj = data as { feedbacks?: GoodsFeedback[] };
+      allFeedbacks = obj.feedbacks ?? [];
+    }
+
+    const filteredFeedbacks = allFeedbacks.filter(
+      (feedback) => feedback.productId === goodId
+    );
+
+    if (filteredFeedbacks.length === 0) {
+      return { rating: 0, reviewsCount: 0 };
+    }
+
+    const avg =
+      filteredFeedbacks.reduce((sum, f) => sum + f.rate, 0) /
+      filteredFeedbacks.length;
+
+    const rounded = Math.round(avg * 2) / 2; // крок 0.5
+
+    return {
+      rating: rounded,
+      reviewsCount: filteredFeedbacks.length,
+    };
+  } catch {
+    return { rating: 0, reviewsCount: 0 };
+  }
+};
+
+/** спочатку товар а потім за id відгук */
 const fetchGoods = async (): Promise<Good[]> => {
   if (!API_BASE) {
     throw new Error("baseURL не налаштований у api.defaults.baseURL");
@@ -336,6 +363,17 @@ const fetchGoods = async (): Promise<Good[]> => {
     return [];
   }
 
-  return typed.goods.map(mapRawGoodToGood);
-};
+  const baseGoods = typed.goods.map(mapRawGoodToGood);
+  const goodsWithStats = await Promise.all(
+    baseGoods.map(async (good) => {
+      const { rating, reviewsCount } = await fetchFeedbackStatsForGood(good.id);
+      return {
+        ...good,
+        rating,
+        reviewsCount,
+      };
+    })
+  );
 
+  return goodsWithStats;
+};

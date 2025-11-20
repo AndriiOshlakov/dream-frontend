@@ -41,7 +41,7 @@
   min-width: 108px;
   height: 36px;
   padding: 6px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: none;
   border-radius: 100px;
   background: rgba(0, 0, 0, 0.05);
   color: #000;
@@ -64,7 +64,6 @@
   margin-top: 4px;
 }
 
-/* hover / focus / active лише для .button (якщо десь буде використана) */
 .button:hover,
 .button:focus {
   background: #c5e1a5;
@@ -78,7 +77,6 @@
   transform: translateY(1px);
 }
 
-/* ==== Кнопка Детальніше ==== */
 .detailsBtn {
   display: inline-flex;
   align-items: center;
@@ -100,7 +98,6 @@
   margin-top: 16px;
 }
 
-/* Детальніше + Всі товари — однаковий hover/focus/active */
 .detailsBtn:hover,
 .detailsBtn:focus,
 .allBtn:hover,
@@ -117,7 +114,6 @@
   transform: translateY(1px);
 }
 
-/* ==== list ==== */
 .list {
   display: grid;
   grid-template-columns: 1fr;
@@ -125,7 +121,6 @@
   margin: 0 auto;
 }
 
-/* card */
 .card {
   background-color: transparent;
   border-radius: 16px;
@@ -168,7 +163,6 @@
   gap: 8px;
 }
 
-/* === Заголовок і бренд === */
 .titleBlock {
   min-height: 56px;
   display: flex;
@@ -176,7 +170,6 @@
   gap: 4px;
 }
 
-/* title + price */
 .headRow {
   display: flex;
   justify-content: space-between;
@@ -214,7 +207,6 @@
   flex: 0 0 auto;
 }
 
-/* rating row */
 .ratingRow {
   display: inline-flex;
   align-items: center;
@@ -251,8 +243,6 @@
   color: #000;
 }
 
-/* ==== контролы свайпера ==== */
-
 .controls {
   margin-top: 24px;
   display: flex;
@@ -262,25 +252,37 @@
   position: relative;
 }
 
+/* кастомні крапки — контейнер */
 .dots {
   display: inline-flex;
   align-items: center;
   gap: 9px;
 }
 
-.dot,
-.dotActive {
+/* базовий клас для всіх крапок */
+.dotBase {
+  border-radius: 50%;
+  background: #000;
+  opacity: 0.25;
+}
+
+.dotSmall {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
 }
 
-.dot {
-  background: rgba(0, 0, 0, 0.25);
+/* середні (по боках від активної) — 10px */
+.dotMedium {
+  width: 10px;
+  height: 10px;
+  opacity: 0.4;
 }
 
-.dotActive {
-  background: #000;
+/* центральна активна — 12px */
+.dotBig {
+  width: 12px;
+  height: 12px;
+  opacity: 1;
 }
 
 .arrows {
@@ -289,7 +291,7 @@
   z-index: 5;
 }
 
-/* ====== BUTTON STATES FOR SLIDER ARROWS ====== */
+/* Кнопки-сстрілки */
 
 .arrowBtn {
   width: 48px;
@@ -312,32 +314,35 @@
   fill: none;
 }
 
-/* Hover / Focus (активна) */
-.arrowBtn:hover,
-.arrowBtn:focus-visible {
+/* Hover / Focus */
+.arrowBtn:hover:not(:disabled),
+.arrowBtn:focus-visible:not(:disabled) {
   background: #9db484;
   border-color: #4e5a42;
 }
 
-.arrowBtn:active {
+/* Active */
+.arrowBtn:active:not(:disabled) {
   background: #1b5e20;
   border-color: #1b5e20;
 }
 
-.arrowBtn:active .icon {
+.arrowBtn:active:not(:disabled) .icon {
   stroke: #fff;
 }
 
 /* Disabled */
 .arrowBtn:disabled {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: #c5e1a5;   
+  border-color: #c5e1a5;
+  opacity: 0.4;         
   cursor: default;
   pointer-events: none;
 }
 
 .arrowBtn:disabled .icon {
-  stroke: rgba(0, 0, 0, 0.25);
+  stroke: #000;   
+  opacity: 1;     
 }
 
 /***** ===== TABLET ≥768px =====*****/
@@ -352,7 +357,6 @@
   }
 
   .title {
-    /* font-size: 36px; */
     margin-bottom: 40px;
     max-width: none;
   }
@@ -460,4 +464,10 @@
     pointer-events: none;
     z-index: 5;
   }
+
+  .arrowBtn {
+    pointer-events: auto;
+  }
 }
+
+
