@@ -5,6 +5,7 @@ import css from './Profile.module.css';
 import OrderItem from '@/components/OrderItem/OrderItem';
 import UserInfoForm from '@/components/UserInfoForm/UserInfoForm';
 import MessageNoInfo from '@/components/MessageNoInfo/MessageNoInfo';
+import Loader from '@/components/Loader/Loader';
 import { logout, fetchMyOrders, editMe } from '@/lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
@@ -45,7 +46,7 @@ export default function ProfileClient() {
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
+  if (isLoading) return <Loader />;
 
   if (error || !orders) return <p>Something went wrong.</p>;
 

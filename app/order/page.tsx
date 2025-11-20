@@ -288,6 +288,7 @@ import { useShopStore } from '@/lib/store/cartStore';
 import GoodsOrderList from '@/components/GoodsOrderList/GoodsOrderList';
 import { nextServer } from '@/lib/api/api';
 import { toast, ToastContainer } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface OrderInput {
   name: string;
@@ -326,6 +327,7 @@ const validationSchema = Yup.object({
 
 export default function CreateOrder() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [profileInitialValues, setProfileInitialValues] = useState<OrderInput>(initialValues);
   const [modalInfo, setModalInfo] = useState<{
     show: boolean;
@@ -399,6 +401,8 @@ export default function CreateOrder() {
         `ВИ ЗРОБИЛИ ВДАЛЕ ЗАМОВЛЕННЯ НА СУМУ ${totalPrice} грн. ДЯКУЄМО, ЩО ОБРАЛИ DREAMCLOTH!`
       );
       clearCart();
+      // Оновлюємо кеш запитів для моїх замовлень на сторінці профілю
+      queryClient.invalidateQueries({ queryKey: ['myOrders'] });
       actions.resetForm();
 
       setTimeout(() => {

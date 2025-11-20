@@ -49,6 +49,41 @@
   transition: background-color 0.2s;
 }
 
+.button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: #c5e1a5;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.1s;
+}
+
+.button:hover,
+.button:focus {
+  background: #9db484;
+}
+
+.button:active {
+  background-color: #3b4331;
+  color: #fff;
+}
+
+.button:disabled {
+  background-color: #f9fcf6;
+}
+
 @media (min-width: 768px) {
   .form {
     grid-template-columns: 1fr 1fr;
@@ -61,5 +96,9 @@
 
   .actions {
     grid-column: 1 / -1;
+  }
+
+  .button {
+    width: auto;
   }
 }
