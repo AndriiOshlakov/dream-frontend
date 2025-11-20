@@ -32,7 +32,6 @@
   margin: 0 0 40px;
 }
 
-/* базова кнопка (якщо десь ще буде) */
 .button,
 .allBtn,
 .detailsBtn {
@@ -42,7 +41,7 @@
   min-width: 108px;
   height: 36px;
   padding: 6px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: none;
   border-radius: 100px;
   background: rgba(0, 0, 0, 0.05);
   color: #000;
@@ -65,7 +64,6 @@
   margin-top: 4px;
 }
 
-/* hover / focus / active лише для .button (на всякий випадок) */
 .button:hover,
 .button:focus {
   background: #c5e1a5;
@@ -79,7 +77,6 @@
   transform: translateY(1px);
 }
 
-/* ==== Кнопка Детальніше ==== */
 .detailsBtn {
   display: inline-flex;
   align-items: center;
@@ -101,7 +98,6 @@
   margin-top: 16px;
 }
 
-/* Детальніше + Всі товари — однаковий hover/focus/active */
 .detailsBtn:hover,
 .detailsBtn:focus,
 .allBtn:hover,
@@ -118,7 +114,6 @@
   transform: translateY(1px);
 }
 
-/* ==== list ==== */
 .list {
   display: grid;
   grid-template-columns: 1fr;
@@ -126,7 +121,6 @@
   margin: 0 auto;
 }
 
-/* card */
 .card {
   background-color: transparent;
   border-radius: 16px;
@@ -138,7 +132,7 @@
 
 .imgWrap {
   width: 100%;
-  height: 413px; /* mobile: 335x413 */
+  height: 413px; 
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
@@ -169,7 +163,6 @@
   gap: 8px;
 }
 
-/* === Заголовок і бренд === */
 .titleBlock {
   min-height: 56px;
   display: flex;
@@ -177,7 +170,6 @@
   gap: 4px;
 }
 
-/* title + price */
 .headRow {
   display: flex;
   justify-content: space-between;
@@ -215,7 +207,6 @@
   flex: 0 0 auto;
 }
 
-/* rating row */
 .ratingRow {
   display: inline-flex;
   align-items: center;
@@ -252,8 +243,6 @@
   color: #000;
 }
 
-/* ==== контролы свайпера ==== */
-
 .controls {
   margin-top: 24px;
   display: flex;
@@ -263,43 +252,37 @@
   position: relative;
 }
 
-/* ----- dots (5 штук, різний розмір) ----- */
+/* кастомні крапки — контейнер */
 .dots {
   display: inline-flex;
   align-items: center;
-  gap: 9px; /* як на макеті */
+  gap: 9px;
 }
 
-/* базовий вигляд точки */
-.dot,
-.dotActive {
+/* базовий клас для всіх крапок */
+.dotBase {
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.25);
+  background: #000;
+  opacity: 0.25;
 }
 
-/* найменші – по краях (1 і 5) */
-.dots .dot:nth-child(1),
-.dots .dot:nth-child(5) {
+.dotSmall {
   width: 8px;
   height: 8px;
 }
 
-/* середні – 2 і 4 */
-.dots .dot:nth-child(2),
-.dots .dot:nth-child(4) {
+/* середні (по боках від активної) — 10px */
+.dotMedium {
   width: 10px;
   height: 10px;
+  opacity: 0.4;
 }
 
-/* центральна – найбільша (3-тя) */
-.dots .dot:nth-child(3) {
+/* центральна активна — 12px */
+.dotBig {
   width: 12px;
   height: 12px;
-}
-
-/* активна точка чорна */
-.dotActive {
-  background: #000;
+  opacity: 1;
 }
 
 .arrows {
@@ -308,7 +291,7 @@
   z-index: 5;
 }
 
-/* ====== BUTTON STATES FOR SLIDER ARROWS ====== */
+/* Кнопки-сстрілки */
 
 .arrowBtn {
   width: 48px;
@@ -332,31 +315,34 @@
 }
 
 /* Hover / Focus */
-.arrowBtn:hover,
-.arrowBtn:focus-visible {
+.arrowBtn:hover:not(:disabled),
+.arrowBtn:focus-visible:not(:disabled) {
   background: #9db484;
   border-color: #4e5a42;
 }
 
-.arrowBtn:active {
+/* Active */
+.arrowBtn:active:not(:disabled) {
   background: #1b5e20;
   border-color: #1b5e20;
 }
 
-.arrowBtn:active .icon {
+.arrowBtn:active:not(:disabled) .icon {
   stroke: #fff;
 }
 
-/* Disabled (на всяк випадок, зараз не використовується) */
+/* Disabled */
 .arrowBtn:disabled {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: #c5e1a5;   
+  border-color: #c5e1a5;
+  opacity: 0.4;         
   cursor: default;
   pointer-events: none;
 }
 
 .arrowBtn:disabled .icon {
-  stroke: rgba(0, 0, 0, 0.25);
+  stroke: #000;   
+  opacity: 1;     
 }
 
 /***** ===== TABLET ≥768px =====*****/
@@ -412,7 +398,7 @@
     transform: translate(-50%, -50%);
     width: 765px;
     display: flex;
-    justify-content: space_between;
+    justify-content: space-between;
     align-items: center;
     pointer-events: none;
     z-index: 5;
@@ -477,6 +463,10 @@
     align-items: center;
     pointer-events: none;
     z-index: 5;
+  }
+
+  .arrowBtn {
+    pointer-events: auto;
   }
 }
 
