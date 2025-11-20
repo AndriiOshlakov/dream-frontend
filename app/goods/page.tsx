@@ -50,7 +50,7 @@ export default function GoodsPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await getCategories();
+        const data = await getCategories(1, 8);
         setCategories(data);
       } catch (err) {
         console.error(err);
@@ -72,6 +72,7 @@ export default function GoodsPage() {
         size: filters.size,
       }),
   });
+
   const handleFiltersChange = (updatedFilters: typeof filters) => {
     setFilters(updatedFilters);
   };

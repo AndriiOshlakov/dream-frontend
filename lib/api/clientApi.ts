@@ -55,9 +55,9 @@ export async function editMe(data: EditCurrentUser): Promise<User> {
 //! -CATEGORIES-
 //! ------------
 
-export async function getCategories(page?: number) {
+export async function getCategories(page?: number, perPage?: number) {
   const response = await nextServer.get<CategoriesResponse>('/categories', {
-    params: { page },
+    params: { page, perPage },
   });
   return response.data.categories;
 }

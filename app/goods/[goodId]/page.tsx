@@ -8,6 +8,7 @@ import { useShopStore } from '@/lib/store/cartStore';
 import Link from 'next/link';
 import Image from 'next/image';
 import Loader from '@/components/Loader/Loader';
+import { toast } from 'react-toastify';
 
 interface Good {
   _id: string;
@@ -19,7 +20,10 @@ interface Good {
   prevDescription?: string;
   fullDescription?: string;
   characteristics?: string[];
-  category?: string;
+  category?: {
+    _id: string;
+    name: string;
+  };
 }
 
 interface Feedback {
@@ -85,6 +89,7 @@ export default function GoodPage() {
 
         const data = await res.json();
         setGood(data);
+
         if (data && data.size && data.size.length > 0) {
           setSelectedSize(data.size[0]);
         }
@@ -117,7 +122,7 @@ export default function GoodPage() {
     };
 
     addToCart(itemToAdd);
-    alert(`"${good.name}" (${selectedSize}, x${quantity}) додано до кошика!`);
+    toast(`"${good.name}" (${selectedSize}, x${quantity}) додано до кошика!`);
   };
 
   const handleBuyNow = () => {
@@ -319,7 +324,10 @@ export default function GoodPage() {
                   {'★'.repeat(feedback.rate)}
                   {'☆'.repeat(5 - feedback.rate)}
                 </div>
-                <p className={css.reviewText}>{feedback.description}</p>
+                <div style={{ height: '200px' }}>
+                  <p className={css.reviewText}>{feedback.description}</p>
+                </div>
+
                 <div className={css.reviewAuthor}>
                   <strong>
                     {feedback.author || authorNames[Math.floor(Math.random() * authorNames.length)]}
@@ -364,7 +372,7 @@ export default function GoodPage() {
             key={Date.now()}
             onClose={closeModal}
             productId={goodId}
-            category={good.category || 'general'}
+            category={good.name || 'general'}
           />
         )}
       </section>

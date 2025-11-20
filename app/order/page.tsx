@@ -403,7 +403,7 @@ export default function CreateOrder() {
 
       setTimeout(() => {
         router.push('/goods');
-      }, 5000);
+      }, 2000);
     } catch (error) {
       console.error('Order submission failed:', error);
 
