@@ -43,7 +43,7 @@ export default function ProfileClient() {
   } = useQuery({
     queryKey: ['myOrders'],
     queryFn: fetchMyOrders,
-    refetchOnMount: false,
+    refetchOnMount: true,
   });
 
   if (isLoading) return <Loader />;
