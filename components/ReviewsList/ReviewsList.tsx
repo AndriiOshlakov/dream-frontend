@@ -93,7 +93,7 @@ export default function ReviewsList() {
               <div className={css.card}>
                 <p className={css.rating}>
                   {Array.from({ length: review.rating }).map((_, i) => (
-                    <svg width="20" height="19" key={i}>
+                    <svg className={css.iconStar} width="20" height="19" key={i}>
                       <use href="/symbol-defs.svg#icon-star-filled" />
                     </svg>
                   ))}
@@ -121,7 +121,7 @@ export default function ReviewsList() {
             disabled={isAtStart}
             aria-label="Попередні відгуки"
           >
-            <svg width="24" height="24">
+            <svg className={css.icon}>
               <use href="/symbol-defs.svg#icon-arrow_back" />
             </svg>
           </button>
@@ -132,7 +132,7 @@ export default function ReviewsList() {
             disabled={isAtEnd}
             aria-label="Наступні відгуки"
           >
-            <svg width="24" height="24">
+            <svg className={css.icon}>
               <use href="/symbol-defs.svg#icon-arrow_forward" />
             </svg>
           </button>
