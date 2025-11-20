@@ -252,18 +252,23 @@
   position: relative;
 }
 
-/* кастомні крапки — контейнер */
+/* Кастомні крапки — контейнер */
 .dots {
   display: inline-flex;
   align-items: center;
   gap: 9px;
 }
 
-/* базовий клас для всіх крапок */
-.dotBase {
+/* Базовий клас крапки */
+.dot {
   border-radius: 50%;
   background: #000;
   opacity: 0.25;
+  transition: width 0.25s, height 0.25s, opacity 0.25s;
+}
+
+.dotActive {
+  opacity: 1;
 }
 
 .dotSmall {
@@ -271,18 +276,15 @@
   height: 8px;
 }
 
-/* середні (по боках від активної) — 10px */
 .dotMedium {
   width: 10px;
   height: 10px;
   opacity: 0.4;
 }
 
-/* центральна активна — 12px */
 .dotBig {
   width: 12px;
   height: 12px;
-  opacity: 1;
 }
 
 .arrows {
@@ -290,8 +292,6 @@
   gap: 12px;
   z-index: 5;
 }
-
-/* Кнопки-сстрілки */
 
 .arrowBtn {
   width: 48px;
@@ -333,16 +333,16 @@
 
 /* Disabled */
 .arrowBtn:disabled {
-  background: #c5e1a5;   
+  background: #c5e1a5;
   border-color: #c5e1a5;
-  opacity: 0.4;         
+  opacity: 0.4;
   cursor: default;
   pointer-events: none;
 }
 
 .arrowBtn:disabled .icon {
-  stroke: #000;   
-  opacity: 1;     
+  stroke: #000;
+  opacity: 1;
 }
 
 /***** ===== TABLET ≥768px =====*****/
@@ -430,7 +430,7 @@
   }
 
   .imgWrap {
-    height: 375px; /* desktop: 304x375 */
+    height: 375px; 
   }
 
   .title {
@@ -462,12 +462,9 @@
     justify-content: space-between;
     align-items: center;
     pointer-events: none;
-    z-index: 5;
   }
 
   .arrowBtn {
     pointer-events: auto;
   }
 }
-
-
