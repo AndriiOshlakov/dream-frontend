@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Loader from '@/components/Loader/Loader';
 import MessageNoInfo from '@/components/MessageNoInfo/MessageNoInfo';
+import { useSearchParams } from 'next/navigation';
 
 export type FiltersType = {
   minVal: number;
@@ -58,6 +59,25 @@ export default function GoodsPage() {
     };
     fetchCategories();
   }, []);
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const categoryIdFromUrl = searchParams.get('category');
+
+    if (categoryIdFromUrl && categories.length > 0) {
+      const category = categories.find((c) => c._id === categoryIdFromUrl);
+      if (category) {
+        setSelectedCategoryId(categoryIdFromUrl);
+        setSelectedCategoryName(category.name);
+        setCurrentPage(1);
+      }
+    } else if (!categoryIdFromUrl) {
+      setSelectedCategoryId(undefined);
+      setSelectedCategoryName('Усі товари');
+      setCurrentPage(1);
+    }
+  }, [categories, searchParams]);
 
   const { data, isPending } = useQuery({
     queryKey: ['goods', selectedCategoryId, filters, currentPage, perPage],
