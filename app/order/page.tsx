@@ -37,8 +37,14 @@ const initialValues: OrderInput = {
 };
 
 const validationSchema = Yup.object({
-  name: Yup.string().max(20, "Ім'я занадто довге").required("Ім'я є обов'язковим полем"),
-  surname: Yup.string().max(30, 'Прізвище занадто довге').required("Прізвище є обов'язковим полем"),
+  name: Yup.string()
+    .matches(/^[А-Яа-яЁёЇїІіЄєҐґA-Za-z'-]+$/, "Ім'я має містити лише літери")
+    .max(20, "Ім'я занадто довге")
+    .required("Ім'я є обов'язковим полем"),
+  surname: Yup.string()
+    .matches(/^[А-Яа-яЁёЇїІіЄєҐґA-Za-z'-]+$/, 'Прізвище має містити лише літери')
+    .max(30, 'Прізвище занадто довге')
+    .required("Прізвище є обов'язковим полем"),
   phone: Yup.string()
     .max(13, 'Надто довгий номер тедефона')
     .min(13, 'Надто короткий номер тедефона')
